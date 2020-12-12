@@ -80,7 +80,7 @@ publishing {
     publications {
         maven(MavenPublication) {
             groupId = group
-            artifactId = 'D-Oniris'
+            artifactId = 'DOniris'
             version = pluginVersion
 
             from components.java
