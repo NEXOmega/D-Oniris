@@ -5,7 +5,6 @@ import dandelion.oniris.players.PlayerStats;
 import dandelion.oniris.players.Stats;
 import dandelion.oniris.players.spell.Elements;
 import dandelion.oniris.players.support.SupportType;
-import jdk.internal.jline.internal.Nullable;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -70,7 +69,7 @@ public enum ItemUtils {
 
     public static ArrayList<String> lore = new ArrayList<>();
 
-    public static DandelionItem createRPGItem(DandelionItem item, Integer level, @Nullable WeaponsTypes type, @Nullable Elements elements, @Nullable SupportType support, int atk, int def, int spd, int vit, int magie) {
+    public static DandelionItem createRPGItem(DandelionItem item, Integer level, WeaponsTypes type, Elements elements, SupportType support, int atk, int def, int spd, int vit, int magie) {
         ItemStack itemStack = item.getItemStack();
         ItemMeta meta = itemStack.getItemMeta();
 

@@ -4,7 +4,6 @@ import dandelion.oniris.commands.equipemetns.WeaponsTypes;
 import dandelion.oniris.players.Stats;
 import dandelion.oniris.players.spell.Elements;
 import dandelion.oniris.players.support.Support;
-import jdk.internal.jline.internal.Nullable;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -32,7 +31,7 @@ public class DandelionItem {
         this.meta = itemStack.getItemMeta();
     }
 
-    public DandelionItem(ItemStack itemStack, String name, @Nullable ArrayList<String> description,@Nullable Stats stats,@Nullable Support support,@Nullable WeaponsTypes types, ItemType itemType, Ranks ranks,@Nullable Elements elements,@Nullable Integer level,@Nullable String spellList) {
+    public DandelionItem(ItemStack itemStack, String name, ArrayList<String> description, Stats stats, Support support, WeaponsTypes types, ItemType itemType, Ranks ranks, Elements elements, Integer level, String spellList) {
         this.itemStack = itemStack;
         meta = itemStack.getItemMeta();
         PersistentDataContainer data = meta.getPersistentDataContainer();
