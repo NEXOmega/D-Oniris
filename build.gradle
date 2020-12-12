@@ -38,6 +38,7 @@ dependencies {
     compile group: 'de.slikey', name:'EffectLib', version:'6.2' //Waiting for 1.16
     compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.5.0";
     implementation 'com.github.WesJD.AnvilGUI:anvilgui:master-SNAPSHOT'
+    implementation 'com.intellij:annotations:+@jar'
 
     implementation files('libraries/CrazyAdvancementsAPI.jar')
     implementation files('libraries/ParticleProjectileApi.jar')
