@@ -89,8 +89,8 @@ publishing {
     }
     repositories {
         maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/my-username/my-library")
+            name = "D-Oniris"
+            url = uri("https://github.com/NEXOmega/D-Oniris")
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
                 password = System.getenv("GITHUB_TOKEN")
