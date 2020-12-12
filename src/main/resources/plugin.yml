@@ -1,0 +1,47 @@
+name: Oniris
+version: @version@
+main: dandelion.oniris.Oniris
+api-version: 1.13
+authors: [NEXOmega]
+description: MMORPG Plugin for minecraft 1.14.4
+website: https://discord.gg/Z9Wwjtd
+commands:
+  playerinfos:
+    description: Récupérer les infos du joueur
+    permission: playerinfos.use
+  spell:
+    description: Lance un sort
+    permission: spell.use
+  menu:
+    description: Ouvre le menu
+    permission: menu.use
+  rpgitem:
+    description: Crée un item
+    permission: rpgitem.use
+  progress:
+    description: Progresser dans votre classe
+    permission: progress.use
+  test:
+    description: Tester
+    permission: test.admin.use
+  treasure:
+    description: Créer un trésor
+    permission: treasure.use
+  editor:
+    description: Editer le jeu
+    permission: admin.editor.use
+  showitem:
+    description: Show an Item
+    permission: showitem.use
+  buff:
+    description: Add buff to player
+    permission: admin.buff
+  ajob:
+    description: Job management
+    permission: admin.job
+  job:
+    description: Open Job Gui
+    permission: player.job
+  ressource:
+    description: Create Ressource
+    permission: admin.ressource
