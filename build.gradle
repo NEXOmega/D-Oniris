@@ -75,26 +75,3 @@ processResources {
         filter ReplaceTokens, tokens: [version: version]
     }
 }
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = group
-            artifactId = 'D-Oniris'
-            version = pluginVersion
-
-            from components.java
-        }
-
-    }
-    repositories {
-        maven {
-            name = "D-Oniris"
-            url = uri("https://github.com/NEXOmega/D-Oniris")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
-}
