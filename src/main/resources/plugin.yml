@@ -45,3 +45,6 @@ commands:
   ressource:
     description: Create Ressource
     permission: admin.ressource
+  entity:
+    description: Creer/modifier/Editer/Lister les entitées
+    permission: admin.entity

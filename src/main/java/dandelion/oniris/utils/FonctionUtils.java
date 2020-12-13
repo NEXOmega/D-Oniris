@@ -2,11 +2,14 @@ package dandelion.oniris.utils;
 
 import dandelion.oniris.commands.equipemetns.WeaponsTypes;
 import dandelion.oniris.entities.DandelionMob;
+import dandelion.oniris.entities.MobType;
 import dandelion.oniris.players.Stats;
 import dandelion.oniris.players.spell.Elements;
+import dandelion.oniris.players.spell.Spell;
 import dandelion.oniris.players.support.Support;
 import net.minecraft.server.v1_16_R2.Entity;
-import net.minecraft.server.v1_16_R2.EntityLiving;
+import net.minecraft.server.v1_16_R2.EntityInsentient;
+import net.minecraft.server.v1_16_R2.EntityTypes;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -180,11 +183,11 @@ public class FonctionUtils {
         }
     }
 
-    public static LivingEntity createLivingEntity(Class<? extends Entity> type, Location loc, DandelionMob dandelionMob) {
+    public static EntityInsentient createLivingEntity(Class<? extends Entity> type, Location loc, DandelionMob dandelionMob) {
         net.minecraft.server.v1_16_R2.World world = ((CraftWorld) (loc.getWorld())).getHandle();
-        net.minecraft.server.v1_16_R2.EntityLiving e = null;
+        net.minecraft.server.v1_16_R2.EntityInsentient e = null;
         try {
-            e = (EntityLiving) (type.getDeclaredConstructor(net.minecraft.server.v1_16_R2.World.class, DandelionMob.class).newInstance(world, dandelionMob));
+            e = (EntityInsentient) (type.getDeclaredConstructor(net.minecraft.server.v1_16_R2.World.class, DandelionMob.class).newInstance(world, dandelionMob));
         } catch (Exception e2) {
             e2.printStackTrace();
         }
@@ -192,6 +195,99 @@ public class FonctionUtils {
         world.addEntity(e, CreatureSpawnEvent.SpawnReason.CUSTOM);
         LivingEntity le = (LivingEntity) (e.getBukkitEntity());
         le.setRemoveWhenFarAway(false);
-        return le;
+        return e;
+    }
+
+    public static class DandelionMobBuilder {
+        String uuid;
+        int level, rewardXp;
+        String name;
+        Stats stats;
+        ArrayList<ItemStack> equipements;
+        ArrayList<Class<? extends Spell>> spells;
+        ArrayList<Support> supports;
+
+        MobType type;
+
+        Location spawnPoint;
+        long respawnTime;
+        boolean respawn = true;
+
+        Class<? extends Entity> entityClass;
+        EntityTypes entityTypes;
+
+        public DandelionMobBuilder setUuid(String uuid) {
+            this.uuid = uuid;
+            return this;
+        }
+
+        public DandelionMobBuilder setLevel(int level) {
+            this.level = level;
+            return this;
+        }
+
+        public DandelionMobBuilder setRewardXp(int rewardXp) {
+            this.rewardXp = rewardXp;
+            return this;
+        }
+
+        public DandelionMobBuilder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public DandelionMobBuilder setStats(Stats stats) {
+            this.stats = stats;
+            return this;
+        }
+
+        public DandelionMobBuilder setEquipements(ArrayList<ItemStack> equipements) {
+            this.equipements = equipements;
+            return this;
+        }
+
+        public DandelionMobBuilder setSpells(ArrayList<Class<? extends Spell>> spells) {
+            this.spells = spells;
+            return this;
+        }
+
+        public DandelionMobBuilder setSupports(ArrayList<Support> supports) {
+            this.supports = supports;
+            return this;
+        }
+
+        public DandelionMobBuilder setType(MobType type) {
+            this.type = type;
+            return this;
+        }
+
+        public DandelionMobBuilder setSpawnPoint(Location spawnPoint) {
+            this.spawnPoint = spawnPoint;
+            return this;
+        }
+
+        public DandelionMobBuilder setRespawnTime(long respawnTime) {
+            this.respawnTime = respawnTime;
+            return this;
+        }
+
+        public DandelionMobBuilder setRespawn(boolean respawn) {
+            this.respawn = respawn;
+            return this;
+        }
+
+        public DandelionMobBuilder setEntityClass(Class<? extends Entity> entityClass) {
+            this.entityClass = entityClass;
+            return this;
+        }
+
+        public DandelionMobBuilder setEntityTypes(EntityTypes entityTypes) {
+            this.entityTypes = entityTypes;
+            return this;
+        }
+
+        public DandelionMob build(){
+            return new DandelionMob(uuid, level,rewardXp,name,stats,equipements,spells,supports,type,spawnPoint,respawnTime,respawn,entityClass,entityTypes);
+        }
     }
 }

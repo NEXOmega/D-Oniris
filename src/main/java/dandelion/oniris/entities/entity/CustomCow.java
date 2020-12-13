@@ -11,6 +11,7 @@ public class CustomCow extends EntityCow {
     public CustomCow(World world, DandelionMob dandelionMob) {
         super(EntityTypes.COW, world);
         this.dandelionMob = dandelionMob;
+        this.expToDrop = dandelionMob.getRewardXp();
     }
 
     @Override
@@ -20,7 +21,7 @@ public class CustomCow extends EntityCow {
     @Override
     public void die() {
         super.die();
-        System.out.println("AAAAAAAAAAAAAAAAAA");
-        Oniris.getInstance().getEntityManager().respawn(dandelionMob, false);
+        if(dandelionMob.isRespawn())
+            Oniris.getInstance().getEntityManager().respawn(dandelionMob, true);
     }
 }

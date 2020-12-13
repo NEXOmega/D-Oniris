@@ -12,6 +12,7 @@ import dandelion.oniris.commands.stats.BuffCommand;
 import dandelion.oniris.commands.stats.JobCommand;
 import dandelion.oniris.commands.stats.PlayerMenuCommands;
 import dandelion.oniris.commands.stats.PlayerProgress;
+import dandelion.oniris.commands.world.EntityCommand;
 import dandelion.oniris.commands.world.RessourcesCommand;
 import dandelion.oniris.commands.world.TreasuresCommands;
 import dandelion.oniris.database.ConnectToDB;
@@ -77,6 +78,7 @@ public final class Oniris extends JavaPlugin {
         getCommand("buff").setExecutor(new BuffCommand(this));
         getCommand("ajob").setExecutor(new AdminJobCommands(this));
         getCommand("job").setExecutor(new JobCommand(this));
+        getCommand("entity").setExecutor(new EntityCommand(this));
 
         PluginManager pm = Bukkit.getPluginManager();
 

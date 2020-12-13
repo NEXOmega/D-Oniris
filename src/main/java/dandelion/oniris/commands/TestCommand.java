@@ -1,13 +1,9 @@
 package dandelion.oniris.commands;
 
 import dandelion.oniris.Oniris;
-import dandelion.oniris.entities.DandelionMob;
-import dandelion.oniris.entities.entity.CustomCow;
-import net.minecraft.server.v1_16_R2.EntityTypes;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class TestCommand implements CommandExecutor {
@@ -26,9 +22,6 @@ public class TestCommand implements CommandExecutor {
         oniris.getPlayers().get(commandSender).setPet(superZombie);
 
         ((CraftWorld)loc.getWorld()).getHandle().addEntity(superZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);*/
-
-        DandelionMob dandelionMob = new DandelionMob("Ban le furieu", ((Player)commandSender).getLocation(), EntityTypes.COW, CustomCow.class);
-        dandelionMob.spawn();
 
         return false;
     }
