@@ -27,6 +27,6 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
     - uses: actions/upload-artifact@v2
-        with:
-          name: D-Oniris
-          path: build/libs
+      with:
+        name: D-Oniris
+        path: build/libs
