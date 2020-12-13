@@ -30,3 +30,11 @@ jobs:
       with:
         name: D-Oniris
         path: build/libs
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/libs/D-Oniris.zip"
+          token: ${{ secrets.GITHUB_TOKEN }}
