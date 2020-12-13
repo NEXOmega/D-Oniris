@@ -4,7 +4,7 @@
 </p>
 <p align=center>
   <img src="https://img.shields.io/badge/Made%20with-Java-%23f7df1e?style=for-the-badge" alt="fully in java"/>
-  <img src="https://img.shields.io/github/workflow/status/NEXOmega/D-Oniris/gradle.yml?logo=github&style=for-the-badge" />
+  <img src="https://img.shields.io/github/workflow/status/NEXOmega/D-Oniris/Build?logo=github&style=for-the-badge" />
   <a href="https://choosealicense.com/licenses/mit/">
     <img src="https://img.shields.io/badge/license-MIT-yellow.svg?style=for-the-badge" alt="License"/>
   </a>
