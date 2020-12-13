@@ -96,6 +96,8 @@ public class DandelionItem {
 
     public void setName(String name) {
         this.name = name;
+        System.out.println(ranks);
+        System.out.println(level);
         meta.setDisplayName(ranks.chatColor + name + (level != null ? "["+level+"]" : ""));
     }
 

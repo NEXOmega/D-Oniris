@@ -15,12 +15,7 @@ public class PetCow  extends EntityCow {
 
         this.setGoalTarget(((CraftPlayer)player).getHandle(), EntityTargetEvent.TargetReason.CUSTOM, true);
     }
-
-    @Override
-    public EnumInteractionResult b(EntityHuman entityhuman, EnumHand enumhand) {
-        entityhuman.startRiding(this);
-        return super.b(entityhuman, enumhand);
-    }
+    
 
     @Override
     protected void initPathfinder() {

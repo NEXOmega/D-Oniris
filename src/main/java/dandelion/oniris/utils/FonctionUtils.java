@@ -1,12 +1,18 @@
 package dandelion.oniris.utils;
 
 import dandelion.oniris.commands.equipemetns.WeaponsTypes;
+import dandelion.oniris.entities.DandelionMob;
 import dandelion.oniris.players.Stats;
 import dandelion.oniris.players.spell.Elements;
 import dandelion.oniris.players.support.Support;
+import net.minecraft.server.v1_16_R2.Entity;
+import net.minecraft.server.v1_16_R2.EntityLiving;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.craftbukkit.v1_16_R2.CraftWorld;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -172,5 +178,20 @@ public class FonctionUtils {
         public DandelionItem build() {
             return new DandelionItem(itemStack,name,description,stats,support,types,itemType, ranks, elements, level, spellList);
         }
+    }
+
+    public static LivingEntity createLivingEntity(Class<? extends Entity> type, Location loc, DandelionMob dandelionMob) {
+        net.minecraft.server.v1_16_R2.World world = ((CraftWorld) (loc.getWorld())).getHandle();
+        net.minecraft.server.v1_16_R2.EntityLiving e = null;
+        try {
+            e = (EntityLiving) (type.getDeclaredConstructor(net.minecraft.server.v1_16_R2.World.class, DandelionMob.class).newInstance(world, dandelionMob));
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        }
+        e.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        world.addEntity(e, CreatureSpawnEvent.SpawnReason.CUSTOM);
+        LivingEntity le = (LivingEntity) (e.getBukkitEntity());
+        le.setRemoveWhenFarAway(false);
+        return le;
     }
 }

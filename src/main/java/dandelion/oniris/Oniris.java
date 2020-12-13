@@ -15,6 +15,7 @@ import dandelion.oniris.commands.stats.PlayerProgress;
 import dandelion.oniris.commands.world.RessourcesCommand;
 import dandelion.oniris.commands.world.TreasuresCommands;
 import dandelion.oniris.database.ConnectToDB;
+import dandelion.oniris.entities.EntityManager;
 import dandelion.oniris.jobs.JobManager;
 import dandelion.oniris.listerners.*;
 import dandelion.oniris.packets.CustomPacketManager;
@@ -51,6 +52,7 @@ public final class Oniris extends JavaPlugin {
     TreasureManager treasureManager;
     RessourceManager ressourceManager;
     JobManager jobManager;
+    EntityManager entityManager;
     MenuGui gui;
     PlayerUtils pUtils;
     ConnectToDB connectToDB = new ConnectToDB();
@@ -89,6 +91,8 @@ public final class Oniris extends JavaPlugin {
         this.ressourceManager = new RessourceManager(this);
         pm.registerEvents(ressourceManager, this);
         this.jobManager = new JobManager(this);
+
+        this.entityManager = new EntityManager(this);
 
         pUtils = new PlayerUtils(this);
         this.getServer().getScheduler().runTaskTimer(this, new TickManager(this), 0L, 1L);
@@ -169,5 +173,9 @@ public final class Oniris extends JavaPlugin {
 
     public SoundAPI getSoundApi() {
         return soundApi;
+    }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
     }
 }

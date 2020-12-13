@@ -128,9 +128,6 @@ public enum ItemUtils {
         item.setStats(builder.build());
 
 
-        if(data.has(NamespacedKey.minecraft("name"), PersistentDataType.STRING))
-            item.setName(data.get(NamespacedKey.minecraft("name"), PersistentDataType.STRING));
-
         if(data.has(NamespacedKey.minecraft("weapon"), PersistentDataType.STRING))
             item.setWeaponType(WeaponsTypes.valueOf(data.get(NamespacedKey.minecraft("weapon"), PersistentDataType.STRING).toUpperCase()));
 
@@ -148,6 +145,8 @@ public enum ItemUtils {
 
         if(data.has(NamespacedKey.minecraft("level"), PersistentDataType.INTEGER))
             item.setLevel(data.get(NamespacedKey.minecraft("level"), PersistentDataType.INTEGER));
+        if(data.has(NamespacedKey.minecraft("name"), PersistentDataType.STRING))
+            item.setName(data.get(NamespacedKey.minecraft("name"), PersistentDataType.STRING));
 
         return item;
     }
