@@ -38,4 +38,5 @@ jobs:
       - uses: ncipollo/release-action@v1
         with:
           artifacts: "build/libs/D-Oniris.zip"
+          tag: v1.0
           token: ${{ secrets.GITHUB_TOKEN }}
