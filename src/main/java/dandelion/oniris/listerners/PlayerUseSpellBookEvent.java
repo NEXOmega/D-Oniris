@@ -30,6 +30,7 @@ public class PlayerUseSpellBookEvent implements Listener {
     public void playerUseSpellBook(PlayerInteractEvent e) {
         if(!e.hasItem()) return;
             if(e.getItem().hasItemMeta()) {
+                if(!e.getItem().getItemMeta().getPersistentDataContainer().has(NamespacedKey.minecraft("itemtype"), PersistentDataType.STRING)) return;
                 if(e.getItem().getItemMeta().getPersistentDataContainer().get(NamespacedKey.minecraft("itemtype"), PersistentDataType.STRING).equalsIgnoreCase(ItemType.GRIMORY.name())) {
                     DandelionItem book = ItemUtils.getDandelionItem(e.getItem());
                     if(e.getAction().equals(Action.LEFT_CLICK_AIR)  ||e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {

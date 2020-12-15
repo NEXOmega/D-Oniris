@@ -21,7 +21,7 @@ public class EntityManager {
             return;
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(Oniris.getInstance(), () ->{
-            mob.spawn(mob.getSpawnPoint());
+            mob.spawnAsMob(mob.getSpawnPoint());
         },(spawned  ? DTicks.seconds(mob.getRespawnTime()) : DTicks.seconds(1)));
     }
 

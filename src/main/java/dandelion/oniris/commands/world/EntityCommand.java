@@ -44,7 +44,7 @@ public class EntityCommand implements TabExecutor {
 
                 DandelionMob dandelionMob = mobBuilder.build();
 
-                dandelionMob.spawnPet(dandelionMob.getSpawnPoint(), (Player) commandSender);
+                dandelionMob.spawnAsPet(dandelionMob.getSpawnPoint(), (Player) commandSender);
 
                 Oniris.getInstance().getEntityManager().addEntity(uuid, dandelionMob);
 
@@ -52,7 +52,7 @@ public class EntityCommand implements TabExecutor {
 
             } else if(args[0].equalsIgnoreCase("spawn")) {
                 if(oniris.getEntityManager().getMobMap().containsKey(args[1])) {
-                    oniris.getEntityManager().getMobMap().get(args[1]).spawn(((Player)commandSender).getEyeLocation());
+                    oniris.getEntityManager().getMobMap().get(args[1]).spawnAsMob(((Player)commandSender).getEyeLocation());
                 }
             } else if(args[0].equalsIgnoreCase("list")) {
                 for(String uuid : oniris.getEntityManager().getMobMap().keySet()) {

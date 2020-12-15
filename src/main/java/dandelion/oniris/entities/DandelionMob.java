@@ -57,7 +57,7 @@ public class DandelionMob {
         this.entityTypes = entityTypes;
     }
 
-    public void spawn(Location location) {
+    public void spawnAsMob(Location location) {
         if(spawnPoint.isWorldLoaded()) {
             EntityInsentient entity = FonctionUtils.createLivingEntity(entityClass, location, this);
             entity.setCustomName(new ChatComponentText(name));
@@ -66,7 +66,7 @@ public class DandelionMob {
         }
     }
 
-    public void spawnPet(Location location, Player owner) {
+    public void spawnAsPet(Location location, Player owner) {
         if(spawnPoint.isWorldLoaded()) {
             //TODO Faire de l'ordre et automatiser grace au MobType
             EntityInsentient entity = FonctionUtils.createLivingEntity(entityClass, location, this);

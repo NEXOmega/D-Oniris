@@ -60,7 +60,6 @@ public class PathfinderGoalPet extends PathfinderGoal {
 
     public void c() {
         //runner
-        System.out.println("aaa" + this.b.getDisplayName());
         this.a.getNavigation().a(this.c, this.d, this.e, this.f);
     }
 
