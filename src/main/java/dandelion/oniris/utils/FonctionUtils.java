@@ -7,12 +7,11 @@ import dandelion.oniris.players.Stats;
 import dandelion.oniris.players.spell.Elements;
 import dandelion.oniris.players.spell.Spell;
 import dandelion.oniris.players.support.Support;
-import net.minecraft.server.v1_16_R2.Entity;
-import net.minecraft.server.v1_16_R2.EntityInsentient;
-import net.minecraft.server.v1_16_R2.EntityTypes;
+import net.minecraft.server.v1_16_R2.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.craftbukkit.v1_16_R2.CraftWorld;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -20,9 +19,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FonctionUtils {
     public static String capitalize(String str) {
@@ -183,23 +184,23 @@ public class FonctionUtils {
         }
     }
 
-    public static EntityInsentient createLivingEntity(Class<? extends Entity> type, Location loc, DandelionMob dandelionMob) {
+    public static EntityInsentient createLivingEntity(Class<? extends Entity> type, String uuid, Location loc, DandelionMob dandelionMob) {
         net.minecraft.server.v1_16_R2.World world = ((CraftWorld) (loc.getWorld())).getHandle();
         net.minecraft.server.v1_16_R2.EntityInsentient e = null;
         try {
-            e = (EntityInsentient) (type.getDeclaredConstructor(net.minecraft.server.v1_16_R2.World.class, DandelionMob.class).newInstance(world, dandelionMob));
+            e = (EntityInsentient) (type.getDeclaredConstructor(net.minecraft.server.v1_16_R2.World.class, String.class, DandelionMob.class).newInstance(world, uuid, dandelionMob));
         } catch (Exception e2) {
             e2.printStackTrace();
         }
         e.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         world.addEntity(e, CreatureSpawnEvent.SpawnReason.CUSTOM);
         LivingEntity le = (LivingEntity) (e.getBukkitEntity());
-        le.setRemoveWhenFarAway(false);
+        //le.setRemoveWhenFarAway(false);
         return e;
     }
 
     public static class DandelionMobBuilder {
-        String uuid;
+        String mob_name;
         int level, rewardXp;
         String name;
         Stats stats;
@@ -209,15 +210,14 @@ public class FonctionUtils {
 
         MobType type;
 
-        Location spawnPoint;
         long respawnTime;
         boolean respawn = true;
 
         Class<? extends Entity> entityClass;
         EntityTypes entityTypes;
 
-        public DandelionMobBuilder setUuid(String uuid) {
-            this.uuid = uuid;
+        public DandelionMobBuilder setMobName(String mob_name) {
+            this.mob_name = mob_name;
             return this;
         }
 
@@ -261,11 +261,6 @@ public class FonctionUtils {
             return this;
         }
 
-        public DandelionMobBuilder setSpawnPoint(Location spawnPoint) {
-            this.spawnPoint = spawnPoint;
-            return this;
-        }
-
         public DandelionMobBuilder setRespawnTime(long respawnTime) {
             this.respawnTime = respawnTime;
             return this;
@@ -287,7 +282,30 @@ public class FonctionUtils {
         }
 
         public DandelionMob build(){
-            return new DandelionMob(uuid, level,rewardXp,name,stats,equipements,spells,supports,type,spawnPoint,respawnTime,respawn,entityClass,entityTypes);
+            return new DandelionMob(mob_name, level,rewardXp,name,stats,equipements,spells,supports,type,respawnTime,respawn,entityClass,entityTypes);
         }
+
+        public DandelionMob build(HashMap<String, Location> mobLocations) {
+            return new DandelionMob(mob_name, level,rewardXp,name,stats,equipements,spells,supports,type,respawnTime,respawn,entityClass,entityTypes, mobLocations);
+        }
+    }
+
+    private static Field attributeField;
+
+    static {
+        try {
+            attributeField = net.minecraft.server.v1_16_R2.AttributeMapBase.class.getDeclaredField("b");
+            attributeField.setAccessible(true);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void registerGenericAttribute(org.bukkit.entity.Entity entity, Attribute attribute) throws IllegalAccessException {
+        net.minecraft.server.v1_16_R2.AttributeMapBase attributeMapBase = ((org.bukkit.craftbukkit.v1_16_R2.entity.CraftLivingEntity)entity).getHandle().getAttributeMap();
+        Map<AttributeBase, AttributeModifiable> map = (Map<net.minecraft.server.v1_16_R2.AttributeBase, net.minecraft.server.v1_16_R2.AttributeModifiable>) attributeField.get(attributeMapBase);
+        net.minecraft.server.v1_16_R2.AttributeBase attributeBase = org.bukkit.craftbukkit.v1_16_R2.attribute.CraftAttributeMap.toMinecraft(attribute);
+        net.minecraft.server.v1_16_R2.AttributeModifiable attributeModifiable = new net.minecraft.server.v1_16_R2.AttributeModifiable(attributeBase, net.minecraft.server.v1_16_R2.AttributeModifiable::getAttribute);
+        map.put(attributeBase, attributeModifiable);
     }
 }

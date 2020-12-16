@@ -1,20 +1,76 @@
 package dandelion.oniris.database;
 
+import dandelion.oniris.entities.DandelionMob;
+import dandelion.oniris.entities.MobType;
+import dandelion.oniris.players.Stats;
+import dandelion.oniris.players.spell.Spell;
+import dandelion.oniris.players.support.Support;
+import dandelion.oniris.utils.FonctionUtils;
+import dandelion.oniris.utils.MobUtils;
+import net.minecraft.server.v1_16_R2.Entity;
+import net.minecraft.server.v1_16_R2.EntityTypes;
 import org.bson.Document;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class ConvertToDoc {
-    public static Document itemstackToDocument(ItemStack itemStack) {
-        return new Document();
+
+    String mob_name;
+    int level, rewardXp;
+    String name;
+    Stats stats;
+    ArrayList<ItemStack> equipements;
+    ArrayList<Class<? extends Spell>> spells;
+    ArrayList<Support> supports;
+    HashMap<String, Location> mobLocations;
+
+    MobType type;
+
+    long respawnTime;
+    boolean respawn = true;
+
+    Class<? extends Entity> entityClass;
+    EntityTypes entityTypes;
+
+    public static Document entityToDoc(DandelionMob mob) {
+        Document document = new Document();
+
+        document.put("level", mob.getLevel());
+        document.put("rewardXp", mob.getRewardXp());
+        document.put("name", mob.getName());
+        document.put("stats", GsonFactory.getPrettyGson().toJson(mob.getStats()));
+        document.put("equipements", GsonFactory.getPrettyGson().toJson(mob.getEquipements()));
+        document.put("spells", GsonFactory.getPrettyGson().toJson(mob.getSpells()));
+        document.put("supports", GsonFactory.getPrettyGson().toJson(mob.getSupports()));
+        document.put("mobLocations", GsonFactory.getPrettyGson().toJson(mob.getMobLocations()));
+        document.put("mobType", mob.getType().toString());
+        document.put("respawnTime", mob.getRespawnTime());
+        document.put("respawn", mob.isRespawn());
+        document.put("entityClass", mob.getEntityClass().getSimpleName());
+        document.put("entityType", mob.getEntityTypes().f());
+        System.out.println(document);
+        return document;
     }
 
-    public static Document locationToDocument(Location location) {
-        Document document = new Document();
-        document.put("world", location.getWorld());
-        document.put("x", location.getX());
-        document.put("y", location.getY());
-        document.put("z", location.getZ());
-        return document;
+    public static DandelionMob docToEntity(Document document) {
+        FonctionUtils.DandelionMobBuilder builder = new FonctionUtils.DandelionMobBuilder();
+        builder.setLevel(document.getInteger("level"));
+        builder.setRewardXp(document.getInteger("rewardXp"));
+        builder.setName(document.getString("name"));
+        builder.setStats(GsonFactory.getPrettyGson().fromJson(document.getString("stats"), Stats.class));
+        builder.setEquipements(GsonFactory.getCompactGson().fromJson(document.getString("equipements"), ArrayList.class));
+        builder.setSpells(GsonFactory.getCompactGson().fromJson(document.getString("spells"), ArrayList.class));
+        builder.setSupports(GsonFactory.getCompactGson().fromJson(document.getString("supports"), ArrayList.class));
+        builder.setType(MobType.valueOf(document.getString("mobType")));
+        builder.setRespawnTime(document.getLong("respawnTime"));
+        builder.setRespawn(document.getBoolean("respawn"));
+        //builder.setEntityClass()
+        builder.setEntityTypes(MobUtils.entityTypesFromString(document.getString("entityType")));
+        System.out.println(builder.build().getEntityTypes());
+        builder.build(GsonFactory.getPrettyGson().fromJson(document.getString("mobLocations"), HashMap.class));
+        return null;
     }
 }

@@ -1,7 +1,5 @@
 package dandelion.oniris.players;
 
-import dandelion.oniris.database.ConvertToDoc;
-import org.bson.Document;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,13 +33,5 @@ public class PortalStone {
 
     public Location getLocation() {
         return location;
-    }
-
-    public Document asDoc() {
-        Document doc = new Document();
-        doc.put("name", this.locName);
-        doc.put("location", ConvertToDoc.locationToDocument(this.getLocation()));
-        doc.put("item", ConvertToDoc.itemstackToDocument(this.getItem()));
-        return doc;
     }
 }

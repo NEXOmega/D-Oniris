@@ -32,6 +32,7 @@ public class ConnectToDB {
     MongoCollection<Document> treasuresCollection = database.getCollection("treasures");
     MongoCollection<Document> ressourcesCollection = database.getCollection("ressources");
     MongoCollection<Document> jobsCollection = database.getCollection("jobs");
+    MongoCollection<Document> entityCollecion = database.getCollection("entities");
 
     public boolean hasPlayer(UUID uuid) {
         Document doc = collection.find(eq("uuid", uuid.toString())).first();
