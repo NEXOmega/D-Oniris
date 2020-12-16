@@ -9,6 +9,7 @@ import dandelion.oniris.entities.entity.DandelionEntity;
 import dandelion.oniris.players.Stats;
 import dandelion.oniris.utils.FonctionUtils;
 import net.minecraft.server.v1_16_R2.EntityTypes;
+import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -77,8 +78,8 @@ public class EntityCommand implements TabExecutor {
                             ((DandelionEntity)((CraftEntity)entity).getHandle()).setRespawn(false);
                             //TODO Save entities
                             System.out.println(((DandelionEntity)((CraftEntity)entity).getHandle()).getMob());
-                            ConvertToDoc.entityToDoc(((DandelionEntity)((CraftEntity)entity).getHandle()).getMob());
-
+                            Document doc = ConvertToDoc.entityToDoc(((DandelionEntity)((CraftEntity)entity).getHandle()).getMob());
+                            ConvertToDoc.docToEntity(doc);
                             entity.remove();
                         }
                     }

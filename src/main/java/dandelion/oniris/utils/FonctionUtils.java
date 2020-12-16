@@ -284,6 +284,10 @@ public class FonctionUtils {
         public DandelionMob build(){
             return new DandelionMob(mob_name, level,rewardXp,name,stats,equipements,spells,supports,type,respawnTime,respawn,entityClass,entityTypes);
         }
+
+        public DandelionMob build(HashMap<String, Location> mobLocations) {
+            return new DandelionMob(mob_name, level,rewardXp,name,stats,equipements,spells,supports,type,respawnTime,respawn,entityClass,entityTypes, mobLocations);
+        }
     }
 
     private static Field attributeField;

@@ -52,6 +52,23 @@ public class DandelionMob {
         this.mobLocations = new HashMap<>();
     }
 
+    public DandelionMob(String mob_name, int level, int rewardXp, String name, Stats stats, ArrayList<ItemStack> equipements, ArrayList<Class<? extends Spell>> spells, ArrayList<Support> supports, MobType type, long respawnTime, boolean respawn, Class<? extends Entity> entityClass, EntityTypes entityTypes, HashMap<String, Location> mobLocations) {
+        this.mob_name = mob_name;
+        this.level = level;
+        this.rewardXp = rewardXp;
+        this.name = name;
+        this.stats = stats;
+        this.equipements = equipements;
+        this.spells = spells;
+        this.supports = supports;
+        this.type = type;
+        this.respawnTime = respawnTime;
+        this.respawn = respawn;
+        this.entityClass = entityClass;
+        this.entityTypes = entityTypes;
+        this.mobLocations = mobLocations;
+    }
+
     public void spawnAsMob(Location location, String uuid) {
         if(location.isWorldLoaded()) {
             EntityInsentient entity = FonctionUtils.createLivingEntity(entityClass, uuid, location, this);
