@@ -17,6 +17,7 @@ import dandelion.oniris.commands.world.RessourcesCommand;
 import dandelion.oniris.commands.world.TreasuresCommands;
 import dandelion.oniris.database.ConnectToDB;
 import dandelion.oniris.entities.EntityManager;
+import dandelion.oniris.entities.entity.DandelionEntity;
 import dandelion.oniris.jobs.JobManager;
 import dandelion.oniris.listerners.*;
 import dandelion.oniris.packets.CustomPacketManager;
@@ -30,6 +31,9 @@ import dandelion.soundapi.SoundAPI;
 import de.slikey.effectlib.EffectLib;
 import de.slikey.effectlib.EffectManager;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_16_R2.entity.CraftEntity;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -88,6 +92,7 @@ public final class Oniris extends JavaPlugin {
         pm.registerEvents(new PlayerRightClickEvent(this), this);
         pm.registerEvents(new PlayerJoinLeave(this), this);
         pm.registerEvents(new CustomCraftsEvent(this), this);
+        pm.registerEvents(new WorldEventListener(), this);
         this.treasureManager = new TreasureManager(this);
         pm.registerEvents(treasureManager, this);
         this.ressourceManager = new RessourceManager(this);
@@ -127,7 +132,19 @@ public final class Oniris extends JavaPlugin {
             });*/
             //p.kickPlayer("Restarting");
         }
+
+        for(World world : Bukkit.getServer().getWorlds()) {
+            for(Entity entity : world.getEntities()) {
+                if(((CraftEntity)entity).getHandle() instanceof DandelionEntity) {
+                    ((DandelionEntity)((CraftEntity)entity).getHandle()).setRespawn(false);
+
+                    entity.remove();
+                }
+            }
+        }
     }
+
+
 
     public static EffectManager getEffectManager() {
         return em;

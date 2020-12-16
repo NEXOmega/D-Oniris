@@ -26,7 +26,6 @@ public class MoveTowardsTargetIfRange extends PathfinderGoal  {
         if(this.target == null) {
 
             this.entity.getNavigation().a(spawnPoint.getX(), spawnPoint.getY(), spawnPoint.getZ(), this.speed);
-            System.out.println("Walk to spawn point");
             return false;
         }
         return true;

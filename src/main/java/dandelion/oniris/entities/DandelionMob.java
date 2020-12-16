@@ -1,6 +1,7 @@
 package dandelion.oniris.entities;
 
 import dandelion.oniris.Oniris;
+import dandelion.oniris.entities.pathfinders.MoveTowardsTargetIfRange;
 import dandelion.oniris.entities.pathfinders.PathfinderGoalPet;
 import dandelion.oniris.players.Stats;
 import dandelion.oniris.players.spell.Spell;
@@ -14,34 +15,28 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DandelionMob {
-    String uuid;
+    String mob_name;
     int level, rewardXp;
     String name;
     Stats stats;
     ArrayList<ItemStack> equipements;
     ArrayList<Class<? extends Spell>> spells;
     ArrayList<Support> supports;
+    HashMap<String, Location> mobLocations;
 
     MobType type;
 
-    Location spawnPoint;
     long respawnTime;
     boolean respawn = true;
 
     Class<? extends Entity> entityClass;
     EntityTypes entityTypes;
 
-    public DandelionMob(String name, Location spawnPoint,EntityTypes entityTypes, Class<? extends Entity> entityClass) {
-        this.name = name;
-        this.spawnPoint = spawnPoint;
-        this.entityClass = entityClass;
-        this.entityTypes = entityTypes;
-    }
-
-    public DandelionMob(String uui,int level, int rewardXp, String name, Stats stats, ArrayList<ItemStack> equipements, ArrayList<Class<? extends Spell>> spells, ArrayList<Support> supports, MobType type, Location spawnPoint, long respawnTime, boolean respawn, Class<? extends Entity> entityClass, EntityTypes entityTypes) {
-        this.uuid = uui;
+    public DandelionMob(String mob_name, int level, int rewardXp, String name, Stats stats, ArrayList<ItemStack> equipements, ArrayList<Class<? extends Spell>> spells, ArrayList<Support> supports, MobType type, long respawnTime, boolean respawn, Class<? extends Entity> entityClass, EntityTypes entityTypes) {
+        this.mob_name = mob_name;
         this.level = level;
         this.rewardXp = rewardXp;
         this.name = name;
@@ -50,26 +45,32 @@ public class DandelionMob {
         this.spells = spells;
         this.supports = supports;
         this.type = type;
-        this.spawnPoint = spawnPoint;
         this.respawnTime = respawnTime;
         this.respawn = respawn;
         this.entityClass = entityClass;
         this.entityTypes = entityTypes;
+        this.mobLocations = new HashMap<>();
     }
 
-    public void spawnAsMob(Location location) {
-        if(spawnPoint.isWorldLoaded()) {
-            EntityInsentient entity = FonctionUtils.createLivingEntity(entityClass, location, this);
+    public void spawnAsMob(Location location, String uuid) {
+        if(location.isWorldLoaded()) {
+            EntityInsentient entity = FonctionUtils.createLivingEntity(entityClass, uuid, location, this);
+
+            entity.goalSelector.a(1, new PathfinderGoalMeleeAttack((EntityCreature) entity,1,true));
+            entity.goalSelector.a(2, new MoveTowardsTargetIfRange((EntityCreature) entity, 1,100, location));
+            entity.targetSelector.a(1, new PathfinderGoalHurtByTarget((EntityCreature) entity));
+            entity.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<EntityHuman>(entity, EntityHuman.class, true));
+
             entity.setCustomName(new ChatComponentText(name));
         } else {
-            Oniris.getInstance().getEntityManager().respawn(this, false);
+            Oniris.getInstance().getEntityManager().respawn(this.getMob_name(), uuid, false);
         }
     }
 
-    public void spawnAsPet(Location location, Player owner) {
-        if(spawnPoint.isWorldLoaded()) {
+    public void spawnAsPet(Location location, Player owner, String uuid) {
+        if(location.isWorldLoaded()) {
             //TODO Faire de l'ordre et automatiser grace au MobType
-            EntityInsentient entity = FonctionUtils.createLivingEntity(entityClass, location, this);
+            EntityInsentient entity = FonctionUtils.createLivingEntity(entityClass, uuid, location, this);
             entity.setInvulnerable(true);
             this.setRespawn(false);
             entity.goalSelector.a(0, new PathfinderGoalFloat(entity));
@@ -80,9 +81,17 @@ public class DandelionMob {
 
             Oniris.getInstance().getPlayers().get(owner).setPet(entity);
         } else {
-            Oniris.getInstance().getEntityManager().respawn(this, false);
+            Oniris.getInstance().getEntityManager().respawn(this.getMob_name(), uuid, false);
         }
 
+    }
+
+    public String getMob_name() {
+        return mob_name;
+    }
+
+    public void setMob_name(String mob_name) {
+        this.mob_name = mob_name;
     }
 
     public int getLevel() {
@@ -149,14 +158,6 @@ public class DandelionMob {
         this.type = type;
     }
 
-    public Location getSpawnPoint() {
-        return spawnPoint;
-    }
-
-    public void setSpawnPoint(Location spawnPoint) {
-        this.spawnPoint = spawnPoint;
-    }
-
     public long getRespawnTime() {
         return respawnTime;
     }
@@ -187,5 +188,13 @@ public class DandelionMob {
 
     public void setRespawn(boolean respawn) {
         this.respawn = respawn;
+    }
+
+    public HashMap<String, Location> getMobLocations() {
+        return mobLocations;
+    }
+
+    public void setMobLocations(HashMap<String, Location> mobLocations) {
+        this.mobLocations = mobLocations;
     }
 }
