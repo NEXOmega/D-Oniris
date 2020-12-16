@@ -1,6 +1,7 @@
 package dandelion.oniris.database;
 
 import dandelion.oniris.entities.DandelionMob;
+import dandelion.oniris.entities.EntityRegistry;
 import dandelion.oniris.entities.MobType;
 import dandelion.oniris.players.Stats;
 import dandelion.oniris.players.spell.Spell;
@@ -33,7 +34,7 @@ public class ConvertToDoc {
     boolean respawn = true;
 
     Class<? extends Entity> entityClass;
-    EntityTypes entityTypes;
+    EntityTypes<Entity> entityTypes;
 
     public static Document entityToDoc(DandelionMob mob) {
         Document document = new Document();
@@ -67,10 +68,10 @@ public class ConvertToDoc {
         builder.setType(MobType.valueOf(document.getString("mobType")));
         builder.setRespawnTime(document.getLong("respawnTime"));
         builder.setRespawn(document.getBoolean("respawn"));
-        //builder.setEntityClass()
+        builder.setEntityClass((Class<? extends Entity>) EntityRegistry.valueOf(document.getString("entityClass").toUpperCase()).getCustomClass());
         builder.setEntityTypes(MobUtils.entityTypesFromString(document.getString("entityType")));
         System.out.println(builder.build().getEntityTypes());
-        builder.build(GsonFactory.getPrettyGson().fromJson(document.getString("mobLocations"), HashMap.class));
-        return null;
+
+        return builder.build(GsonFactory.getPrettyGson().fromJson(document.getString("mobLocations"), HashMap.class));
     }
 }

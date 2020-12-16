@@ -4,6 +4,7 @@ import com.mongodb.Block;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import dandelion.oniris.entities.DandelionMob;
 import dandelion.oniris.jobs.Blacksmith;
 import dandelion.oniris.jobs.JobStats;
 import dandelion.oniris.players.Infos;
@@ -92,6 +93,12 @@ public class ConnectToDB {
         doc.put("support", stats.getSupportType().toString());
         doc.put("portalStones", GsonFactory.getPrettyGson().toJson(stats.getPortalStones()));
         collection.insertOne(doc);
+    }
+
+    public void addEntity(DandelionMob mob) {
+        Document doc = ConvertToDoc.entityToDoc(mob);
+        entityCollecion.insertOne(doc);
+        System.out.println(entityCollecion);
     }
 
     public void addTreasure(Treasure treasure, Location location) {
