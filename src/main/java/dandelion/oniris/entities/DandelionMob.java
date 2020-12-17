@@ -71,6 +71,7 @@ public class DandelionMob {
 
     public void spawnAsMob(Location location, String uuid) {
         if(location.isWorldLoaded()) {
+            System.out.println("DD Name : " + this);
             EntityInsentient entity = FonctionUtils.createLivingEntity(entityClass, uuid, location, this);
 
             entity.goalSelector.a(1, new PathfinderGoalMeleeAttack((EntityCreature) entity,1,true));

@@ -96,8 +96,8 @@ public class PlayerRightClickEvent implements Listener {
                 if(item.getType().equals(Material.FIREWORK_STAR)) {
                     Bukkit.getScheduler().runTask(oniris, () -> {
                         SpellType s = SpellType.valueOf(ChatColor.stripColor(item.getItemMeta().getDisplayName().toUpperCase()));
-
-                        if(oniris.getPlayers().get(event.getPlayer()).getSpells().contains(s.toString())) {
+                        System.out.println(s.toString());
+                        if(oniris.getPlayers().get(event.getPlayer()).getSpells().contains(s.toString().toLowerCase())) {
                             if(s.getLevel() <= event.getPlayer().getLevel()) {
                                 try {
                                     oniris.getSpellManager().cast(event.getPlayer(),oniris,oniris.getPlayers().get(event.getPlayer()),s);

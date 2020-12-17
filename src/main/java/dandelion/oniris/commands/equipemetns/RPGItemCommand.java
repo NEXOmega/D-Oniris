@@ -227,7 +227,7 @@ public class RPGItemCommand implements TabExecutor {
                         arg++;
                     }
 
-                    meta.setDisplayName((meta.hasDisplayName() ? meta.getDisplayName() : "") + "Parchemin de sort");
+                    meta.setDisplayName(ChatColor.RESET + (meta.hasDisplayName() ? meta.getDisplayName() : "") + "Parchemin de sort");
                     if (args[arg].startsWith("n:")) {
                         meta.setDisplayName(meta.getDisplayName() + " : " + ChatColor.translateAlternateColorCodes('&', args[arg]
                                 .replace("n:", "")

@@ -26,7 +26,7 @@ import java.util.UUID;
 
 import static com.mongodb.client.model.Filters.eq;
 
-public class ConnectToDB {
+public class DatabaseConnect {
     MongoClient mongoClient = new MongoClient("localhost", 27017);
     MongoDatabase database = mongoClient.getDatabase("dandelion");
     MongoCollection<Document> collection = database.getCollection("players");
@@ -98,7 +98,16 @@ public class ConnectToDB {
     public void addEntity(DandelionMob mob) {
         Document doc = ConvertToDoc.entityToDoc(mob);
         entityCollecion.insertOne(doc);
-        System.out.println(entityCollecion);
+    }
+
+    public boolean hasEntity(String mobName) {
+        Document doc = entityCollecion.find(eq("mobName", mobName)).first();
+        return (doc != null);
+    }
+
+    public void updateEntity(DandelionMob mob) {
+        System.out.println(mob.getMobLocations().size());
+        entityCollecion.replaceOne(eq("mobName", mob.getMob_name()), ConvertToDoc.entityToDoc(mob));
     }
 
     public void addTreasure(Treasure treasure, Location location) {
@@ -143,5 +152,9 @@ public class ConnectToDB {
 
     public MongoCollection<Document> getJobsCollection() {
         return jobsCollection;
+    }
+
+    public MongoCollection<Document> getEntityCollecion() {
+        return entityCollecion;
     }
 }

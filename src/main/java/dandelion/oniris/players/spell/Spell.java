@@ -35,7 +35,6 @@ public abstract class Spell {
 
     public void onLaunched(Player sender, Oniris oniris, PlayerStats stats) {
         String name = this.getClass().getSimpleName().toUpperCase();
-        System.out.println(name);
         stats.onLaunchSpell(sender, stats, SpellType.valueOf(name), this);
         SpellType spell = SpellType.valueOf(name);
         sender.getNearbyEntities(spell.getTier() * 10, spell.getTier() *10, spell.getTier() *10).forEach(e -> {

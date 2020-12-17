@@ -32,6 +32,7 @@ public class CustomCow extends EntityCow implements DandelionEntity {
     @Override
     public void die() {
         super.die();
+        System.out.println("Dead " + dandelionMob.getMob_name() +" "+dandelionMob.isRespawn());
         if(dandelionMob.isRespawn())
             Oniris.getInstance().getEntityManager().respawn(dandelionMob.getMob_name(), uuid, true);
     }

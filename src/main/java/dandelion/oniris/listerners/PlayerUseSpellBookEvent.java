@@ -36,6 +36,10 @@ public class PlayerUseSpellBookEvent implements Listener {
                     if(e.getAction().equals(Action.LEFT_CLICK_AIR)  ||e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
                         String name = ChatColor.stripColor(e.getItem().getItemMeta().getDisplayName());
                         String spell = name.split(" ")[2];
+                        if(spell.length() < 1)  {
+                            e.getPlayer().sendMessage("Vous n'avez pas encore debloqué de sorts.");
+                            return;
+                        }
 
                         Bukkit.getScheduler().runTask(oniris, () -> {
                             SpellType s = SpellType.valueOf(spell.toUpperCase());

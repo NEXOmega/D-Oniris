@@ -60,7 +60,7 @@ public class DandelionItem {
 
         if(types != null) {
             this.types = types;
-            data.set(NamespacedKey.minecraft("weapon"), PersistentDataType.STRING, types.name());
+            data.set(NamespacedKey.minecraft("weapon"), PersistentDataType.STRING, types.name().toLowerCase());
         }
 
         if(itemType != null) {
@@ -96,8 +96,6 @@ public class DandelionItem {
 
     public void setName(String name) {
         this.name = name;
-        System.out.println(ranks);
-        System.out.println(level);
         meta.setDisplayName(ranks.chatColor + name + (level != null ? "["+level+"]" : ""));
     }
 
@@ -137,7 +135,7 @@ public class DandelionItem {
 
     public void setWeaponType(WeaponsTypes types) {
         this.types = types;
-        meta.getPersistentDataContainer().set(NamespacedKey.minecraft("weapon"), PersistentDataType.STRING, types.name());
+        meta.getPersistentDataContainer().set(NamespacedKey.minecraft("weapon"), PersistentDataType.STRING, types.name().toLowerCase());
     }
 
     public ItemType getItemType() {

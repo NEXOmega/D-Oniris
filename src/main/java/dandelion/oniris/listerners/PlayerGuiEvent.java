@@ -29,6 +29,7 @@ public class PlayerGuiEvent implements Listener {
 
     @EventHandler
     public void clickInv(@NotNull InventoryClickEvent e) {
+        if (e.getClickedInventory() == null) return;
         if (e.getClickedInventory().getType() == InventoryType.PLAYER) {
             if (e.getClick() == ClickType.SHIFT_LEFT) e.setCancelled(true);
             if (e.getSlot() <= 39 && e.getSlot() >= 36) {
@@ -207,7 +208,6 @@ public class PlayerGuiEvent implements Listener {
                     e.getWhoClicked().sendMessage("§cErreur, votre classe ne vous permet pas d'utiliser ca");
                 }
             }
-            System.out.println("0");
             if (clicked.getType().toString().contains("HELMET")) {
                 if (!e.getInventory().getItem(1).getType().equals(Material.CARROT_ON_A_STICK)) {
                     e.getWhoClicked().sendMessage("§cVeuillez vous desequiper avant !");

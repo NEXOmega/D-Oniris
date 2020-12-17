@@ -134,8 +134,8 @@ public enum ItemUtils {
         if(data.has(NamespacedKey.minecraft("itemtype"), PersistentDataType.STRING))
             item.setItemType(ItemType.valueOf(data.get(NamespacedKey.minecraft("itemtype"), PersistentDataType.STRING).toUpperCase()));
 
-        if(data.has(NamespacedKey.minecraft("rarity"), PersistentDataType.STRING))
-            item.setRanks(Ranks.valueOf(data.get(NamespacedKey.minecraft("rarity"), PersistentDataType.STRING).toUpperCase()));
+        if(data.has(NamespacedKey.minecraft("rank"), PersistentDataType.STRING))
+            item.setRanks(Ranks.valueOf(data.get(NamespacedKey.minecraft("rank"), PersistentDataType.STRING).toUpperCase()));
 
         if(data.has(NamespacedKey.minecraft("element"), PersistentDataType.STRING))
             item.setElements(Elements.valueOf(data.get(NamespacedKey.minecraft("element"), PersistentDataType.STRING).toUpperCase()));

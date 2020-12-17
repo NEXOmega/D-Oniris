@@ -1,5 +1,6 @@
 package dandelion.oniris;
 
+import com.mongodb.Block;
 import dandelion.oniris.commands.PlayerInfos;
 import dandelion.oniris.commands.TestCommand;
 import dandelion.oniris.commands.admin.AdminJobCommands;
@@ -15,6 +16,9 @@ import dandelion.oniris.commands.stats.PlayerProgress;
 import dandelion.oniris.commands.world.EntityCommand;
 import dandelion.oniris.commands.world.RessourcesCommand;
 import dandelion.oniris.commands.world.TreasuresCommands;
+import dandelion.oniris.database.ConvertToDoc;
+import dandelion.oniris.database.DatabaseConnect;
+import dandelion.oniris.entities.DandelionMob;
 import dandelion.oniris.entities.EntityManager;
 import dandelion.oniris.entities.entity.DandelionEntity;
 import dandelion.oniris.jobs.JobManager;
@@ -27,9 +31,9 @@ import dandelion.oniris.world.RessourceManager;
 import dandelion.oniris.world.TickManager;
 import dandelion.oniris.world.TreasureManager;
 import dandelion.soundapi.SoundAPI;
-import dandelion.soundapi.database.ConnectToDB;
 import de.slikey.effectlib.EffectLib;
 import de.slikey.effectlib.EffectManager;
+import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_16_R2.entity.CraftEntity;
@@ -60,7 +64,7 @@ public final class Oniris extends JavaPlugin {
     EntityManager entityManager;
     MenuGui gui;
     PlayerUtils pUtils;
-    ConnectToDB connectToDB = new ConnectToDB();
+    DatabaseConnect connectToDB = new DatabaseConnect();
 
     SoundAPI soundApi;
     @Override
@@ -115,6 +119,15 @@ public final class Oniris extends JavaPlugin {
                 player.getPlayer().sendMessage("§eData Loaded & Updated !");
                 this.getPlayers().put(player, stats);
 
+        });
+
+        this.getConnectToDB().getEntityCollecion().find().forEach((Block<? super Document>) e -> {
+            DandelionMob mob = ConvertToDoc.docToEntity(e);
+            this.getEntityManager().addEntity(mob.getMob_name(), mob);
+            mob.getMobLocations().forEach((uuid, loc) -> {
+                this.getEntityManager().addEntityLocation(uuid, mob.getMob_name(), loc);
+                mob.spawnAsMob(loc, uuid);
+            });
         });
     }
 
@@ -174,7 +187,7 @@ public final class Oniris extends JavaPlugin {
         return gui;
     }
 
-    public ConnectToDB getConnectToDB() {
+    public DatabaseConnect getConnectToDB() {
         return connectToDB;
     }
 

@@ -14,7 +14,7 @@ public class Heal extends Spell {
         data.setHealth(data.getHealth() + heal);
 
         double vit = data.getHealth() / vitTot;
-        data.getBar().setProgress(vit);
+        data.getBar().setProgress((vit > 1 ? 1 : vit));
 
         /*NoFlexZone particules = new NoFlexZone(main.getEffectManager());
         particules.setEntity(sender);
