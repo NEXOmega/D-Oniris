@@ -361,12 +361,9 @@ public class PlayerGuiEvent implements Listener {
                 oniris.getpUtils().addEquipementStat(stats,clicked, false);
 
             }else if (meta.getPersistentDataContainer().has(NamespacedKey.minecraft("weapon"), PersistentDataType.STRING)) {
-                if(stats.getClassType().getRpgClass().weaponTypes.contains(meta.getPersistentDataContainer().get(NamespacedKey.minecraft("weapon"), PersistentDataType.STRING))) {
-
-                    e.getInventory().setItem(9, eGui.getItem(8));
-                    stats.getEquipements()[4] = null;
-                    oniris.getpUtils().addEquipementStat(stats, clicked, false);
-                }
+                e.getInventory().setItem(9, eGui.getItem(8));
+                stats.getEquipements()[4] = null;
+                oniris.getpUtils().addEquipementStat(stats, clicked, false);
 
             } else if (clicked.getType().equals(Material.LIGHT_BLUE_DYE)) {
                     e.getInventory().setItem(18,eGui.getItem(1));

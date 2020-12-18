@@ -18,7 +18,7 @@ public class ZoneHeal extends Spell {
                 float heal = ((vitTot / 5) >= vitTot) ? (int)data.getHealth() + ((vitTot / 5) * 5) : vitTot;
                 data.setHealth(heal);
                 double vit = data.getHealth() / (data.getStats().getVitality() + data.getClassType().getStats().getVitality());
-                data.getBar().setProgress(vit);
+                data.updateHealthBar();
 
                 ent.sendMessage("§eHealed By : " + sender.getName());
             }

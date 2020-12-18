@@ -184,11 +184,11 @@ public class FonctionUtils {
         }
     }
 
-    public static EntityInsentient createLivingEntity(Class<? extends Entity> type, String uuid, Location loc, DandelionMob dandelionMob) {
+    public static EntityInsentient createLivingEntity(Class<? extends Entity> type, MobType mobType, String uuid, Location loc, DandelionMob dandelionMob) {
         net.minecraft.server.v1_16_R2.World world = ((CraftWorld) (loc.getWorld())).getHandle();
         net.minecraft.server.v1_16_R2.EntityInsentient e = null;
         try {
-            e = (EntityInsentient) (type.getDeclaredConstructor(net.minecraft.server.v1_16_R2.World.class, String.class, DandelionMob.class).newInstance(world, uuid, dandelionMob));
+            e = (EntityInsentient) (type.getDeclaredConstructor(net.minecraft.server.v1_16_R2.World.class, String.class, DandelionMob.class, MobType.class).newInstance(world, uuid, dandelionMob, mobType));
         } catch (Exception e2) {
             e2.printStackTrace();
         }
@@ -207,8 +207,6 @@ public class FonctionUtils {
         ArrayList<ItemStack> equipements;
         ArrayList<Class<? extends Spell>> spells;
         ArrayList<Support> supports;
-
-        MobType type;
 
         long respawnTime;
         boolean respawn = true;
@@ -256,11 +254,6 @@ public class FonctionUtils {
             return this;
         }
 
-        public DandelionMobBuilder setType(MobType type) {
-            this.type = type;
-            return this;
-        }
-
         public DandelionMobBuilder setRespawnTime(long respawnTime) {
             this.respawnTime = respawnTime;
             return this;
@@ -282,11 +275,11 @@ public class FonctionUtils {
         }
 
         public DandelionMob build(){
-            return new DandelionMob(mob_name, level,rewardXp,name,stats,equipements,spells,supports,type,respawnTime,respawn,entityClass,entityTypes);
+            return new DandelionMob(mob_name, level,rewardXp,name,stats,equipements,spells,supports,respawnTime,respawn,entityClass,entityTypes);
         }
 
         public DandelionMob build(HashMap<String, Location> mobLocations) {
-            return new DandelionMob(mob_name, level,rewardXp,name,stats,equipements,spells,supports,type,respawnTime,respawn,entityClass,entityTypes, mobLocations);
+            return new DandelionMob(mob_name, level,rewardXp,name,stats,equipements,spells,supports,respawnTime,respawn,entityClass,entityTypes, mobLocations);
         }
     }
 

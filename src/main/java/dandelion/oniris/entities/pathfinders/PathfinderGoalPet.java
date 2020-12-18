@@ -29,7 +29,6 @@ public class PathfinderGoalPet extends PathfinderGoal {
         //will start the pathfinding goal if it is true
         //runs every tick
         this.b = this.a.getGoalTarget();
-        System.out.println(this.b.getDisplayName());
         if(this.b == null)
             return false;
         else if(this.a.getRidingPassenger() != null)

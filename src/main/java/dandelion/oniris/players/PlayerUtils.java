@@ -24,8 +24,7 @@ public class PlayerUtils {
         PlayerStats stats = main.getPlayers().get(p);
         stats.setHealth(stats.getMaxVitality());
 
-        double vit = stats.getHealth() / stats.getMaxVitality();
-        stats.getBar().setProgress(vit);
+        stats.updateHealthBar();
 
         //p.damage(2);
         if (p.getHealth() < 10) {

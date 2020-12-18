@@ -3,7 +3,6 @@ package dandelion.oniris.database;
 import com.google.gson.reflect.TypeToken;
 import dandelion.oniris.entities.DandelionMob;
 import dandelion.oniris.entities.EntityRegistry;
-import dandelion.oniris.entities.MobType;
 import dandelion.oniris.players.Stats;
 import dandelion.oniris.utils.FonctionUtils;
 import dandelion.oniris.utils.MobUtils;
@@ -31,7 +30,6 @@ public class ConvertToDoc {
         document.put("spells", GsonFactory.getPrettyGson().toJson(mob.getSpells()));
         document.put("supports", GsonFactory.getPrettyGson().toJson(mob.getSupports()));
         document.put("mobLocations", GsonFactory.getPrettyGson().toJson(mob.getMobLocations()));
-        document.put("mobType", mob.getType().toString());
         document.put("respawnTime", mob.getRespawnTime());
         document.put("respawn", mob.isRespawn());
         document.put("entityClass", mob.getEntityClass().getSimpleName());
@@ -50,7 +48,6 @@ public class ConvertToDoc {
         builder.setEquipements(GsonFactory.getCompactGson().fromJson(document.getString("equipements"), ArrayList.class));
         builder.setSpells(GsonFactory.getCompactGson().fromJson(document.getString("spells"), ArrayList.class));
         builder.setSupports(GsonFactory.getCompactGson().fromJson(document.getString("supports"), ArrayList.class));
-        builder.setType(MobType.valueOf(document.getString("mobType")));
         builder.setRespawnTime(document.getLong("respawnTime"));
         builder.setRespawn(document.getBoolean("respawn"));
         builder.setEntityClass((Class<? extends Entity>) EntityRegistry.valueOf(document.getString("entityClass").toUpperCase()).getCustomClass());

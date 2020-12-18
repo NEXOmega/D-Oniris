@@ -27,15 +27,13 @@ public class DandelionMob {
     ArrayList<Support> supports;
     HashMap<String, Location> mobLocations;
 
-    MobType type;
-
     long respawnTime;
     boolean respawn = true;
 
     Class<? extends Entity> entityClass;
     EntityTypes entityTypes;
 
-    public DandelionMob(String mob_name, int level, int rewardXp, String name, Stats stats, ArrayList<ItemStack> equipements, ArrayList<Class<? extends Spell>> spells, ArrayList<Support> supports, MobType type, long respawnTime, boolean respawn, Class<? extends Entity> entityClass, EntityTypes entityTypes) {
+    public DandelionMob(String mob_name, int level, int rewardXp, String name, Stats stats, ArrayList<ItemStack> equipements, ArrayList<Class<? extends Spell>> spells, ArrayList<Support> supports, long respawnTime, boolean respawn, Class<? extends Entity> entityClass, EntityTypes entityTypes) {
         this.mob_name = mob_name;
         this.level = level;
         this.rewardXp = rewardXp;
@@ -44,7 +42,6 @@ public class DandelionMob {
         this.equipements = equipements;
         this.spells = spells;
         this.supports = supports;
-        this.type = type;
         this.respawnTime = respawnTime;
         this.respawn = respawn;
         this.entityClass = entityClass;
@@ -52,7 +49,7 @@ public class DandelionMob {
         this.mobLocations = new HashMap<>();
     }
 
-    public DandelionMob(String mob_name, int level, int rewardXp, String name, Stats stats, ArrayList<ItemStack> equipements, ArrayList<Class<? extends Spell>> spells, ArrayList<Support> supports, MobType type, long respawnTime, boolean respawn, Class<? extends Entity> entityClass, EntityTypes entityTypes, HashMap<String, Location> mobLocations) {
+    public DandelionMob(String mob_name, int level, int rewardXp, String name, Stats stats, ArrayList<ItemStack> equipements, ArrayList<Class<? extends Spell>> spells, ArrayList<Support> supports, long respawnTime, boolean respawn, Class<? extends Entity> entityClass, EntityTypes entityTypes, HashMap<String, Location> mobLocations) {
         this.mob_name = mob_name;
         this.level = level;
         this.rewardXp = rewardXp;
@@ -61,7 +58,6 @@ public class DandelionMob {
         this.equipements = equipements;
         this.spells = spells;
         this.supports = supports;
-        this.type = type;
         this.respawnTime = respawnTime;
         this.respawn = respawn;
         this.entityClass = entityClass;
@@ -72,7 +68,7 @@ public class DandelionMob {
     public void spawnAsMob(Location location, String uuid) {
         if(location.isWorldLoaded()) {
             System.out.println("DD Name : " + this);
-            EntityInsentient entity = FonctionUtils.createLivingEntity(entityClass, uuid, location, this);
+            EntityInsentient entity = FonctionUtils.createLivingEntity(entityClass, MobType.HOSTILE, uuid, location, this);
 
             entity.goalSelector.a(1, new PathfinderGoalMeleeAttack((EntityCreature) entity,1,true));
             entity.goalSelector.a(2, new MoveTowardsTargetIfRange((EntityCreature) entity, 1,100, location));
@@ -87,8 +83,7 @@ public class DandelionMob {
 
     public void spawnAsPet(Location location, Player owner, String uuid) {
         if(location.isWorldLoaded()) {
-            //TODO Faire de l'ordre et automatiser grace au MobType
-            EntityInsentient entity = FonctionUtils.createLivingEntity(entityClass, uuid, location, this);
+            EntityInsentient entity = FonctionUtils.createLivingEntity(entityClass, MobType.PET, uuid, location, this);
             entity.setInvulnerable(true);
             this.setRespawn(false);
             entity.goalSelector.a(0, new PathfinderGoalFloat(entity));
@@ -166,14 +161,6 @@ public class DandelionMob {
 
     public void setSupports(ArrayList<Support> supports) {
         this.supports = supports;
-    }
-
-    public MobType getType() {
-        return type;
-    }
-
-    public void setType(MobType type) {
-        this.type = type;
     }
 
     public long getRespawnTime() {

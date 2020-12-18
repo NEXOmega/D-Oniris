@@ -43,8 +43,7 @@ public class PlayerJoinLeave implements Listener {
             PlayerStats stats = main.getConnectToDB().getPlayerStats(e.getPlayer().getUniqueId());
             stats.getInfos().setLastPlayed(LocalDateTime.now());
             stats.init();
-            double vit = stats.getHealth() / stats.getMaxVitality();
-            stats.getBar().setProgress((vit > 0) ? vit : 0);
+            stats.updateHealthBar();
             stats.getBar().addPlayer(e.getPlayer());
             stats.getEnnemyBar().addPlayer(e.getPlayer());
             e.getPlayer().sendMessage("§eData Loaded & Updated !");

@@ -22,6 +22,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -39,13 +40,11 @@ public class EntityCommand implements TabExecutor {
 
                 FonctionUtils.DandelionMobBuilder mobBuilder = new FonctionUtils.DandelionMobBuilder();
                 String uuid = UUID.randomUUID().toString();
-                //TODO change to true mob name
                 mobBuilder.setMobName(args[1]);
                 mobBuilder.setLevel(Integer.parseInt(args[2]));
                 mobBuilder.setRewardXp(Integer.parseInt(args[3]));
                 mobBuilder.setName(args[4]);
-                mobBuilder.setType(MobType.valueOf(args[5].toUpperCase()));
-                mobBuilder.setRespawnTime(Long.parseLong(args[6]));
+                mobBuilder.setRespawnTime(Long.parseLong(args[5]));
                 mobBuilder.setRespawn(true);
                 mobBuilder.setStats(new Stats(0,4,0,0,0));
 
@@ -67,13 +66,20 @@ public class EntityCommand implements TabExecutor {
             } else if(args[0].equalsIgnoreCase("spawn")) {
                 if(oniris.getEntityManager().getMobMap().containsKey(args[1])) {
                     String uuid = UUID.randomUUID().toString();
-                    oniris.getEntityManager().getMobMap().get(args[1]).spawnAsMob(((Player)commandSender).getLocation(), uuid);
-                    oniris.getEntityManager().addEntityLocation(uuid,args[1],((Player)commandSender).getLocation());
-                    oniris.getEntityManager().getMobMap().get(args[1]).getMobLocations().put(uuid,((Player)commandSender).getLocation() );
-                    System.out.println(args[1]);
-                    if(oniris.getConnectToDB().hasEntity(args[1])) {
-                        oniris.getConnectToDB().updateEntity(oniris.getEntityManager().getMobMap().get(args[1]));
+                    if(args[2].equalsIgnoreCase("hostile")) {
+                        oniris.getEntityManager().getMobMap().get(args[1]).spawnAsMob(((Player)commandSender).getLocation(), uuid);
+                        if(Boolean.parseBoolean(args[3])) {
+                            System.out.println("tongranper");
+                            oniris.getEntityManager().addEntityLocation(uuid,args[1],((Player)commandSender).getLocation());
+                            oniris.getEntityManager().getMobMap().get(args[1]).getMobLocations().put(uuid,((Player)commandSender).getLocation());
+                            if(oniris.getConnectToDB().hasEntity(args[1])) {//TODO args 3 not working check if right
+                                oniris.getConnectToDB().updateEntity(oniris.getEntityManager().getMobMap().get(args[1]));
+                            }
+                        }
+                    } else if(args[2].equalsIgnoreCase("pet")) {
+                        oniris.getEntityManager().getMobMap().get(args[1]).spawnAsPet(((Player)commandSender).getLocation(), ((Player)commandSender), uuid);
                     }
+
                 }
             } else if(args[0].equalsIgnoreCase("list")) {
                 for(String uuid : oniris.getEntityManager().getMobMap().keySet()) {
@@ -107,7 +113,34 @@ public class EntityCommand implements TabExecutor {
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        return Arrays.asList("spawn", "create", "list", "save");
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+        ArrayList<String> tab = new ArrayList<>();
+        if(args[0].equalsIgnoreCase("create")) {
+            if(args.length == 2)
+                return Arrays.asList("mob_identifier");
+            if(args.length == 3)
+                return Arrays.asList("level");
+            if(args.length == 4)
+                return Arrays.asList("expDropped");
+            if(args.length == 5)
+                return Arrays.asList("mobName");
+            return Arrays.asList("RespawnTimeInSeconds");
+        } else if(args[0].equalsIgnoreCase("spawn")) {
+            if(args.length == 2) {
+                for (String name : oniris.getEntityManager().getMobMap().keySet()) {
+                    if (name.startsWith(args[1])) {
+                        tab.add(name);
+                    }
+                }
+                return tab;
+            }
+            if(args.length == 3) {
+                for(MobType type : MobType.values()) {
+                    tab.add(type.name());
+                }
+                return tab;
+            }
+        }
+        return Arrays.asList("spawn", "create", "list", "save", "load");
     }
 }

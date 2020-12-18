@@ -125,12 +125,22 @@ public class PlayerStats {
         this.bar = bar;
     }
 
+    public void updateHealthBar() {
+        this.bar.setTitle(ChatColor.YELLOW + "Life " + "{" + this.getHealth() + "/" + this.getMaxVitality() + "}");
+        this.bar.setProgress((getHealth()/getMaxVitality() < 1 ? getHealth()/getMaxVitality() : 1));
+    }
+
     public BossBar getEnnemyBar() {
         return ennemyBar;
     }
 
     public void setEnnemyBar(BossBar ennemyBar) {
         this.ennemyBar = ennemyBar;
+    }
+
+    public void updateEnnemyBar() {
+        this.ennemyBar.setTitle(ChatColor.YELLOW + "Life " + "{" + this.getHealth() + "/" + this.getMaxVitality() + "}");
+        this.ennemyBar.setProgress((getHealth()/getMaxVitality() < 1 ? getHealth()/getMaxVitality() : 1));
     }
 
     public LinkedList<String> getSpells() {

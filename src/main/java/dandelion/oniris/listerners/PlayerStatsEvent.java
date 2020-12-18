@@ -140,7 +140,7 @@ public class PlayerStatsEvent implements Listener {
                 oniris.getpUtils().killPlayer((Player) e.getEntity());
                 return;
             }
-            stats.getBar().setProgress(vit);
+            stats.updateHealthBar();
         }
     }
 
@@ -215,7 +215,7 @@ public class PlayerStatsEvent implements Listener {
                 oniris.getpUtils().killPlayer((Player) e.getDamagee());
                 return;
             }
-            stats.getBar().setProgress(vit);
+            stats.updateHealthBar();
         }
     }
 

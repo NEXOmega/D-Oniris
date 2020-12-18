@@ -90,6 +90,7 @@ public final class Oniris extends JavaPlugin {
 
         PluginManager pm = Bukkit.getPluginManager();
 
+        pm.registerEvents(new PlayerChatListener(), this);
         pm.registerEvents(new PlayerGuiEvent(this), this);
         pm.registerEvents(new PlayerUseSpellBookEvent(this), this);
         pm.registerEvents(new PlayerStatsEvent(this), this);
@@ -115,7 +116,7 @@ public final class Oniris extends JavaPlugin {
                 stats.getInfos().setLastPlayed(LocalDateTime.now());
                 stats.init();
                 double vit = stats.getHealth() / stats.getMaxVitality();
-                stats.getBar().setProgress((vit > 0) ? vit : 0);
+                stats.updateHealthBar();
                 player.getPlayer().sendMessage("§eData Loaded & Updated !");
                 this.getPlayers().put(player, stats);
 
