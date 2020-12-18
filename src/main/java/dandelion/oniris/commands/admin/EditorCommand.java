@@ -53,7 +53,7 @@ public class EditorCommand implements TabExecutor {
         PlayerStats targetStats = oniris.getPlayers().get(target);
         pane.clear();
 
-        Gui gui = new Gui(oniris, 5, "Editor");
+        Gui gui = new Gui( 5, "Editor");
         //gui.addPane(getSelectorPane());
         /*pane.addPane(0, getPlayerEditorPane());
         pane.addPane(1, getItemEditorPane());
@@ -62,7 +62,8 @@ public class EditorCommand implements TabExecutor {
         gui.addPane(getPlayerEditorPane(target, targetStats));
         gui.setOnGlobalClick(event -> event.setCancelled(true));
         gui.update();
-        gui.show((Player) commandSender);
+        gui.show((Player)commandSender);
+
         return false;
     }
 
@@ -105,7 +106,7 @@ public class EditorCommand implements TabExecutor {
                         RED + "Spd : " + GREEN + targetStats.getMaxSpeed(),
                         RED + "Current HP : " + GREEN + targetStats.getHealth() + "/" + targetStats.getMaxVitality())).getItemStack()));
         playerPane.addItem(new GuiItem(FonctionUtils.createItem(YELLOW + "Classe : " +RED + targetStats.getClassType().getClassName(), Material.IRON_SWORD,ItemType.DISPLAY_ITEM, Ranks.COMMON, 1 , 0).getItemStack(), inventoryClickEvent -> {
-            inventoryClickEvent.getWhoClicked().closeInventory();
+
             new AnvilGUI.Builder()
                     .onClose(player -> {                      //called when the inventory is closing
                         player.sendMessage("Fin de la selection de classe");
@@ -130,7 +131,7 @@ public class EditorCommand implements TabExecutor {
         }));
         ItemStack spellItem = FonctionUtils.createItem(YELLOW +"Sorts", Material.PAPER,ItemType.DISPLAY_ITEM, Ranks.COMMON, 1, 0, targetStats.getSpells()).getItemStack();
         playerPane.addItem(new GuiItem(spellItem, inventoryClickEvent -> {
-            inventoryClickEvent.getWhoClicked().closeInventory();
+
             new AnvilGUI.Builder()
                     .onClose(player -> {                      //called when the inventory is closing
                         player.sendMessage("Fin de la selection de classe");
@@ -183,7 +184,7 @@ public class EditorCommand implements TabExecutor {
             oniris.getJobManager().createRecipeGui((Player) e.getWhoClicked());
         }));
         playerPane.addItem(new GuiItem(FonctionUtils.createItem("Edit Recipe", Material.DIAMOND_AXE,ItemType.DISPLAY_ITEM, Ranks.COMMON, 1, 0).getItemStack(), e -> {
-            Gui gui = new Gui(oniris, 6, "Edit Recipe");
+            Gui gui = new Gui( 6, "Edit Recipe");
             gui.setOnGlobalClick(clickEvent -> clickEvent.setCancelled(true));
 
             OutlinePane recipesPane = new OutlinePane(0,0,9,5);
@@ -242,6 +243,7 @@ public class EditorCommand implements TabExecutor {
             gui.addPane(recipesPane);
             gui.addPane(optionPane);
             gui.show(e.getWhoClicked());
+
         }));
         return playerPane;
     }

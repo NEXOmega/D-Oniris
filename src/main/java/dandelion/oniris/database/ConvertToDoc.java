@@ -34,7 +34,6 @@ public class ConvertToDoc {
         document.put("respawn", mob.isRespawn());
         document.put("entityClass", mob.getEntityClass().getSimpleName());
         document.put("entityType", mob.getEntityTypes().f());
-        System.out.println(document);
         return document;
     }
 

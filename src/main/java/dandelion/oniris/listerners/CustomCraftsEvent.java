@@ -92,7 +92,7 @@ public class CustomCraftsEvent implements Listener {
                         return;
                     }
 
-                    Gui gui = new Gui(oniris, 3, "Binding");
+                    Gui gui = new Gui( 3, "Binding");
                     gui.setOnGlobalClick(event -> event.setCancelled(true));
                     OutlinePane spellpane = new OutlinePane(2, 0, 7, 3);
 
@@ -140,6 +140,7 @@ public class CustomCraftsEvent implements Listener {
                     gui.addPane(spellpane);
 
                     gui.show(e.getPlayer());
+
                 }
             }
             else if(e.getClickedBlock().getType() == Material.SMITHING_TABLE) {

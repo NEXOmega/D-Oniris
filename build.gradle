@@ -46,7 +46,7 @@ dependencies {
 
     extraLibs  'org.mongodb:mongodb-driver:3.4.3'
     extraLibs group: 'xyz.upperlevel.spigot.book', name: 'spigot-book-api', version: '1.3'
-    extraLibs 'com.github.stefvanschie.inventoryframework:IF:0.5.18'
+    extraLibs 'com.github.stefvanschie.inventoryframework:IF:0.7.2'
     extraLibs 'com.github.WesJD.AnvilGUI:anvilgui:master-SNAPSHOT'
     implementation 'org.jetbrains:annotations:15.0'
 }

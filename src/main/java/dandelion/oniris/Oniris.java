@@ -90,6 +90,7 @@ public final class Oniris extends JavaPlugin {
 
         PluginManager pm = Bukkit.getPluginManager();
 
+        pm.registerEvents(new AdminToolsEventListener(this), this);
         pm.registerEvents(new PlayerChatListener(), this);
         pm.registerEvents(new PlayerGuiEvent(this), this);
         pm.registerEvents(new PlayerUseSpellBookEvent(this), this);

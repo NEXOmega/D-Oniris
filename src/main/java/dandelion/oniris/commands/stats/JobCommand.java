@@ -33,17 +33,19 @@ public class JobCommand implements TabExecutor {
         if(oniris.getPlayers().containsKey(commandSender)) {
             PlayerStats stats = oniris.getPlayers().get(commandSender);
 
-            Gui gui = new Gui(oniris, 1, "Job Gui");
+            Gui gui = new Gui( 1, "Job Gui");
             gui.setOnGlobalClick(e -> e.setCancelled(true));
             OutlinePane pane = new OutlinePane(0,0,9,1);
             pane.addItem(new GuiItem(FonctionUtils.createItem("Forgeron", Material.DIAMOND_AXE, ItemType.DISPLAY_ITEM, Ranks.COMMON,1, 0, Arrays.asList(ChatColor.GOLD + "Level : " + stats.getJobStats().getBlacksmith().getLevel(), ChatColor.GOLD + "Exp : " + stats.getJobStats().getBlacksmith().getExp(), ChatColor.GOLD + "Exp for level up " + stats.getJobStats().getBlacksmith().getExpUntilNextLevel())).getItemStack(), clickEvent -> {
                 stats.getJobStats().getBlacksmith().getKnowingRecipeGui(oniris, "Bucheron Gui", (Player) commandSender, stats).show((HumanEntity) commandSender);
+
             }));
             pane.addItem(new GuiItem(FonctionUtils.createItem("Alchimiste", Material.EXPERIENCE_BOTTLE,ItemType.DISPLAY_ITEM, Ranks.COMMON,1, 0, Arrays.asList(ChatColor.GOLD + "Level : " + stats.getJobStats().getAlchemist().getLevel(), ChatColor.GOLD + "Exp : " + stats.getJobStats().getAlchemist().getExp(), ChatColor.GOLD + "Exp for level up " + stats.getJobStats().getAlchemist().getExpUntilNextLevel())).getItemStack(), e-> {
                 stats.getJobStats().getAlchemist().potionExamination((Player) commandSender, stats);
             }));
             gui.addPane(pane);
-            gui.show((HumanEntity) commandSender);
+            gui.show((Player)commandSender);
+
         }
         return false;
     }

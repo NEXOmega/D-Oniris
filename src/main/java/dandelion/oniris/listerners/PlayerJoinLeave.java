@@ -104,7 +104,7 @@ public class PlayerJoinLeave implements Listener {
 
 
     private void openClass(Player p, PlayerStats stats) {
-        Gui gui = new Gui(main, 1, "Selection de classe");
+        Gui gui = new Gui( 1, "Selection de classe");
         gui.setOnGlobalClick(inventoryClickEvent -> inventoryClickEvent.setCancelled(true));
         OutlinePane pane = new OutlinePane(9,1);
         pane.addItem(new GuiItem(FonctionUtils.createItem(ChatColor.translateAlternateColorCodes('&', "&eMagicien"),
@@ -125,7 +125,7 @@ public class PlayerJoinLeave implements Listener {
                 p.openInventory(main.getGui().getClasseSelectionGui().inv());
             }*/
             if(stats.getClassType().equals(ClassType.VILLAGER)) {
-                gui.show(p);
+              gui.show(p);
             }
         }, 5,5);
     }

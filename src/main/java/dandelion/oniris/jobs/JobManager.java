@@ -70,7 +70,7 @@ public class JobManager {
 
         ArrayList<ItemStack> ingredientList = new ArrayList<>();
         AtomicReference<ItemStack> resultItem = new AtomicReference<>();
-        Gui gui = new Gui(oniris, 5,"Create Recipe");
+        Gui gui = new Gui(5,"Create Recipe");
         gui.setOnTopClick(e -> e.setCancelled(true));
 
         OutlinePane ingredients = new OutlinePane(0,0,7,5);

@@ -3,7 +3,6 @@ package dandelion.oniris.jobs;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
-import dandelion.oniris.Oniris;
 import dandelion.oniris.players.PlayerStats;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,7 +15,7 @@ public class Blacksmith extends CraftingJob {
     Peut analyser les armes
      */
 
-    transient Gui gui = new Gui(Oniris.getInstance(), 6, "Blacksmith");
+    transient Gui gui = new Gui(6, "Blacksmith");
 
     public void openGui(Player p, PlayerStats playerStats) {
         gui.setOnGlobalClick(e -> e.setCancelled(true));
@@ -52,8 +51,6 @@ public class Blacksmith extends CraftingJob {
         gui.addPane(recipesPane);
         gui.addPane(optionPane);
         gui.show(p);
+
     }
-
-
-
 }

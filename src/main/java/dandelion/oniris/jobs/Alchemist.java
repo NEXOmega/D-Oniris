@@ -3,7 +3,6 @@ package dandelion.oniris.jobs;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
-import dandelion.oniris.Oniris;
 import dandelion.oniris.players.PlayerStats;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -19,7 +18,7 @@ import java.util.HashMap;
 
 public class Alchemist extends Job {
 
-    transient Gui alchimistGui = new Gui(Oniris.getInstance(), 2, "Create Potion");
+    transient Gui alchimistGui = new Gui( 2, "Create Potion");
     HashMap<String, ItemStack> ingredients = new HashMap<>();
 
     public void openGui(Player p, PlayerStats stats, ItemStack emptyPotion) {
@@ -108,10 +107,11 @@ public class Alchemist extends Job {
         alchimistGui.addPane(craftPane);
 
         alchimistGui.show(p);
+
     }
 
     public void potionExamination(Player p, PlayerStats stats) {
-        Gui gui = new Gui(Oniris.getInstance(), 4, "Examination");
+        Gui gui = new Gui(4, "Examination");
         gui.setOnGlobalClick(e -> e.setCancelled(true));
         OutlinePane potionPane = new OutlinePane(0,0,9,4);
         ArrayList<String> lore = new ArrayList<>();

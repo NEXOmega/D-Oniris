@@ -1,5 +1,6 @@
 package dandelion.oniris.jobs;
 
+
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
@@ -22,7 +23,7 @@ public abstract class CraftingJob extends Job {
     ArrayList<String> knowingRecipe = new ArrayList<>();
 
     public Gui getKnowingRecipeGui(Plugin pl, String name, Player p, PlayerStats playerStats) {
-        this.gui = new Gui(pl, 6, name);
+        this.gui = new Gui( 6, name);
 
         gui.setOnGlobalClick(e -> e.setCancelled(true));
 
@@ -37,14 +38,16 @@ public abstract class CraftingJob extends Job {
             meta.getLore().add(ChatColor.GOLD + "Exp gained " + Blacksmith.recipeList.get(s).getExp());
             craft.setItemMeta(meta);
             recipesPane.addItem(new GuiItem(craft, clickEvent -> {
-                Gui g = new Gui(pl, 6, "Recipe");
+                Gui g = new Gui( 6, "Recipe");
                 g.setOnGlobalClick(e -> e.setCancelled(true));
                 OutlinePane recipePane = new OutlinePane(0,0,9,6);
                 for(ItemStack itemStack : this.getRecipe(s).getIngredients()) {
                     recipePane.addItem(new GuiItem(itemStack));
                 }
                 g.addPane(recipePane);
+
                 g.show(p);
+
             }));
         }
 

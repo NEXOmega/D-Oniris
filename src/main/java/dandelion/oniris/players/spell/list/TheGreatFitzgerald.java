@@ -27,7 +27,7 @@ public class TheGreatFitzgerald extends Spell {
 
     @Override
     public void launch(Player sender, Oniris oniris, PlayerStats data) {
-        Gui gui = new Gui(oniris, 2, "Money to Spend");
+        Gui gui = new Gui( 2, "Money to Spend");
         OutlinePane pane = new OutlinePane(0,0,9,1);
         OutlinePane optionPane = new OutlinePane(0,1,9,1);
         AtomicInteger money = new AtomicInteger();

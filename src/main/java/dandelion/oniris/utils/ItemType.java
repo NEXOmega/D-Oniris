@@ -9,5 +9,6 @@ public enum ItemType {
     SCROLL,
     BINDER,
     DISPLAY_ITEM,
-    MONEY
+    MONEY,
+    ADMIN_TOOL
 }

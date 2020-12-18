@@ -15,20 +15,23 @@ public class CustomCow extends EntityCow implements DandelionEntity {
         super(EntityTypes.COW, world);
         this.dandelionMob = dandelionMob;
         this.uuid = uuid;
-        this.setHealth(dandelionMob.getStats().getVitality());
         this.expToDrop = dandelionMob.getRewardXp();
         this.type = type;
 
         try {
             FonctionUtils.registerGenericAttribute(this.getBukkitEntity(), Attribute.GENERIC_ATTACK_DAMAGE);
-            this.getAttributeMap().b().add(new AttributeModifiable(GenericAttributes.ATTACK_DAMAGE, (a) -> {a.setValue(dandelionMob.getStats().getStrength());}));
-            this.getAttributeMap().b().add(new AttributeModifiable(GenericAttributes.MOVEMENT_SPEED, a -> a.setValue(dandelionMob.getStats().getSpeed())));
+            FonctionUtils.registerGenericAttribute(this.getBukkitEntity(), Attribute.GENERIC_ATTACK_KNOCKBACK);
             this.getAttributeMap().b().add(new AttributeModifiable(GenericAttributes.ARMOR, a -> a.setValue(dandelionMob.getStats().getDefence())));
-            this.getAttributeMap().b().add(new AttributeModifiable(GenericAttributes.MAX_HEALTH, a -> a.setValue(dandelionMob.getStats().getVitality())));
+
+            this.getAttributeInstance(GenericAttributes.ATTACK_KNOCKBACK).setValue(1);
+            this.getAttributeInstance(GenericAttributes.ATTACK_DAMAGE).setValue(dandelionMob.getStats().getStrength());
+            this.getAttributeInstance(GenericAttributes.MAX_HEALTH).setValue(dandelionMob.getStats().getVitality());
+            //this.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).setValue(dandelionMob.getStats().getSpeed());
         } catch (IllegalAccessException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        this.setHealth(dandelionMob.getStats().getVitality());
     }
 
     @Override
@@ -51,5 +54,10 @@ public class CustomCow extends EntityCow implements DandelionEntity {
     @Override
     public DandelionMob getMob() {
         return dandelionMob;
+    }
+
+    @Override
+    public MobType getMobType() {
+        return type;
     }
 }

@@ -132,8 +132,10 @@ public class PlayerStatsEvent implements Listener {
             stats.onHitByEntity(e);
             double def = stats.getMaxDefence();
             def = ((def / 100) + 1);
-
+            if(((CraftEntity)e.getDamager()).getHandle() instanceof DandelionEntity)
+                e.setDamage(((DandelionEntity)((CraftEntity)e.getDamager()).getHandle()).getMob().getStats().getStrength());
             stats.setHealth(stats.getHealth() - (e.getDamage() / def));
+
             //e.getEntity().sendMessage(e.getDamage() + ":" + def + "=" +(e.getDamage() / def) + "; " + stats.getHealth());
             e.setDamage(0);
             //Graph Part
@@ -152,7 +154,6 @@ public class PlayerStatsEvent implements Listener {
             stats.updateHealthBar();
         }
     }
-
 
     /*@EventHandler
     public void onWalk(PlayerToggleSprintEvent e) {

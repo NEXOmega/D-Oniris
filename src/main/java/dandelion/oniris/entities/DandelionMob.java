@@ -68,11 +68,9 @@ public class DandelionMob {
 
     public void spawnAsMob(Location location, String uuid) {
         if(location.isWorldLoaded()) {
-            System.out.println("DD Name : " + this);
             EntityInsentient entity = FonctionUtils.createLivingEntity(entityClass, MobType.HOSTILE, uuid, location, this);
-
-            entity.goalSelector.a(1, new PathfinderGoalMeleeAttack((EntityCreature) entity,1,true));
-            entity.goalSelector.a(2, new MoveTowardsTargetIfRange((EntityCreature) entity, 1,100, location));
+            entity.goalSelector.a(1, new PathfinderGoalMeleeAttack((EntityCreature) entity,this.stats.getSpeed(),true));
+            entity.goalSelector.a(2, new MoveTowardsTargetIfRange((EntityCreature) entity, this.stats.getSpeed(),100, location));
             entity.targetSelector.a(1, new PathfinderGoalHurtByTarget((EntityCreature) entity));
             entity.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<EntityHuman>(entity, EntityHuman.class, true));
 
