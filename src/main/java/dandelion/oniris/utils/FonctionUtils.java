@@ -13,7 +13,6 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.craftbukkit.v1_16_R2.CraftWorld;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -194,8 +193,6 @@ public class FonctionUtils {
         }
         e.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         world.addEntity(e, CreatureSpawnEvent.SpawnReason.CUSTOM);
-        LivingEntity le = (LivingEntity) (e.getBukkitEntity());
-        //le.setRemoveWhenFarAway(false);
         return e;
     }
 

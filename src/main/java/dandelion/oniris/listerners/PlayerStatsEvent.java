@@ -2,6 +2,7 @@ package dandelion.oniris.listerners;
 
 import dandelion.oniris.Oniris;
 import dandelion.oniris.commands.equipemetns.WeaponsTypes;
+import dandelion.oniris.entities.entity.DandelionEntity;
 import dandelion.oniris.events.onHitBySpell;
 import dandelion.oniris.events.onSpellSense;
 import dandelion.oniris.players.PlayerStats;
@@ -14,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.craftbukkit.v1_16_R2.entity.CraftEntity;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -62,10 +64,12 @@ public class PlayerStatsEvent implements Listener {
             if(snowball.getShooter() instanceof Player) {
                 PlayerStats stats = oniris.getPlayers().get(snowball.getShooter());
                 //Graph Part
-                stats.getEnnemyBar().setTitle("§e"+e.getEntity().getCustomName());
-                stats.getEnnemyBar().setVisible(true);
-                Bukkit.getScheduler().scheduleSyncDelayedTask(oniris, () ->
-                        stats.getEnnemyBar().setProgress(((LivingEntity)e.getEntity()).getHealth() / ((LivingEntity)e.getEntity()).getMaxHealth()),1);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(oniris, () -> {
+                    if(((CraftEntity)e.getEntity()).getHandle() instanceof DandelionEntity) {
+                        stats.getEnnemyBar().setVisible(true);
+                        stats.updateEnnemyBar((LivingEntity) e.getEntity(), ((DandelionEntity)((CraftEntity)e.getEntity()).getHandle()).getMob());
+                    }
+                },1);
             }
 
         }
@@ -76,10 +80,12 @@ public class PlayerStatsEvent implements Listener {
                 PlayerStats stats = oniris.getPlayers().get(arrow.getShooter());
 
                 //Graph Part
-                stats.getEnnemyBar().setTitle("§e"+e.getEntity().getCustomName());
-                stats.getEnnemyBar().setVisible(true);
-                Bukkit.getScheduler().scheduleSyncDelayedTask(oniris, () ->
-                        stats.getEnnemyBar().setProgress(((LivingEntity)e.getEntity()).getHealth() / ((LivingEntity)e.getEntity()).getMaxHealth()),1);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(oniris, () -> {
+                    if(((CraftEntity)e.getEntity()).getHandle() instanceof DandelionEntity) {
+                        stats.getEnnemyBar().setVisible(true);
+                        stats.updateEnnemyBar((LivingEntity) e.getEntity(), ((DandelionEntity)((CraftEntity)e.getEntity()).getHandle()).getMob());
+                    }
+                },1);
             }
         }
 
@@ -97,10 +103,13 @@ public class PlayerStatsEvent implements Listener {
                 e.setDamage(stats.calculateDamages(e.getDamage()));
 
                 //Graph Part
-                stats.getEnnemyBar().setTitle("§e"+e.getEntity().getCustomName());
-                stats.getEnnemyBar().setVisible(true);
-                Bukkit.getScheduler().scheduleSyncDelayedTask(oniris, () ->
-                 stats.getEnnemyBar().setProgress(((LivingEntity)e.getEntity()).getHealth() / ((LivingEntity)e.getEntity()).getMaxHealth()),1);
+
+                Bukkit.getScheduler().scheduleSyncDelayedTask(oniris, () -> {
+                    if(((CraftEntity)e.getEntity()).getHandle() instanceof DandelionEntity) {
+                        stats.getEnnemyBar().setVisible(true);
+                        stats.updateEnnemyBar((LivingEntity) e.getEntity(), ((DandelionEntity)((CraftEntity)e.getEntity()).getHandle()).getMob());
+                    }
+                    },1);
             }
         }
 
@@ -125,7 +134,7 @@ public class PlayerStatsEvent implements Listener {
             def = ((def / 100) + 1);
 
             stats.setHealth(stats.getHealth() - (e.getDamage() / def));
-            e.getEntity().sendMessage(e.getDamage() + ":" + def + "=" +(e.getDamage() / def) + "; " + stats.getHealth());
+            //e.getEntity().sendMessage(e.getDamage() + ":" + def + "=" +(e.getDamage() / def) + "; " + stats.getHealth());
             e.setDamage(0);
             //Graph Part
 

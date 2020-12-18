@@ -1,5 +1,6 @@
 package dandelion.oniris.players;
 
+import dandelion.oniris.entities.DandelionMob;
 import dandelion.oniris.events.onHitBySpell;
 import dandelion.oniris.events.onSpellSense;
 import dandelion.oniris.jobs.JobStats;
@@ -19,6 +20,7 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
@@ -126,7 +128,7 @@ public class PlayerStats {
     }
 
     public void updateHealthBar() {
-        this.bar.setTitle(ChatColor.YELLOW + "Life " + "{" + this.getHealth() + "/" + this.getMaxVitality() + "}");
+        this.bar.setTitle(ChatColor.YELLOW + "Vie " + ChatColor.RED + "{" + ChatColor.YELLOW + Math.round(this.getHealth()) + ChatColor.RED + "/" + ChatColor.YELLOW + Math.round(this.getMaxVitality()) + ChatColor.RED + "}");
         this.bar.setProgress((getHealth()/getMaxVitality() < 1 ? getHealth()/getMaxVitality() : 1));
     }
 
@@ -138,9 +140,9 @@ public class PlayerStats {
         this.ennemyBar = ennemyBar;
     }
 
-    public void updateEnnemyBar() {
-        this.ennemyBar.setTitle(ChatColor.YELLOW + "Life " + "{" + this.getHealth() + "/" + this.getMaxVitality() + "}");
-        this.ennemyBar.setProgress((getHealth()/getMaxVitality() < 1 ? getHealth()/getMaxVitality() : 1));
+    public void updateEnnemyBar(LivingEntity entity, DandelionMob mob) {
+        this.ennemyBar.setTitle(ChatColor.YELLOW + mob.getName() + ChatColor.RED + " {" + ChatColor.YELLOW + Math.round(entity.getHealth()) + ChatColor.RED + "/" + ChatColor.YELLOW + Math.round(mob.getStats().getVitality()) + ChatColor.RED + "}");
+        this.ennemyBar.setProgress((entity.getHealth()/mob.getStats().getVitality() < 1 ? entity.getHealth()/mob.getStats().getVitality() : 1));
     }
 
     public LinkedList<String> getSpells() {

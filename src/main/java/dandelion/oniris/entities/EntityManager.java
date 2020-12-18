@@ -20,13 +20,11 @@ public class EntityManager {
     }
 
     public void respawn(String mob_name, String uuid, boolean spawned) {
-        System.out.println("Respawn ? " + mob_name);
         if (!mobMap.containsKey(mob_name))
             return;
         DandelionMob mob = mobMap.get(mob_name);
         Bukkit.getScheduler().scheduleSyncDelayedTask(Oniris.getInstance(), () ->{
             mob.spawnAsMob(mobSpawn.get(uuid), uuid);
-            System.out.println("Set cooldown : "+mob.getMob_name());
         },(spawned  ? DTicks.seconds(mob.getRespawnTime()) : DTicks.seconds(1)));
     }
 

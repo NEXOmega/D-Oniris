@@ -8,6 +8,7 @@ import dandelion.oniris.players.spell.Spell;
 import dandelion.oniris.players.support.Support;
 import dandelion.oniris.utils.FonctionUtils;
 import net.minecraft.server.v1_16_R2.*;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_16_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -75,7 +76,8 @@ public class DandelionMob {
             entity.targetSelector.a(1, new PathfinderGoalHurtByTarget((EntityCreature) entity));
             entity.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<EntityHuman>(entity, EntityHuman.class, true));
 
-            entity.setCustomName(new ChatComponentText(name));
+            entity.setCustomName(new ChatComponentText(ChatColor.GRAY + name + ChatColor.RED + " ["+level+"]"));
+            entity.setCustomNameVisible(true);
         } else {
             Oniris.getInstance().getEntityManager().respawn(this.getMob_name(), uuid, false);
         }
