@@ -6,6 +6,7 @@ import dandelion.oniris.entities.EntityRegistry;
 import dandelion.oniris.players.Stats;
 import dandelion.oniris.utils.FonctionUtils;
 import dandelion.oniris.utils.MobUtils;
+import dandelion.oniris.world.Treasure;
 import net.minecraft.server.v1_16_R2.Entity;
 import org.bson.Document;
 import org.bukkit.Location;
@@ -16,7 +17,8 @@ import java.util.HashMap;
 
 public class ConvertToDoc {
 
-    static Type type = new TypeToken<HashMap<String, Location>>(){}.getType();
+    static Type locationType = new TypeToken<HashMap<String, Location>>(){}.getType();
+    static Type rewardListType = new TypeToken<ArrayList<Treasure.Reward>>(){}.getType();
 
     public static Document entityToDoc(DandelionMob mob) {
         Document document = new Document();
@@ -30,6 +32,7 @@ public class ConvertToDoc {
         document.put("spells", GsonFactory.getPrettyGson().toJson(mob.getSpells()));
         document.put("supports", GsonFactory.getPrettyGson().toJson(mob.getSupports()));
         document.put("mobLocations", GsonFactory.getPrettyGson().toJson(mob.getMobLocations()));
+        document.put("mobDrops", GsonFactory.getPrettyGson().toJson(mob.getRewardList()));
         document.put("respawnTime", mob.getRespawnTime());
         document.put("respawn", mob.isRespawn());
         document.put("entityClass", mob.getEntityClass().getSimpleName());
@@ -53,6 +56,6 @@ public class ConvertToDoc {
         builder.setEntityTypes(MobUtils.entityTypesFromString(document.getString("entityType")));
         System.out.println(builder.build().getEntityTypes());
 
-        return builder.build(GsonFactory.getPrettyGson().fromJson(document.getString("mobLocations"), type));
+        return builder.build(GsonFactory.getPrettyGson().fromJson(document.getString("mobLocations"), locationType),GsonFactory.getPrettyGson().fromJson(document.getString("mobDrops"), rewardListType));
     }
 }

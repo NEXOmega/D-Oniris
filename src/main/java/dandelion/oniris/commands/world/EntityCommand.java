@@ -42,7 +42,7 @@ public class EntityCommand implements TabExecutor {
                 mobBuilder.setMobName(args[1]);
                 mobBuilder.setLevel(Integer.parseInt(args[2]));
                 mobBuilder.setRewardXp(Integer.parseInt(args[3]));
-                mobBuilder.setName(args[4]);
+                mobBuilder.setName(args[4].replace("_"," "));
                 mobBuilder.setRespawnTime(Long.parseLong(args[5]));
                 mobBuilder.setRespawn(true);
                 mobBuilder.setStats(new Stats(0,4,0,0,0));
@@ -124,8 +124,9 @@ public class EntityCommand implements TabExecutor {
             if(args.length == 5)
                 return Arrays.asList("mobName");
             if(args.length == 6)
+                return Arrays.asList("respawnTimeInSeconds");
+            if(args.length == 7)
                 return Arrays.asList("cow","chicken","zombie","skeleton","wither","hoglin","pig","villager","fish","guardian");
-            return Arrays.asList("RespawnTimeInSeconds");
         } else if(args[0].equalsIgnoreCase("spawn")) {
             if(args.length == 2) {
                 for (String name : oniris.getEntityManager().getMobMap().keySet()) {

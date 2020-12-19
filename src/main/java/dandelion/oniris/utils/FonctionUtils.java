@@ -7,6 +7,7 @@ import dandelion.oniris.players.Stats;
 import dandelion.oniris.players.spell.Elements;
 import dandelion.oniris.players.spell.Spell;
 import dandelion.oniris.players.support.Support;
+import dandelion.oniris.world.Treasure;
 import net.minecraft.server.v1_16_R2.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -275,8 +276,8 @@ public class FonctionUtils {
             return new DandelionMob(mob_name, level,rewardXp,name,stats,equipements,spells,supports,respawnTime,respawn,entityClass,entityTypes);
         }
 
-        public DandelionMob build(HashMap<String, Location> mobLocations) {
-            return new DandelionMob(mob_name, level,rewardXp,name,stats,equipements,spells,supports,respawnTime,respawn,entityClass,entityTypes, mobLocations);
+        public DandelionMob build(HashMap<String, Location> mobLocations, ArrayList<Treasure.Reward> rewardList) {
+            return new DandelionMob(mob_name, level,rewardXp,name,stats,equipements,spells,supports,respawnTime,respawn,entityClass,entityTypes, mobLocations, rewardList);
         }
     }
 

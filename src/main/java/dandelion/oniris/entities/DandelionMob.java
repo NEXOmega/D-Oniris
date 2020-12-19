@@ -7,6 +7,7 @@ import dandelion.oniris.players.Stats;
 import dandelion.oniris.players.spell.Spell;
 import dandelion.oniris.players.support.Support;
 import dandelion.oniris.utils.FonctionUtils;
+import dandelion.oniris.world.Treasure;
 import net.minecraft.server.v1_16_R2.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -27,6 +28,7 @@ public class DandelionMob {
     ArrayList<Class<? extends Spell>> spells;
     ArrayList<Support> supports;
     HashMap<String, Location> mobLocations;
+    ArrayList<Treasure.Reward> rewardList;
 
     long respawnTime;
     boolean respawn = true;
@@ -48,9 +50,10 @@ public class DandelionMob {
         this.entityClass = entityClass;
         this.entityTypes = entityTypes;
         this.mobLocations = new HashMap<>();
+        this.rewardList = new ArrayList<>();
     }
 
-    public DandelionMob(String mob_name, int level, int rewardXp, String name, Stats stats, ArrayList<ItemStack> equipements, ArrayList<Class<? extends Spell>> spells, ArrayList<Support> supports, long respawnTime, boolean respawn, Class<? extends Entity> entityClass, EntityTypes entityTypes, HashMap<String, Location> mobLocations) {
+    public DandelionMob(String mob_name, int level, int rewardXp, String name, Stats stats, ArrayList<ItemStack> equipements, ArrayList<Class<? extends Spell>> spells, ArrayList<Support> supports, long respawnTime, boolean respawn, Class<? extends Entity> entityClass, EntityTypes entityTypes, HashMap<String, Location> mobLocations, ArrayList<Treasure.Reward> rewardList) {
         this.mob_name = mob_name;
         this.level = level;
         this.rewardXp = rewardXp;
@@ -64,6 +67,7 @@ public class DandelionMob {
         this.entityClass = entityClass;
         this.entityTypes = entityTypes;
         this.mobLocations = mobLocations;
+        this.rewardList = rewardList;
     }
 
     public void spawnAsMob(Location location, String uuid) {
@@ -201,5 +205,17 @@ public class DandelionMob {
 
     public void setMobLocations(HashMap<String, Location> mobLocations) {
         this.mobLocations = mobLocations;
+    }
+
+    public ArrayList<Treasure.Reward> getRewardList() {
+        return rewardList;
+    }
+
+    public void setDropMap(ArrayList<Treasure.Reward> rewardList) {
+        this.rewardList = rewardList;
+    }
+
+    public void addDrop(Treasure.Reward reward) {
+        this.getRewardList().add(reward);
     }
 }

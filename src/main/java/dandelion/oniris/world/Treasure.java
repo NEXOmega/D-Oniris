@@ -52,7 +52,7 @@ public class Treasure {
         itemList.add(new Reward(item, chance, chanceToGetMultiple));
     }
 
-    static class Reward {
+    public static class Reward {
         ItemStack item;
         int chance;
         int chanceToGetMultiple = 1;
@@ -61,6 +61,18 @@ public class Treasure {
             this.item = item;
             this.chance = chance;
             this.chanceToGetMultiple = chanceToGetMultiple;
+        }
+
+        public ItemStack getItem() {
+            return item;
+        }
+
+        public int getChance() {
+            return chance;
+        }
+
+        public int getChanceToGetMultiple() {
+            return chanceToGetMultiple;
         }
     }
 
@@ -71,4 +83,5 @@ public class Treasure {
         badLuck.setItemMeta(meta);
         return badLuck;
     }
+
 }

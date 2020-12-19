@@ -7,6 +7,8 @@ import dandelion.oniris.utils.FonctionUtils;
 import net.minecraft.server.v1_16_R2.*;
 import org.bukkit.attribute.Attribute;
 
+import java.util.Random;
+
 public class DandelionEntity extends EntityCreature {
     String uuid;
     DandelionMob dandelionMob;
@@ -39,6 +41,11 @@ public class DandelionEntity extends EntityCreature {
     @Override
     public void die() {
         super.die();
+        this.getMob().getRewardList().forEach((reward) -> {
+            if(new Random().nextInt(101) <= reward.getChance()) {
+                this.getBukkitEntity().getWorld().dropItem(this.getBukkitEntity().getLocation(), reward.getItem());
+            }
+        });
         if(dandelionMob.isRespawn())
             Oniris.getInstance().getEntityManager().respawn(dandelionMob.getMob_name(), uuid, true);
     }
@@ -51,7 +58,6 @@ public class DandelionEntity extends EntityCreature {
     public DandelionMob getMob() {
         return dandelionMob;
     }
-
 
     public MobType getMobType() {
         return type;

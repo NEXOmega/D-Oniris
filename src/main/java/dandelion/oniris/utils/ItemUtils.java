@@ -22,9 +22,9 @@ import java.util.Collections;
 import static org.bukkit.ChatColor.*;
 
 public enum ItemUtils {
-    BRONZE_COIN(FonctionUtils.createItem(GREEN+"Piece De Bronze", Material.INK_SAC,ItemType.MONEY, Ranks.COMMON,1,1, Arrays.asList(ChatColor.GREEN + "-Argent-", GRAY+"Valeur : 1 Bronze")), "Piece de niveau 1"),
-    ARGENT_COIN(FonctionUtils.createItem(GRAY+"Piece D'Argent", Material.INK_SAC,ItemType.MONEY, Ranks.COMMON,1,1, Arrays.asList(ChatColor.GREEN + "-Argent-", GRAY+"Valeur : 64 Bronze")), "Piece de niveau 2"),
-    GOLD_COIN(FonctionUtils.createItem(GOLD+"Piece D'Or", Material.INK_SAC,ItemType.MONEY, Ranks.COMMON,1,1, Arrays.asList(ChatColor.GREEN + "-Argent-", GRAY+"Valeur : 4096 Bronze")), "Piece de niveau 1"),
+    BRONZE_COIN(FonctionUtils.createItem(GREEN+"Piece De Bronze", Material.INK_SAC,ItemType.MONEY, Ranks.COMMON,1,2, Arrays.asList(ChatColor.GREEN + "-Argent-", GRAY+"Valeur : 1 Bronze")), "Piece de niveau 1"),
+    ARGENT_COIN(FonctionUtils.createItem(GRAY+"Piece D'Argent", Material.INK_SAC,ItemType.MONEY, Ranks.COMMON,1,3, Arrays.asList(ChatColor.GREEN + "-Argent-", GRAY+"Valeur : 64 Bronze")), "Piece de niveau 2"),
+    GOLD_COIN(FonctionUtils.createItem(GOLD+"Piece D'Or", Material.INK_SAC,ItemType.MONEY, Ranks.COMMON,1,4, Arrays.asList(ChatColor.GREEN + "-Argent-", GRAY+"Valeur : 4096 Bronze")), "Piece de niveau 1"),
     GRIMOIRE(FonctionUtils.createItem("Grimoire", Material.BOOK,ItemType.GRIMORY, Ranks.COMMON, 1, 1), "Grimoire de base pour vos sorts"),
     BINDER(FonctionUtils.createItem("Binder", Material.FIREWORK_STAR,ItemType.BINDER, Ranks.COMMON,1,1, Collections.singletonList(WHITE+"Binding")), "Item to bind"),
     ADMIN_WRENCH(FonctionUtils.createItem("Admin Wrench", Material.CARROT_ON_A_STICK, ItemType.ADMIN_TOOL, Ranks.UNOBTAINABLE,1,1), "Permet diverses actions si vous avez la permission");

@@ -10,6 +10,7 @@ import dandelion.oniris.utils.FonctionUtils;
 import dandelion.oniris.utils.ItemType;
 import dandelion.oniris.utils.ItemUtils;
 import dandelion.oniris.utils.Ranks;
+import dandelion.oniris.world.Treasure;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -91,6 +92,18 @@ public class AdminToolsEventListener implements Listener {
                     anvilGui.open(e.getPlayer());
                 }));
 
+                gui.setOnBottomClick(clickEvent -> {
+                    clickEvent.setCancelled(true);
+                    AnvilGUI.Builder builder =new AnvilGUI.Builder().plugin(oniris).title("Add Item");
+                    builder.itemLeft(clickEvent.getCurrentItem().clone());
+                    builder.onComplete((pl, text) -> {
+                        dandelionMob.addDrop(new Treasure.Reward(clickEvent.getCurrentItem().clone(), Integer.parseInt(text), 1));
+                        oniris.getConnectToDB().updateEntity(dandelionMob);
+                        oniris.getEntityManager().getMobMap().put(dandelionMob.getMob_name(), dandelionMob);
+                        return AnvilGUI.Response.close();
+                    });
+                    builder.open(e.getPlayer());
+                });
                 gui.addPane(pane);
                 gui.show(e.getPlayer());
 
