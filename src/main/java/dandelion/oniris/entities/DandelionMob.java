@@ -68,7 +68,7 @@ public class DandelionMob {
 
     public void spawnAsMob(Location location, String uuid) {
         if(location.isWorldLoaded()) {
-            EntityInsentient entity = FonctionUtils.createLivingEntity(entityClass, MobType.HOSTILE, uuid, location, this);
+            EntityInsentient entity = FonctionUtils.createLivingEntity(entityTypes, entityClass, MobType.HOSTILE, uuid, location, this);
             entity.goalSelector.a(1, new PathfinderGoalMeleeAttack((EntityCreature) entity,this.stats.getSpeed(),true));
             entity.goalSelector.a(2, new MoveTowardsTargetIfRange((EntityCreature) entity, this.stats.getSpeed(),100, location));
             entity.targetSelector.a(1, new PathfinderGoalHurtByTarget((EntityCreature) entity));
@@ -83,7 +83,7 @@ public class DandelionMob {
 
     public void spawnAsPet(Location location, Player owner, String uuid) {
         if(location.isWorldLoaded()) {
-            EntityInsentient entity = FonctionUtils.createLivingEntity(entityClass, MobType.PET, uuid, location, this);
+            EntityInsentient entity = FonctionUtils.createLivingEntity(entityTypes, entityClass, MobType.PET, uuid, location, this);
             entity.setInvulnerable(true);
             this.setRespawn(false);
             entity.goalSelector.a(0, new PathfinderGoalFloat(entity));

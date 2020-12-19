@@ -183,11 +183,11 @@ public class FonctionUtils {
         }
     }
 
-    public static EntityInsentient createLivingEntity(Class<? extends Entity> type, MobType mobType, String uuid, Location loc, DandelionMob dandelionMob) {
+    public static EntityInsentient createLivingEntity(EntityTypes<? extends EntityCreature> entityType, Class<? extends Entity> type, MobType mobType, String uuid, Location loc, DandelionMob dandelionMob) {
         net.minecraft.server.v1_16_R2.World world = ((CraftWorld) (loc.getWorld())).getHandle();
         net.minecraft.server.v1_16_R2.EntityInsentient e = null;
         try {
-            e = (EntityInsentient) (type.getDeclaredConstructor(net.minecraft.server.v1_16_R2.World.class, String.class, DandelionMob.class, MobType.class).newInstance(world, uuid, dandelionMob, mobType));
+            e = (EntityInsentient) (type.getDeclaredConstructor(EntityTypes.class, net.minecraft.server.v1_16_R2.World.class, String.class, DandelionMob.class, MobType.class).newInstance(entityType,  world, uuid, dandelionMob, mobType));
         } catch (Exception e2) {
             e2.printStackTrace();
         }

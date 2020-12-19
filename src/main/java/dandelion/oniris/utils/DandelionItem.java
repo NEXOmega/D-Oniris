@@ -204,6 +204,7 @@ public class DandelionItem {
     }
 
     public ItemStack getItemStack() {
+        meta.setUnbreakable(true);
         itemStack.setItemMeta(meta);
         return itemStack;
     }

@@ -5,11 +5,10 @@ import dandelion.oniris.Oniris;
 import dandelion.oniris.database.ConvertToDoc;
 import dandelion.oniris.entities.DandelionMob;
 import dandelion.oniris.entities.MobType;
-import dandelion.oniris.entities.entity.CustomCow;
 import dandelion.oniris.entities.entity.DandelionEntity;
 import dandelion.oniris.players.Stats;
 import dandelion.oniris.utils.FonctionUtils;
-import net.minecraft.server.v1_16_R2.EntityTypes;
+import dandelion.oniris.utils.MobUtils;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -48,8 +47,8 @@ public class EntityCommand implements TabExecutor {
                 mobBuilder.setRespawn(true);
                 mobBuilder.setStats(new Stats(0,4,0,0,0));
 
-                mobBuilder.setEntityClass(CustomCow.class);
-                mobBuilder.setEntityTypes(EntityTypes.COW);
+                mobBuilder.setEntityClass(DandelionEntity.class);
+                mobBuilder.setEntityTypes(MobUtils.entityTypesFromString("entity.minecraft."+args[6].toLowerCase()));
 
                 DandelionMob dandelionMob = mobBuilder.build();
 
@@ -124,6 +123,8 @@ public class EntityCommand implements TabExecutor {
                 return Arrays.asList("expDropped");
             if(args.length == 5)
                 return Arrays.asList("mobName");
+            if(args.length == 6)
+                return Arrays.asList("cow","chicken","zombie","skeleton","wither","hoglin","pig","villager","fish","guardian");
             return Arrays.asList("RespawnTimeInSeconds");
         } else if(args[0].equalsIgnoreCase("spawn")) {
             if(args.length == 2) {

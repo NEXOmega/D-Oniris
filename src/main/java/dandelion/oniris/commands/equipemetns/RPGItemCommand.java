@@ -39,27 +39,19 @@ public class RPGItemCommand implements TabExecutor {
             Player p = (Player) commandSender;
             if (args.length > 1) {
                 if (args[0].equalsIgnoreCase("equip")) {
-                    ItemStack item = new ItemStack(Material.matchMaterial(args[1]));
-                    ItemMeta meta = item.getItemMeta();
+                    lore.clear();
                     String level = ChatColor.translateAlternateColorCodes('&', args[2]);
                     StringBuilder sb = new StringBuilder();
                     for (int i = 3; i < args.length; i++) {
                         sb.append(ChatColor.translateAlternateColorCodes('&', args[i]));
                         sb.append(" ");
                     }
-                    meta.getPersistentDataContainer().set(NamespacedKey.minecraft("name"), PersistentDataType.STRING, sb.toString());
-                    sb.append(level);
-                    meta.getPersistentDataContainer().set(NamespacedKey.minecraft("level"), PersistentDataType.INTEGER, Integer.parseInt(level.replaceAll("[^0-9]", "")));
-                    meta.setDisplayName(sb.toString());
-
-                    lore.clear();
                     lore.add(ChatColor.YELLOW + "-Equipement-");
-                    meta.setLore(lore);
-                    meta.setUnbreakable(true);
+                    DandelionItem equipement = FonctionUtils.createItem(sb.toString(), Material.matchMaterial(args[1]), ItemType.EQUIPEMENT, Ranks.COMMON, 1, 1, lore);
+                    sb.append(level);
+                    equipement.setLevel(Integer.parseInt(level.replaceAll("[^0-9]", "")));
 
-                    item.setItemMeta(meta);
-
-                    p.getInventory().addItem(item);
+                    p.getInventory().addItem(equipement.getItemStack());
 
                 }
                 else if (args[0].equalsIgnoreCase("attr")) {

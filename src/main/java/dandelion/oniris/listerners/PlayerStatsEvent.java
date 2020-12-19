@@ -75,13 +75,14 @@ public class PlayerStatsEvent implements Listener {
         }
 
         if(e.getDamager() instanceof Arrow) {
-            Arrow arrow = (Arrow) e.getDamager();
+            AbstractArrow arrow = (AbstractArrow) e.getDamager();
             if(arrow.getShooter() instanceof Player) {
                 PlayerStats stats = oniris.getPlayers().get(arrow.getShooter());
 
                 //Graph Part
                 Bukkit.getScheduler().scheduleSyncDelayedTask(oniris, () -> {
                     if(((CraftEntity)e.getEntity()).getHandle() instanceof DandelionEntity) {
+                        System.out.println("test");
                         stats.getEnnemyBar().setVisible(true);
                         stats.updateEnnemyBar((LivingEntity) e.getEntity(), ((DandelionEntity)((CraftEntity)e.getEntity()).getHandle()).getMob());
                     }

@@ -1,16 +1,16 @@
 package dandelion.oniris.entities;
 
-import dandelion.oniris.entities.entity.CustomCow;
+import dandelion.oniris.entities.entity.DandelionEntity;
 import net.minecraft.server.v1_16_R2.ControllerLook;
 import net.minecraft.server.v1_16_R2.EntityInsentient;
 import net.minecraft.server.v1_16_R2.EntityPlayer;
 
 public class LookController extends ControllerLook {
-    protected final CustomCow ridable;
+    protected final DandelionEntity ridable;
     private float yawOffset = 0;
     private float pitchOffset = 0;
 
-    public LookController(CustomCow ridable) {
+    public LookController(DandelionEntity ridable) {
         super((EntityInsentient) ridable);
         this.ridable = ridable;
     }

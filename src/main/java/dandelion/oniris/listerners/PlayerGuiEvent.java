@@ -12,13 +12,13 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.*;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.regex.Pattern;
 
 public class PlayerGuiEvent implements Listener {
     Oniris oniris;
@@ -226,7 +226,7 @@ public class PlayerGuiEvent implements Listener {
                     e.getWhoClicked().sendMessage("§cVeuillez vous desequiper avant !");
                     return;
                 }
-                if (!(Integer.parseInt(clicked.getItemMeta().getDisplayName().split(Pattern.quote("["))[1].replaceAll("[^0-9]", "")) <= ((Player) e.getWhoClicked()).getLevel()))
+                if (!(dItem.getLevel() <= ((Player) e.getWhoClicked()).getLevel()))
                     return;
                 e.getInventory().setItem(10, clicked);
                 stats.getEquipements()[1] = clicked;
