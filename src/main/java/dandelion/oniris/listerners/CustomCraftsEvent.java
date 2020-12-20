@@ -150,7 +150,8 @@ public class CustomCraftsEvent implements Listener {
                 PlayerStats playerStats = oniris.getPlayers().get(e.getPlayer());
 
                 playerStats.getJobStats().getBlacksmith().openGui(e.getPlayer(), playerStats);
-            } else if (e.getClickedBlock().getType() == Material.BREWING_STAND) {
+            }
+            else if (e.getClickedBlock().getType() == Material.BREWING_STAND) {
                 e.setCancelled(true);
                 e.getPlayer().sendMessage("Opening Alchemy Table");
 

@@ -109,6 +109,8 @@ public class PlayerStatsEvent implements Listener {
                     if(((CraftEntity)e.getEntity()).getHandle() instanceof DandelionEntity) {
                         stats.getEnnemyBar().setVisible(true);
                         stats.updateEnnemyBar((LivingEntity) e.getEntity(), ((DandelionEntity)((CraftEntity)e.getEntity()).getHandle()).getMob());
+                        if(e.getEntity().isDead())
+                            stats.getEnnemyBar().setVisible(false);
                     }
                     },1);
             }

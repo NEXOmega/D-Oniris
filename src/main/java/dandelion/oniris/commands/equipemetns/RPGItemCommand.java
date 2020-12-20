@@ -212,8 +212,9 @@ public class RPGItemCommand implements TabExecutor {
                 }
                 else if (args[0].equalsIgnoreCase("Scroll")) {
                     int arg = 1;
-                    ItemStack scroll = new ItemStack(Material.INK_SAC, 1, (byte) 7);
+                    ItemStack scroll = new ItemStack(Material.PAPER, 1);
                     ItemMeta meta = scroll.getItemMeta();
+                    meta.setCustomModelData(1);
                     if (args[arg].startsWith("c:&")) {
                         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', args[arg].replace("c:", "")));
                         arg++;

@@ -23,7 +23,7 @@ public class Archer extends RPGClass {
                 WeaponsTypes.DAGGER, null, null, 3,0,0,0,0).getItemStack();
 
         ItemStack bow = ItemUtils.createRPGItem(
-                FonctionUtils.createItem("Arc de debutant", Material.BOW, ItemType.WEAPON, Ranks.COMMON, 1, 1, null),0,
+                FonctionUtils.createItem("Arc de debutant", Material.BOW, ItemType.WEAPON, Ranks.COMMON, 1, 1),0,
                 WeaponsTypes.BOW,null, null, 4,0,0,0,0).getItemStack();
 
         ItemStack arrows = FonctionUtils.createItem("Fleche de debutant", Material.ARROW, ItemType.ITEM, Ranks.COMMON,16, 1).getItemStack();

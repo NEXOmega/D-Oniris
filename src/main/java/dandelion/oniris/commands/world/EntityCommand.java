@@ -21,10 +21,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class EntityCommand implements TabExecutor {
     Oniris oniris;
@@ -40,12 +37,14 @@ public class EntityCommand implements TabExecutor {
                 FonctionUtils.DandelionMobBuilder mobBuilder = new FonctionUtils.DandelionMobBuilder();
                 String uuid = UUID.randomUUID().toString();
                 mobBuilder.setMobName(args[1]);
+                mobBuilder.setMobType(MobType.valueOf(args[7]));
+                System.out.println(MobType.valueOf(args[7]));
                 mobBuilder.setLevel(Integer.parseInt(args[2]));
                 mobBuilder.setRewardXp(Integer.parseInt(args[3]));
                 mobBuilder.setName(args[4].replace("_"," "));
                 mobBuilder.setRespawnTime(Long.parseLong(args[5]));
                 mobBuilder.setRespawn(true);
-                mobBuilder.setStats(new Stats(0,4,0,0,0));
+                mobBuilder.setStats(new Stats(10,10,10,10,0));
 
                 mobBuilder.setEntityClass(DandelionEntity.class);
                 mobBuilder.setEntityTypes(MobUtils.entityTypesFromString("entity.minecraft."+args[6].toLowerCase()));
@@ -65,10 +64,9 @@ public class EntityCommand implements TabExecutor {
             } else if(args[0].equalsIgnoreCase("spawn")) {
                 if(oniris.getEntityManager().getMobMap().containsKey(args[1])) {
                     String uuid = UUID.randomUUID().toString();
-                    if(args[2].equalsIgnoreCase("hostile")) {
+                    if(args[2].equalsIgnoreCase("mob")) {
                         oniris.getEntityManager().getMobMap().get(args[1]).spawnAsMob(((Player)commandSender).getLocation(), uuid);
                         if(Boolean.parseBoolean(args[3])) {
-                            System.out.println("tongranper");
                             oniris.getEntityManager().addEntityLocation(uuid,args[1],((Player)commandSender).getLocation());
                             oniris.getEntityManager().getMobMap().get(args[1]).getMobLocations().put(uuid,((Player)commandSender).getLocation());
                             if(oniris.getConnectToDB().hasEntity(args[1])) {//TODO args 3 not working check if right
@@ -106,6 +104,18 @@ public class EntityCommand implements TabExecutor {
                         mob.spawnAsMob(loc, uuid);
                     });
                 });
+            } else if(args[0].equalsIgnoreCase("reset")) {
+                for(World world : Bukkit.getServer().getWorlds()) {
+                    for(Entity entity : world.getEntities()) {
+                        if(((CraftEntity)entity).getHandle() instanceof DandelionEntity) {
+                            ((DandelionEntity)((CraftEntity)entity).getHandle()).setRespawn(false);
+                            //TODO Save entities
+                            entity.remove();
+                        }
+                    }
+                }
+                oniris.getEntityManager().getMobMap().clear();
+                oniris.getEntityManager().getMobSpawn().clear();
             }
         }
         return false;
@@ -127,6 +137,14 @@ public class EntityCommand implements TabExecutor {
                 return Arrays.asList("respawnTimeInSeconds");
             if(args.length == 7)
                 return Arrays.asList("cow","chicken","zombie","skeleton","wither","hoglin","pig","villager","fish","guardian");
+            if(args.length == 8)
+                for (MobType type : MobType.values()) {
+                    System.out.println(type.name());
+                    if (type.name().startsWith(args[7])) {
+                        tab.add(type.name());
+                    }
+                }
+            return tab;
         } else if(args[0].equalsIgnoreCase("spawn")) {
             if(args.length == 2) {
                 for (String name : oniris.getEntityManager().getMobMap().keySet()) {
@@ -137,10 +155,8 @@ public class EntityCommand implements TabExecutor {
                 return tab;
             }
             if(args.length == 3) {
-                for(MobType type : MobType.values()) {
-                    tab.add(type.name());
-                }
-                return tab;
+
+                return Arrays.asList("mob", "pet");
             }
         }
         return Arrays.asList("spawn", "create", "list", "save", "load");

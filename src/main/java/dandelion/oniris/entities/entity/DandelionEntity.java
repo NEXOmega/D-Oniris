@@ -13,13 +13,15 @@ public class DandelionEntity extends EntityCreature {
     String uuid;
     DandelionMob dandelionMob;
     MobType type;
+    boolean drop = true;
 
     public DandelionEntity(EntityTypes<? extends EntityCreature> entitytypes, World world, String uuid, DandelionMob dandelionMob, MobType type) {
         super(entitytypes, world);
         this.dandelionMob = dandelionMob;
         this.uuid = uuid;
-        this.expToDrop = dandelionMob.getRewardXp();
+        this.expToDrop = 0;
         this.type = type;
+        this.drop = true;
 
         try {
             FonctionUtils.registerGenericAttribute(this.getBukkitEntity(), Attribute.GENERIC_ATTACK_DAMAGE);
@@ -41,11 +43,17 @@ public class DandelionEntity extends EntityCreature {
     @Override
     public void die() {
         super.die();
-        this.getMob().getRewardList().forEach((reward) -> {
-            if(new Random().nextInt(101) <= reward.getChance()) {
-                this.getBukkitEntity().getWorld().dropItem(this.getBukkitEntity().getLocation(), reward.getItem());
-            }
-        });
+        if(drop) {
+            this.getMob().getRewardList().forEach((reward) -> {
+                if(new Random().nextInt(101) <= reward.getChance()) {
+                    this.getBukkitEntity().getWorld().dropItem(this.getBukkitEntity().getLocation(), reward.getItem());
+                }
+            });
+        }
+        if(this.dead) {
+            if(killer != null)
+                killer.giveExp(dandelionMob.getRewardXp());
+        }
         if(dandelionMob.isRespawn())
             Oniris.getInstance().getEntityManager().respawn(dandelionMob.getMob_name(), uuid, true);
     }
@@ -54,6 +62,13 @@ public class DandelionEntity extends EntityCreature {
         this.dandelionMob.setRespawn(respawn);
     }
 
+    public boolean isDrop() {
+        return drop;
+    }
+
+    public void setDrop(boolean drop) {
+        this.drop = drop;
+    }
 
     public DandelionMob getMob() {
         return dandelionMob;

@@ -35,8 +35,9 @@ public class DandelionMob {
 
     Class<? extends Entity> entityClass;
     EntityTypes entityTypes;
+    MobType type;
 
-    public DandelionMob(String mob_name, int level, int rewardXp, String name, Stats stats, ArrayList<ItemStack> equipements, ArrayList<Class<? extends Spell>> spells, ArrayList<Support> supports, long respawnTime, boolean respawn, Class<? extends Entity> entityClass, EntityTypes entityTypes) {
+    public DandelionMob(String mob_name, MobType type, int level, int rewardXp, String name, Stats stats, ArrayList<ItemStack> equipements, ArrayList<Class<? extends Spell>> spells, ArrayList<Support> supports, long respawnTime, boolean respawn, Class<? extends Entity> entityClass, EntityTypes entityTypes) {
         this.mob_name = mob_name;
         this.level = level;
         this.rewardXp = rewardXp;
@@ -51,9 +52,10 @@ public class DandelionMob {
         this.entityTypes = entityTypes;
         this.mobLocations = new HashMap<>();
         this.rewardList = new ArrayList<>();
+        this.type = type;
     }
 
-    public DandelionMob(String mob_name, int level, int rewardXp, String name, Stats stats, ArrayList<ItemStack> equipements, ArrayList<Class<? extends Spell>> spells, ArrayList<Support> supports, long respawnTime, boolean respawn, Class<? extends Entity> entityClass, EntityTypes entityTypes, HashMap<String, Location> mobLocations, ArrayList<Treasure.Reward> rewardList) {
+    public DandelionMob(String mob_name, MobType type, int level, int rewardXp, String name, Stats stats, ArrayList<ItemStack> equipements, ArrayList<Class<? extends Spell>> spells, ArrayList<Support> supports, long respawnTime, boolean respawn, Class<? extends Entity> entityClass, EntityTypes entityTypes, HashMap<String, Location> mobLocations, ArrayList<Treasure.Reward> rewardList) {
         this.mob_name = mob_name;
         this.level = level;
         this.rewardXp = rewardXp;
@@ -68,15 +70,30 @@ public class DandelionMob {
         this.entityTypes = entityTypes;
         this.mobLocations = mobLocations;
         this.rewardList = rewardList;
+        this.type = type;
     }
 
     public void spawnAsMob(Location location, String uuid) {
         if(location.isWorldLoaded()) {
-            EntityInsentient entity = FonctionUtils.createLivingEntity(entityTypes, entityClass, MobType.HOSTILE, uuid, location, this);
-            entity.goalSelector.a(1, new PathfinderGoalMeleeAttack((EntityCreature) entity,this.stats.getSpeed(),true));
-            entity.goalSelector.a(2, new MoveTowardsTargetIfRange((EntityCreature) entity, this.stats.getSpeed(),100, location));
-            entity.targetSelector.a(1, new PathfinderGoalHurtByTarget((EntityCreature) entity));
-            entity.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<EntityHuman>(entity, EntityHuman.class, true));
+            EntityInsentient entity = FonctionUtils.createLivingEntity(entityTypes, entityClass, type, uuid, location, this);
+            if(type.equals(MobType.HOSTILE)) {
+                entity.goalSelector.a(1, new PathfinderGoalMeleeAttack((EntityCreature) entity,this.stats.getSpeed(),true));
+                entity.goalSelector.a(2, new MoveTowardsTargetIfRange((EntityCreature) entity, this.stats.getSpeed(),100, location));
+                entity.goalSelector.a(3, new PathfinderGoalRandomStrollLand((EntityCreature) entity,this.stats.getSpeed()));
+                entity.targetSelector.a(1, new PathfinderGoalHurtByTarget((EntityCreature) entity));
+                entity.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<EntityHuman>(entity, EntityHuman.class, true));
+            } else if(type.equals(MobType.PASSIVE)) {
+                entity.goalSelector.a(1, new PathfinderGoalMeleeAttack((EntityCreature) entity,this.stats.getSpeed(),true));
+                entity.goalSelector.a(1, new MoveTowardsTargetIfRange((EntityCreature) entity, this.stats.getSpeed(),100, location));
+                entity.goalSelector.a(3, new PathfinderGoalRandomStrollLand((EntityCreature) entity,this.stats.getSpeed()));
+                entity.targetSelector.a(1, new PathfinderGoalHurtByTarget((EntityCreature) entity));
+            } else if(type.equals(MobType.INNOFENSIVE)) {
+                entity.goalSelector.a(1, new PathfinderGoalRandomStrollLand((EntityCreature) entity,this.stats.getSpeed()));
+                entity.goalSelector.a(2, new PathfinderGoalPanic((EntityCreature) entity, this.getStats().getSpeed()));
+                entity.targetSelector.a(1, new PathfinderGoalHurtByTarget((EntityCreature) entity));
+                entity.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<EntityHuman>(entity, EntityHuman.class, true));
+            }
+
 
             entity.setCustomName(new ChatComponentText(ChatColor.GRAY + name + ChatColor.RED + " ["+level+"]"));
             entity.setCustomNameVisible(true);
@@ -87,7 +104,7 @@ public class DandelionMob {
 
     public void spawnAsPet(Location location, Player owner, String uuid) {
         if(location.isWorldLoaded()) {
-            EntityInsentient entity = FonctionUtils.createLivingEntity(entityTypes, entityClass, MobType.PET, uuid, location, this);
+            EntityInsentient entity = FonctionUtils.createLivingEntity(entityTypes, entityClass, MobType.INNOFENSIVE, uuid, location, this);
             entity.setInvulnerable(true);
             this.setRespawn(false);
             entity.goalSelector.a(0, new PathfinderGoalFloat(entity));
@@ -217,5 +234,13 @@ public class DandelionMob {
 
     public void addDrop(Treasure.Reward reward) {
         this.getRewardList().add(reward);
+    }
+
+    public MobType getType() {
+        return type;
+    }
+
+    public void setType(MobType type) {
+        this.type = type;
     }
 }

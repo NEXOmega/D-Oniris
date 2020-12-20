@@ -70,7 +70,7 @@ public class PlayerRightClickEvent implements Listener {
                     }
 
                 }
-                if(item.getType().equals(Material.INK_SAC)) {
+                if(item.getType().equals(Material.PAPER)) {
                         if(item.getItemMeta().getDisplayName().toLowerCase().contains("Parchemin de Sort".toLowerCase())) {
                             if(!(event.getPlayer().isSneaking())) return;
 

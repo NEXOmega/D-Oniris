@@ -14,6 +14,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.craftbukkit.v1_16_R2.CraftWorld;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -193,6 +194,7 @@ public class FonctionUtils {
             e2.printStackTrace();
         }
         e.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        ((LivingEntity)e.getBukkitEntity()).setRemoveWhenFarAway(false);
         world.addEntity(e, CreatureSpawnEvent.SpawnReason.CUSTOM);
         return e;
     }
@@ -211,6 +213,7 @@ public class FonctionUtils {
 
         Class<? extends Entity> entityClass;
         EntityTypes entityTypes;
+        MobType mobType;
 
         public DandelionMobBuilder setMobName(String mob_name) {
             this.mob_name = mob_name;
@@ -272,12 +275,17 @@ public class FonctionUtils {
             return this;
         }
 
+        public DandelionMobBuilder setMobType(MobType mobType) {
+            this.mobType = mobType;
+            return this;
+        }
+
         public DandelionMob build(){
-            return new DandelionMob(mob_name, level,rewardXp,name,stats,equipements,spells,supports,respawnTime,respawn,entityClass,entityTypes);
+            return new DandelionMob(mob_name, mobType, level,rewardXp,name,stats,equipements,spells,supports,respawnTime,respawn,entityClass,entityTypes);
         }
 
         public DandelionMob build(HashMap<String, Location> mobLocations, ArrayList<Treasure.Reward> rewardList) {
-            return new DandelionMob(mob_name, level,rewardXp,name,stats,equipements,spells,supports,respawnTime,respawn,entityClass,entityTypes, mobLocations, rewardList);
+            return new DandelionMob(mob_name, mobType, level,rewardXp,name,stats,equipements,spells,supports,respawnTime,respawn,entityClass,entityTypes, mobLocations, rewardList);
         }
     }
 

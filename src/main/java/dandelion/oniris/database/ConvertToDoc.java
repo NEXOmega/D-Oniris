@@ -3,6 +3,7 @@ package dandelion.oniris.database;
 import com.google.gson.reflect.TypeToken;
 import dandelion.oniris.entities.DandelionMob;
 import dandelion.oniris.entities.EntityRegistry;
+import dandelion.oniris.entities.MobType;
 import dandelion.oniris.players.Stats;
 import dandelion.oniris.utils.FonctionUtils;
 import dandelion.oniris.utils.MobUtils;
@@ -24,6 +25,7 @@ public class ConvertToDoc {
         Document document = new Document();
 
         document.put("mobName", mob.getMob_name());
+        document.put("mobType", mob.getType().name());
         document.put("level", mob.getLevel());
         document.put("rewardXp", mob.getRewardXp());
         document.put("name", mob.getName());
@@ -43,6 +45,7 @@ public class ConvertToDoc {
     public static DandelionMob docToEntity(Document document) {
         FonctionUtils.DandelionMobBuilder builder = new FonctionUtils.DandelionMobBuilder();
         builder.setMobName(document.getString("mobName"));
+        builder.setMobType(MobType.valueOf(document.getString("mobType")));
         builder.setLevel(document.getInteger("level"));
         builder.setRewardXp(document.getInteger("rewardXp"));
         builder.setName(document.getString("name"));
@@ -54,7 +57,6 @@ public class ConvertToDoc {
         builder.setRespawn(document.getBoolean("respawn"));
         builder.setEntityClass((Class<? extends Entity>) EntityRegistry.valueOf(document.getString("entityClass").toUpperCase()).getCustomClass());
         builder.setEntityTypes(MobUtils.entityTypesFromString(document.getString("entityType")));
-        System.out.println(builder.build().getEntityTypes());
 
         return builder.build(GsonFactory.getPrettyGson().fromJson(document.getString("mobLocations"), locationType),GsonFactory.getPrettyGson().fromJson(document.getString("mobDrops"), rewardListType));
     }

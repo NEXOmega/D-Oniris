@@ -5,6 +5,7 @@ import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import dandelion.oniris.Oniris;
 import dandelion.oniris.entities.DandelionMob;
+import dandelion.oniris.entities.MobType;
 import dandelion.oniris.entities.entity.DandelionEntity;
 import dandelion.oniris.utils.FonctionUtils;
 import dandelion.oniris.utils.ItemType;
@@ -62,7 +63,8 @@ public class AdminToolsEventListener implements Listener {
                                     ChatColor.GRAY + "level int",
                                     ChatColor.GRAY + "respawntime int",
                                     ChatColor.GRAY + "exp int",
-                                    ChatColor.GRAY + "name String"
+                                    ChatColor.GRAY + "name String",
+                                    ChatColor.GRAY + "type MobType"
                                     )).getItemStack());
                     anvilGui.onComplete((player,text) -> {
                         String[] args = text.split(" ");
@@ -83,7 +85,9 @@ public class AdminToolsEventListener implements Listener {
                         else if(args[0].equalsIgnoreCase("exp"))
                             dandelionMob.setRewardXp(Integer.parseInt(args[1]));
                         else if(args[0].equalsIgnoreCase("name"))
-                            dandelionMob.setName(args[1]);
+                            dandelionMob.setName(args[1].replace("_"," "));
+                        else if(args[0].equalsIgnoreCase("type"))
+                            dandelionMob.setType(MobType.valueOf(args[1].toUpperCase()));
 
                         oniris.getConnectToDB().updateEntity(dandelionMob);
                         oniris.getEntityManager().getMobMap().put(dandelionMob.getMob_name(), dandelionMob);
