@@ -97,17 +97,15 @@ public class DandelionMob {
                 entity.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<EntityHuman>(entity, EntityHuman.class, true));
             } else if(type.equals(MobType.RANGED_HOSTILE)) {
                 //var1 = damages var3 = speed var 4 = distance from target
-                entity.goalSelector.a(1, new PathfinderGoalArrowAttack((DandelionEntity)entity, 5,20,10));
+                entity.goalSelector.a(1, new PathfinderGoalArrowAttack((DandelionEntity)entity, this.getStats().getSpeed(), 20, 10.0F));
                 entity.targetSelector.a(1, new PathfinderGoalHurtByTarget((EntityCreature) entity));
                 entity.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<EntityHuman>(entity, EntityHuman.class, true));
             }else if(type.equals(MobType.RANGED_PASSIVE)) {
-                //var1 = damages var3 = speed var 4 = distance from target
-                entity.goalSelector.a(1, new PathfinderGoalArrowAttack((DandelionEntity)entity, 5,20,10));
+                //var1 = move speed var3 = speed var 4 = distance from target
+                entity.goalSelector.a(1, new PathfinderGoalArrowAttack((DandelionEntity)entity, this.getStats().getSpeed(), 20, 10.0F));
                 entity.targetSelector.a(1, new PathfinderGoalHurtByTarget((EntityCreature) entity));
             }else if(type.equals(MobType.PATHTEST)) {
             }
-
-
             entity.setCustomName(new ChatComponentText(ChatColor.GRAY + name + ChatColor.RED + " ["+level+"]"));
             entity.setCustomNameVisible(true);
         } else {
