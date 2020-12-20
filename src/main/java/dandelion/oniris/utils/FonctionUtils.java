@@ -215,6 +215,8 @@ public class FonctionUtils {
         EntityTypes entityTypes;
         MobType mobType;
 
+        boolean baby;
+
         public DandelionMobBuilder setMobName(String mob_name) {
             this.mob_name = mob_name;
             return this;
@@ -275,6 +277,11 @@ public class FonctionUtils {
             return this;
         }
 
+        public DandelionMobBuilder setBaby(boolean baby) {
+            this.baby = baby;
+            return this;
+        }
+
         public DandelionMobBuilder setMobType(MobType mobType) {
             this.mobType = mobType;
             return this;
@@ -285,7 +292,7 @@ public class FonctionUtils {
         }
 
         public DandelionMob build(HashMap<String, Location> mobLocations, ArrayList<Treasure.Reward> rewardList) {
-            return new DandelionMob(mob_name, mobType, level,rewardXp,name,stats,equipements,spells,supports,respawnTime,respawn,entityClass,entityTypes, mobLocations, rewardList);
+            return new DandelionMob(mob_name, mobType, level,rewardXp,name,stats,equipements,spells,supports,respawnTime,respawn,entityClass,entityTypes, mobLocations, rewardList, baby);
         }
     }
 

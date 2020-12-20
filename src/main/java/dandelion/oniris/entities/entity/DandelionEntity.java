@@ -9,7 +9,7 @@ import org.bukkit.attribute.Attribute;
 
 import java.util.Random;
 
-public class DandelionEntity extends EntityCreature {
+public class DandelionEntity extends EntityCreature implements IRangedEntity {
     String uuid;
     DandelionMob dandelionMob;
     MobType type;
@@ -22,7 +22,7 @@ public class DandelionEntity extends EntityCreature {
         this.expToDrop = 0;
         this.type = type;
         this.drop = true;
-
+        this.setBaby(dandelionMob.isBaby());
         try {
             FonctionUtils.registerGenericAttribute(this.getBukkitEntity(), Attribute.GENERIC_ATTACK_DAMAGE);
             FonctionUtils.registerGenericAttribute(this.getBukkitEntity(), Attribute.GENERIC_ATTACK_KNOCKBACK);
@@ -38,7 +38,6 @@ public class DandelionEntity extends EntityCreature {
         }
         this.setHealth(dandelionMob.getStats().getVitality());
     }
-
 
     @Override
     public void die() {
@@ -78,4 +77,20 @@ public class DandelionEntity extends EntityCreature {
         return type;
     }
 
+    @Override
+    public void a(EntityLiving entityLiving, float v) {
+        ItemStack itemstack = this.f(this.b(ProjectileHelper.a(this, Items.BOW)));
+        EntityArrow entityarrow = this.bs(itemstack, this.dandelionMob.getStats().getStrength());
+        double d0 = entityLiving.locX() - this.locX();
+        double d1 = entityLiving.e(0.3333333333333333D) - entityarrow.locY();
+        double d2 = entityLiving.locZ() - this.locZ();
+        double d3 = (double)MathHelper.sqrt(d0 * d0 + d2 * d2);
+        entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.world.getDifficulty().a() * 4));
+        this.world.addEntity(entityarrow);
+
+    }
+
+    protected EntityArrow bs(ItemStack itemstack, float v) {
+        return ProjectileHelper.a(this, itemstack, v);
+    }
 }

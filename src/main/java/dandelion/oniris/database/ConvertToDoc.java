@@ -8,7 +8,6 @@ import dandelion.oniris.players.Stats;
 import dandelion.oniris.utils.FonctionUtils;
 import dandelion.oniris.utils.MobUtils;
 import dandelion.oniris.world.Treasure;
-import net.minecraft.server.v1_16_R2.Entity;
 import org.bson.Document;
 import org.bukkit.Location;
 
@@ -39,6 +38,7 @@ public class ConvertToDoc {
         document.put("respawn", mob.isRespawn());
         document.put("entityClass", mob.getEntityClass().getSimpleName());
         document.put("entityType", mob.getEntityTypes().f());
+        document.put("baby", mob.isBaby());
         return document;
     }
 
@@ -55,8 +55,9 @@ public class ConvertToDoc {
         builder.setSupports(GsonFactory.getCompactGson().fromJson(document.getString("supports"), ArrayList.class));
         builder.setRespawnTime(document.getLong("respawnTime"));
         builder.setRespawn(document.getBoolean("respawn"));
-        builder.setEntityClass((Class<? extends Entity>) EntityRegistry.valueOf(document.getString("entityClass").toUpperCase()).getCustomClass());
+        builder.setEntityClass(EntityRegistry.valueOf(document.getString("entityClass").toUpperCase()).getCustomClass());
         builder.setEntityTypes(MobUtils.entityTypesFromString(document.getString("entityType")));
+        builder.setBaby(document.getBoolean("baby"));
 
         return builder.build(GsonFactory.getPrettyGson().fromJson(document.getString("mobLocations"), locationType),GsonFactory.getPrettyGson().fromJson(document.getString("mobDrops"), rewardListType));
     }

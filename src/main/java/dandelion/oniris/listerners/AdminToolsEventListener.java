@@ -64,7 +64,8 @@ public class AdminToolsEventListener implements Listener {
                                     ChatColor.GRAY + "respawntime int",
                                     ChatColor.GRAY + "exp int",
                                     ChatColor.GRAY + "name String",
-                                    ChatColor.GRAY + "type MobType"
+                                    ChatColor.GRAY + "type MobType",
+                                    ChatColor.GRAY + "baby boolean"
                                     )).getItemStack());
                     anvilGui.onComplete((player,text) -> {
                         String[] args = text.split(" ");
@@ -88,12 +89,26 @@ public class AdminToolsEventListener implements Listener {
                             dandelionMob.setName(args[1].replace("_"," "));
                         else if(args[0].equalsIgnoreCase("type"))
                             dandelionMob.setType(MobType.valueOf(args[1].toUpperCase()));
+                        else if(args[0].equalsIgnoreCase("baby"))
+                            dandelionMob.setBaby(Boolean.parseBoolean(args[1]));
 
                         oniris.getConnectToDB().updateEntity(dandelionMob);
                         oniris.getEntityManager().getMobMap().put(dandelionMob.getMob_name(), dandelionMob);
                         return AnvilGUI.Response.close();
                     });
                     anvilGui.open(e.getPlayer());
+                }));
+
+                pane.addItem(new GuiItem(FonctionUtils.createItem("Supprimer", Material.BARRIER, ItemType.EQUIPEMENT.DISPLAY_ITEM, Ranks.MYTHIC, 1,1).getItemStack(), click -> {
+                    oniris.getConnectToDB().removeEntity(dandelionMob.getMob_name());
+
+                    dandelionMob.getMobLocations().forEach((uuid, loc) -> {
+                        oniris.getEntityManager().getMobSpawn().remove(uuid);
+                    });
+                    oniris.getEntityManager().getMobMap().remove(dandelionMob.getMob_name());
+
+                    e.getRightClicked().remove();
+                    e.getPlayer().sendMessage(ChatColor.RED + "Entité effacée");
                 }));
 
                 gui.setOnBottomClick(clickEvent -> {

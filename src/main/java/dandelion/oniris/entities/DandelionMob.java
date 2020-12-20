@@ -1,6 +1,7 @@
 package dandelion.oniris.entities;
 
 import dandelion.oniris.Oniris;
+import dandelion.oniris.entities.entity.DandelionEntity;
 import dandelion.oniris.entities.pathfinders.MoveTowardsTargetIfRange;
 import dandelion.oniris.entities.pathfinders.PathfinderGoalPet;
 import dandelion.oniris.players.Stats;
@@ -29,6 +30,7 @@ public class DandelionMob {
     ArrayList<Support> supports;
     HashMap<String, Location> mobLocations;
     ArrayList<Treasure.Reward> rewardList;
+    boolean baby = false;
 
     long respawnTime;
     boolean respawn = true;
@@ -55,7 +57,7 @@ public class DandelionMob {
         this.type = type;
     }
 
-    public DandelionMob(String mob_name, MobType type, int level, int rewardXp, String name, Stats stats, ArrayList<ItemStack> equipements, ArrayList<Class<? extends Spell>> spells, ArrayList<Support> supports, long respawnTime, boolean respawn, Class<? extends Entity> entityClass, EntityTypes entityTypes, HashMap<String, Location> mobLocations, ArrayList<Treasure.Reward> rewardList) {
+    public DandelionMob(String mob_name, MobType type, int level, int rewardXp, String name, Stats stats, ArrayList<ItemStack> equipements, ArrayList<Class<? extends Spell>> spells, ArrayList<Support> supports, long respawnTime, boolean respawn, Class<? extends Entity> entityClass, EntityTypes entityTypes, HashMap<String, Location> mobLocations, ArrayList<Treasure.Reward> rewardList, boolean baby) {
         this.mob_name = mob_name;
         this.level = level;
         this.rewardXp = rewardXp;
@@ -71,6 +73,7 @@ public class DandelionMob {
         this.mobLocations = mobLocations;
         this.rewardList = rewardList;
         this.type = type;
+        this.baby = baby;
     }
 
     public void spawnAsMob(Location location, String uuid) {
@@ -87,11 +90,21 @@ public class DandelionMob {
                 entity.goalSelector.a(1, new MoveTowardsTargetIfRange((EntityCreature) entity, this.stats.getSpeed(),100, location));
                 entity.goalSelector.a(3, new PathfinderGoalRandomStrollLand((EntityCreature) entity,this.stats.getSpeed()));
                 entity.targetSelector.a(1, new PathfinderGoalHurtByTarget((EntityCreature) entity));
-            } else if(type.equals(MobType.INNOFENSIVE)) {
+            } else if(type.equals(MobType.INOFFENSIVE)) {
                 entity.goalSelector.a(1, new PathfinderGoalRandomStrollLand((EntityCreature) entity,this.stats.getSpeed()));
                 entity.goalSelector.a(2, new PathfinderGoalPanic((EntityCreature) entity, this.getStats().getSpeed()));
                 entity.targetSelector.a(1, new PathfinderGoalHurtByTarget((EntityCreature) entity));
                 entity.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<EntityHuman>(entity, EntityHuman.class, true));
+            } else if(type.equals(MobType.RANGED_HOSTILE)) {
+                //var1 = damages var3 = speed var 4 = distance from target
+                entity.goalSelector.a(1, new PathfinderGoalArrowAttack((DandelionEntity)entity, 5,20,10));
+                entity.targetSelector.a(1, new PathfinderGoalHurtByTarget((EntityCreature) entity));
+                entity.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<EntityHuman>(entity, EntityHuman.class, true));
+            }else if(type.equals(MobType.RANGED_PASSIVE)) {
+                //var1 = damages var3 = speed var 4 = distance from target
+                entity.goalSelector.a(1, new PathfinderGoalArrowAttack((DandelionEntity)entity, 5,20,10));
+                entity.targetSelector.a(1, new PathfinderGoalHurtByTarget((EntityCreature) entity));
+            }else if(type.equals(MobType.PATHTEST)) {
             }
 
 
@@ -104,7 +117,7 @@ public class DandelionMob {
 
     public void spawnAsPet(Location location, Player owner, String uuid) {
         if(location.isWorldLoaded()) {
-            EntityInsentient entity = FonctionUtils.createLivingEntity(entityTypes, entityClass, MobType.INNOFENSIVE, uuid, location, this);
+            EntityInsentient entity = FonctionUtils.createLivingEntity(entityTypes, entityClass, MobType.INOFFENSIVE, uuid, location, this);
             entity.setInvulnerable(true);
             this.setRespawn(false);
             entity.goalSelector.a(0, new PathfinderGoalFloat(entity));
@@ -242,5 +255,13 @@ public class DandelionMob {
 
     public void setType(MobType type) {
         this.type = type;
+    }
+
+    public boolean isBaby() {
+        return baby;
+    }
+
+    public void setBaby(boolean baby) {
+        this.baby = baby;
     }
 }

@@ -100,6 +100,10 @@ public class DatabaseConnect {
         entityCollecion.insertOne(doc);
     }
 
+    public void removeEntity(String mobName) {
+        entityCollecion.findOneAndDelete(eq("mobName", mobName));
+    }
+
     public boolean hasEntity(String mobName) {
         Document doc = entityCollecion.find(eq("mobName", mobName)).first();
         return (doc != null);
