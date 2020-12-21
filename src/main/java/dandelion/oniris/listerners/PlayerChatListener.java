@@ -53,14 +53,14 @@ public class PlayerChatListener implements Listener {
 
             if(var.contains("item")) {
                 if(var.equalsIgnoreCase("item"))
-                    return textBuilder.text(pl.getInventory().getItemInMainHand().getItemMeta().getDisplayName()).onHover(BookUtil.HoverAction.showItem(pl.getInventory().getItemInMainHand())).build();
+                    return textBuilder.text(ChatColor.GREEN + "[" + ChatColor.WHITE + pl.getInventory().getItemInMainHand().getItemMeta().getDisplayName() + ChatColor.GREEN + "]").onHover(BookUtil.HoverAction.showItem(pl.getInventory().getItemInMainHand())).build();
                 else if(!var.replaceAll("[^\\d.]", "").equals("")) {
                     return textBuilder.text(pl.getInventory().getItem(Integer.parseInt(var.replaceAll("[^\\d.]",""))).getItemMeta().getDisplayName())
                             .onHover(BookUtil.HoverAction.showItem(pl.getInventory().getItem(Integer.parseInt(var.replaceAll("[^\\d.]",""))))).build();
                 }
             } else if(var.equalsIgnoreCase("me")) {
                 TextComponent base = new TextComponent();
-                base.setText(pl.getDisplayName());
+                base.setText(ChatColor.GREEN + "[" + ChatColor.WHITE + pl.getDisplayName() + ChatColor.GREEN + "]");
 
                 BaseComponent description = new TextComponent();
                 description.addExtra(ChatColor.GRAY + "Level : " + ChatColor.YELLOW + stats.getLevel());

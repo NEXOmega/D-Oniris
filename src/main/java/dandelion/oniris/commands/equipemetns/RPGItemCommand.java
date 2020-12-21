@@ -48,8 +48,8 @@ public class RPGItemCommand implements TabExecutor {
                     }
                     lore.add(ChatColor.YELLOW + "-Equipement-");
                     DandelionItem equipement = FonctionUtils.createItem(sb.toString(), Material.matchMaterial(args[1]), ItemType.EQUIPEMENT, Ranks.COMMON, 1, 1, lore);
-                    sb.append(level);
                     equipement.setLevel(Integer.parseInt(level.replaceAll("[^0-9]", "")));
+                    equipement.setName(sb.toString());
 
                     p.getInventory().addItem(equipement.getItemStack());
 
