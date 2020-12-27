@@ -60,6 +60,10 @@ public class AdminToolsEventListener implements Listener {
                                     ChatColor.GRAY + "defence int",
                                     ChatColor.GRAY + "vitality int",
                                     ChatColor.GRAY + "speed int",
+                                    ChatColor.GRAY + "attackSpeed int",
+                                    ChatColor.GRAY + "attackRange int",
+                                    ChatColor.GRAY + "rangedDamage int",
+                                    ChatColor.GRAY + "rangedSpeed int",
                                     ChatColor.GRAY + "level int",
                                     ChatColor.GRAY + "respawntime int",
                                     ChatColor.GRAY + "exp int",
@@ -79,6 +83,14 @@ public class AdminToolsEventListener implements Listener {
                             dandelionMob.getStats().setVitality(Float.parseFloat(args[1]));
                         else if(args[0].equalsIgnoreCase("speed"))
                             dandelionMob.getStats().setSpeed(Float.parseFloat(args[1]));
+                        else if(args[0].equalsIgnoreCase("attackSpeed"))
+                            dandelionMob.getStats().setAttackSpeed(Float.parseFloat(args[1]));
+                        else if(args[0].equalsIgnoreCase("attackRange"))
+                            dandelionMob.getStats().setAttackRange(Float.parseFloat(args[1]));
+                        else if(args[0].equalsIgnoreCase("rangedDamage"))
+                            dandelionMob.getStats().setRangedDamage(Float.parseFloat(args[1]));
+                        else if(args[0].equalsIgnoreCase("rangedSpeed"))
+                            dandelionMob.getStats().setRangedSpeed(Float.parseFloat(args[1]));
                         else if(args[0].equalsIgnoreCase("level"))
                             dandelionMob.setLevel(Integer.parseInt(args[1]));
                         else if(args[0].equalsIgnoreCase("respawntime"))
@@ -111,17 +123,41 @@ public class AdminToolsEventListener implements Listener {
                     e.getPlayer().sendMessage(ChatColor.RED + "Entité effacée");
                 }));
 
+                pane.addItem(new GuiItem(FonctionUtils.createItem("Drop List", Material.ROTTEN_FLESH, ItemType.DISPLAY_ITEM, Ranks.HERO, 1, 1).getItemStack(), click -> {
+                    Gui dropGui = new Gui(3, "Drops de" + dandelionMob.getName());
+                    OutlinePane dropPane = new OutlinePane(0,0,9,3);
+                    dandelionMob.getRewardList().forEach( r -> {
+                        dropPane.addItem(new GuiItem(r.getItem()));
+                    });
+                    dropGui.addPane(dropPane);
+                    e.getPlayer().closeInventory();
+                    dropGui.show(e.getPlayer());
+
+                }));
                 gui.setOnBottomClick(clickEvent -> {
                     clickEvent.setCancelled(true);
-                    AnvilGUI.Builder builder =new AnvilGUI.Builder().plugin(oniris).title("Add Item");
-                    builder.itemLeft(clickEvent.getCurrentItem().clone());
-                    builder.onComplete((pl, text) -> {
-                        dandelionMob.addDrop(new Treasure.Reward(clickEvent.getCurrentItem().clone(), Integer.parseInt(text), 1));
-                        oniris.getConnectToDB().updateEntity(dandelionMob);
-                        oniris.getEntityManager().getMobMap().put(dandelionMob.getMob_name(), dandelionMob);
-                        return AnvilGUI.Response.close();
-                    });
-                    builder.open(e.getPlayer());
+                    if(clickEvent.isLeftClick()) {
+                        AnvilGUI.Builder builder =new AnvilGUI.Builder().plugin(oniris).title("Add Item");
+                        builder.itemLeft(clickEvent.getCurrentItem().clone());
+                        builder.onComplete((pl, text) -> {
+                            dandelionMob.addDrop(new Treasure.Reward(clickEvent.getCurrentItem().clone(), Integer.parseInt(text), 1));
+                            oniris.getConnectToDB().updateEntity(dandelionMob);
+                            oniris.getEntityManager().getMobMap().put(dandelionMob.getMob_name(), dandelionMob);
+                            return AnvilGUI.Response.close();
+                        });
+                        builder.open(e.getPlayer());
+                    } else if (clickEvent.isRightClick()) {
+                        AnvilGUI.Builder builder = new AnvilGUI.Builder().plugin(oniris).title("Set Equipement");
+                        builder.itemLeft(clickEvent.getCurrentItem().clone());
+                        builder.onComplete((pl, text) -> {
+                            dandelionMob.getEquipements()[Integer.parseInt(text)] = clickEvent.getCurrentItem().clone();
+                            oniris.getConnectToDB().updateEntity(dandelionMob);
+                            oniris.getEntityManager().getMobMap().put(dandelionMob.getMob_name(), dandelionMob);
+                            return AnvilGUI.Response.close();
+                        });
+                        builder.open(e.getPlayer());
+                    }
+
                 });
                 gui.addPane(pane);
                 gui.show(e.getPlayer());

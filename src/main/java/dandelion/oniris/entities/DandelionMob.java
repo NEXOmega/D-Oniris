@@ -12,7 +12,9 @@ import dandelion.oniris.world.Treasure;
 import net.minecraft.server.v1_16_R2.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_16_R2.entity.CraftItem;
 import org.bukkit.craftbukkit.v1_16_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.inventory.ItemStack;
@@ -24,8 +26,8 @@ public class DandelionMob {
     String mob_name;
     int level, rewardXp;
     String name;
-    Stats stats;
-    ArrayList<ItemStack> equipements;
+    EntityStats stats;
+    ItemStack[] equipements;
     ArrayList<Class<? extends Spell>> spells;
     ArrayList<Support> supports;
     HashMap<String, Location> mobLocations;
@@ -39,13 +41,14 @@ public class DandelionMob {
     EntityTypes entityTypes;
     MobType type;
 
-    public DandelionMob(String mob_name, MobType type, int level, int rewardXp, String name, Stats stats, ArrayList<ItemStack> equipements, ArrayList<Class<? extends Spell>> spells, ArrayList<Support> supports, long respawnTime, boolean respawn, Class<? extends Entity> entityClass, EntityTypes entityTypes) {
+    public DandelionMob(String mob_name, MobType type, int level, int rewardXp, String name, EntityStats stats, ItemStack[] equipements, ArrayList<Class<? extends Spell>> spells, ArrayList<Support> supports, long respawnTime, boolean respawn, Class<? extends Entity> entityClass, EntityTypes entityTypes) {
         this.mob_name = mob_name;
         this.level = level;
         this.rewardXp = rewardXp;
         this.name = name;
         this.stats = stats;
-        this.equipements = equipements;
+        //0 Head, 1 Chest, 2 Leggings, 3 Boots, 4 MainHand, 5 OFFHand
+        this.equipements = new ItemStack[6];
         this.spells = spells;
         this.supports = supports;
         this.respawnTime = respawnTime;
@@ -57,7 +60,7 @@ public class DandelionMob {
         this.type = type;
     }
 
-    public DandelionMob(String mob_name, MobType type, int level, int rewardXp, String name, Stats stats, ArrayList<ItemStack> equipements, ArrayList<Class<? extends Spell>> spells, ArrayList<Support> supports, long respawnTime, boolean respawn, Class<? extends Entity> entityClass, EntityTypes entityTypes, HashMap<String, Location> mobLocations, ArrayList<Treasure.Reward> rewardList, boolean baby) {
+    public DandelionMob(String mob_name, MobType type, int level, int rewardXp, String name, EntityStats stats, ItemStack[] equipements, ArrayList<Class<? extends Spell>> spells, ArrayList<Support> supports, long respawnTime, boolean respawn, Class<? extends Entity> entityClass, EntityTypes entityTypes, HashMap<String, Location> mobLocations, ArrayList<Treasure.Reward> rewardList, boolean baby) {
         this.mob_name = mob_name;
         this.level = level;
         this.rewardXp = rewardXp;
@@ -79,6 +82,20 @@ public class DandelionMob {
     public void spawnAsMob(Location location, String uuid) {
         if(location.isWorldLoaded()) {
             EntityInsentient entity = FonctionUtils.createLivingEntity(entityTypes, entityClass, type, uuid, location, this);
+
+            if(equipements[0] != null)
+                entity.setSlot(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(equipements[0]));
+            if(equipements[1] != null)
+                entity.setSlot(EnumItemSlot.CHEST, CraftItemStack.asNMSCopy(equipements[1]));
+            if(equipements[2] != null)
+                entity.setSlot(EnumItemSlot.LEGS, CraftItemStack.asNMSCopy(equipements[2]));
+            if(equipements[3] != null)
+                entity.setSlot(EnumItemSlot.FEET, CraftItemStack.asNMSCopy(equipements[3]));
+            if(equipements[4] != null)
+                entity.setSlot(EnumItemSlot.MAINHAND, CraftItemStack.asNMSCopy(equipements[4]));
+            if(equipements[5] != null)
+                entity.setSlot(EnumItemSlot.OFFHAND, CraftItemStack.asNMSCopy(equipements[5]));
+
             if(type.equals(MobType.HOSTILE)) {
                 entity.goalSelector.a(1, new PathfinderGoalMeleeAttack((EntityCreature) entity,this.stats.getSpeed(),true));
                 entity.goalSelector.a(2, new MoveTowardsTargetIfRange((EntityCreature) entity, this.stats.getSpeed(),100, location));
@@ -163,19 +180,19 @@ public class DandelionMob {
         this.name = name;
     }
 
-    public Stats getStats() {
+    public EntityStats getStats() {
         return stats;
     }
 
-    public void setStats(Stats stats) {
+    public void setStats(EntityStats stats) {
         this.stats = stats;
     }
 
-    public ArrayList<ItemStack> getEquipements() {
+    public ItemStack[] getEquipements() {
         return equipements;
     }
 
-    public void setEquipements(ArrayList<ItemStack> equipements) {
+    public void setEquipements(ItemStack[] equipements) {
         this.equipements = equipements;
     }
 
@@ -239,7 +256,7 @@ public class DandelionMob {
         return rewardList;
     }
 
-    public void setDropMap(ArrayList<Treasure.Reward> rewardList) {
+    public void setRewardList(ArrayList<Treasure.Reward> rewardList) {
         this.rewardList = rewardList;
     }
 

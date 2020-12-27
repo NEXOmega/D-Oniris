@@ -4,6 +4,7 @@ import com.mongodb.Block;
 import dandelion.oniris.Oniris;
 import dandelion.oniris.database.ConvertToDoc;
 import dandelion.oniris.entities.DandelionMob;
+import dandelion.oniris.entities.EntityStats;
 import dandelion.oniris.entities.MobType;
 import dandelion.oniris.entities.entity.DandelionEntity;
 import dandelion.oniris.players.Stats;
@@ -44,7 +45,7 @@ public class EntityCommand implements TabExecutor {
                 mobBuilder.setName(args[4].replace("_"," "));
                 mobBuilder.setRespawnTime(Long.parseLong(args[5]));
                 mobBuilder.setRespawn(true);
-                mobBuilder.setStats(new Stats(10,10,10,10,0));
+                mobBuilder.setStats(new EntityStats(10,10,10,10,0, 0, 0, 0, 0));
 
                 mobBuilder.setEntityClass(DandelionEntity.class);
                 mobBuilder.setEntityTypes(MobUtils.entityTypesFromString("entity.minecraft."+args[6].toLowerCase()));

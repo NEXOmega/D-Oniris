@@ -28,7 +28,6 @@ public enum ItemUtils {
     GRIMOIRE(FonctionUtils.createItem("Grimoire", Material.BOOK,ItemType.GRIMORY, Ranks.COMMON, 1, 1), "Grimoire de base pour vos sorts"),
     BINDER(FonctionUtils.createItem("Binder", Material.FIREWORK_STAR,ItemType.BINDER, Ranks.COMMON,1,1, Collections.singletonList(WHITE+"Binding")), "Item to bind"),
     ADMIN_WRENCH(FonctionUtils.createItem("Admin Wrench", Material.CARROT_ON_A_STICK, ItemType.ADMIN_TOOL, Ranks.UNOBTAINABLE,1,1), "Permet diverses actions si vous avez la permission");
-
     DandelionItem item;
     String description;
 

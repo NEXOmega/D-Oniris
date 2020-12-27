@@ -1,7 +1,9 @@
 package dandelion.oniris.utils;
 
+import com.mojang.authlib.GameProfile;
 import dandelion.oniris.commands.equipemetns.WeaponsTypes;
 import dandelion.oniris.entities.DandelionMob;
+import dandelion.oniris.entities.EntityStats;
 import dandelion.oniris.entities.MobType;
 import dandelion.oniris.players.Stats;
 import dandelion.oniris.players.spell.Elements;
@@ -9,11 +11,14 @@ import dandelion.oniris.players.spell.Spell;
 import dandelion.oniris.players.support.Support;
 import dandelion.oniris.world.Treasure;
 import net.minecraft.server.v1_16_R2.*;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.craftbukkit.v1_16_R2.CraftServer;
 import org.bukkit.craftbukkit.v1_16_R2.CraftWorld;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
@@ -21,10 +26,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class FonctionUtils {
     public static String capitalize(String str) {
@@ -203,8 +205,8 @@ public class FonctionUtils {
         String mob_name;
         int level, rewardXp;
         String name;
-        Stats stats;
-        ArrayList<ItemStack> equipements;
+        EntityStats stats;
+        ItemStack[] equipements;
         ArrayList<Class<? extends Spell>> spells;
         ArrayList<Support> supports;
 
@@ -237,12 +239,12 @@ public class FonctionUtils {
             return this;
         }
 
-        public DandelionMobBuilder setStats(Stats stats) {
+        public DandelionMobBuilder setStats(EntityStats stats) {
             this.stats = stats;
             return this;
         }
 
-        public DandelionMobBuilder setEquipements(ArrayList<ItemStack> equipements) {
+        public DandelionMobBuilder setEquipements(ItemStack[] equipements) {
             this.equipements = equipements;
             return this;
         }

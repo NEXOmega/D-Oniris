@@ -3,6 +3,7 @@ package dandelion.oniris.database;
 import com.google.gson.reflect.TypeToken;
 import dandelion.oniris.entities.DandelionMob;
 import dandelion.oniris.entities.EntityRegistry;
+import dandelion.oniris.entities.EntityStats;
 import dandelion.oniris.entities.MobType;
 import dandelion.oniris.players.Stats;
 import dandelion.oniris.utils.FonctionUtils;
@@ -10,9 +11,11 @@ import dandelion.oniris.utils.MobUtils;
 import dandelion.oniris.world.Treasure;
 import org.bson.Document;
 import org.bukkit.Location;
+import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class ConvertToDoc {
@@ -45,12 +48,13 @@ public class ConvertToDoc {
     public static DandelionMob docToEntity(Document document) {
         FonctionUtils.DandelionMobBuilder builder = new FonctionUtils.DandelionMobBuilder();
         builder.setMobName(document.getString("mobName"));
+        System.out.println("TEST " + document.getString("mobName") +" : " + document.getString("mobType"));
         builder.setMobType(MobType.valueOf(document.getString("mobType")));
         builder.setLevel(document.getInteger("level"));
         builder.setRewardXp(document.getInteger("rewardXp"));
         builder.setName(document.getString("name"));
-        builder.setStats(GsonFactory.getPrettyGson().fromJson(document.getString("stats"), Stats.class));
-        builder.setEquipements(GsonFactory.getCompactGson().fromJson(document.getString("equipements"), ArrayList.class));
+        builder.setStats(GsonFactory.getPrettyGson().fromJson(document.getString("stats"), EntityStats.class));
+        builder.setEquipements(GsonFactory.getCompactGson().fromJson(document.getString("equipements"), ItemStack[].class));
         builder.setSpells(GsonFactory.getCompactGson().fromJson(document.getString("spells"), ArrayList.class));
         builder.setSupports(GsonFactory.getCompactGson().fromJson(document.getString("supports"), ArrayList.class));
         builder.setRespawnTime(document.getLong("respawnTime"));

@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class PlayerInfos implements CommandExecutor {
     Oniris oniris;
@@ -15,7 +16,7 @@ public class PlayerInfos implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if(sender instanceof Player) {
 
                 if(oniris.getPlayers().containsKey(sender)){
@@ -33,6 +34,7 @@ public class PlayerInfos implements CommandExecutor {
         }
         return false;
     }
+
     private String getStatsInfos(PlayerStats stats) {
         return ChatColor.RED +"--{"+ChatColor.YELLOW +"Stats" + ChatColor.RED +"}--" +
                 ChatColor.RED +"\nVitalité: " + ChatColor.YELLOW + stats.getStats().getVitality() +

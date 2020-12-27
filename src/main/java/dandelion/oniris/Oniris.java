@@ -93,7 +93,7 @@ public final class Oniris extends JavaPlugin {
         pm.registerEvents(new AdminToolsEventListener(this), this);
         pm.registerEvents(new PlayerChatListener(), this);
         pm.registerEvents(new PlayerGuiEvent(this), this);
-        pm.registerEvents(new PlayerUseSpellBookEvent(this), this);
+        pm.registerEvents(new PlayerUseSpecialItemEvent(this), this);
         pm.registerEvents(new PlayerStatsEvent(this), this);
         pm.registerEvents(new PlayerRightClickEvent(this), this);
         pm.registerEvents(new PlayerJoinLeave(this), this);
