@@ -5,6 +5,7 @@ import dandelion.oniris.commands.equipemetns.WeaponsTypes;
 import dandelion.oniris.entities.DandelionMob;
 import dandelion.oniris.entities.EntityStats;
 import dandelion.oniris.entities.MobType;
+import dandelion.oniris.entities.entity.DandelionEntity;
 import dandelion.oniris.players.Stats;
 import dandelion.oniris.players.spell.Elements;
 import dandelion.oniris.players.spell.Spell;

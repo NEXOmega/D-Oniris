@@ -121,6 +121,8 @@ public class DandelionMob {
                 //var1 = move speed var3 = speed var 4 = distance from target
                 entity.goalSelector.a(1, new PathfinderGoalArrowAttack((DandelionEntity)entity, this.getStats().getSpeed(), 20, 10.0F));
                 entity.targetSelector.a(1, new PathfinderGoalHurtByTarget((EntityCreature) entity));
+            }else if(type.equals(MobType.PORTAL)) {
+                entity.setInvisible(true);
             }else if(type.equals(MobType.PATHTEST)) {
             }
             entity.setCustomName(new ChatComponentText(ChatColor.GRAY + name + ChatColor.RED + " ["+level+"]"));

@@ -12,7 +12,8 @@ public class PortalStoneGui {
         Inventory inv = Bukkit.createInventory(player,9, ChatColor.RED +"Portal Stone");
 
         stats.getPortalStones().forEach(stone -> {
-            inv.addItem(stone.getItem());
+            if(stone.getLocation().getWorld().getUID().equals(player.getWorld().getUID()))
+                inv.addItem(stone.getItem());
         });
 
         return inv;

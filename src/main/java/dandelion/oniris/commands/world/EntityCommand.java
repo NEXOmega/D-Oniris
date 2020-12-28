@@ -96,7 +96,7 @@ public class EntityCommand implements TabExecutor {
                         if(Boolean.parseBoolean(args[3])) {
                             oniris.getEntityManager().addEntityLocation(uuid,args[1],((Player)commandSender).getLocation());
                             oniris.getEntityManager().getMobMap().get(args[1]).getMobLocations().put(uuid,((Player)commandSender).getLocation());
-                            if(oniris.getConnectToDB().hasEntity(args[1])) {//TODO args 3 not working check if right
+                            if(oniris.getConnectToDB().hasEntity(args[1])) {
                                 oniris.getConnectToDB().updateEntity(oniris.getEntityManager().getMobMap().get(args[1]));
                             }
                         }
