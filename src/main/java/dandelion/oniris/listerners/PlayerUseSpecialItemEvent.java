@@ -1,6 +1,7 @@
 package dandelion.oniris.listerners;
 
 import dandelion.oniris.Oniris;
+import dandelion.oniris.entities.DandelionMob;
 import dandelion.oniris.players.PlayerStats;
 import dandelion.oniris.players.spell.SpellType;
 import dandelion.oniris.utils.DandelionItem;
@@ -17,17 +18,18 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import xyz.upperlevel.spigot.book.BookUtil;
 
-public class PlayerUseSpellBookEvent implements Listener {
+public class PlayerUseSpecialItemEvent implements Listener {
     Oniris oniris;
     String currentSpell = "";
 
-    public PlayerUseSpellBookEvent(Oniris oniris) {
+    public PlayerUseSpecialItemEvent(Oniris oniris) {
         this.oniris = oniris;
     }
 
     @EventHandler
-    public void playerUseSpellBook(PlayerInteractEvent e) {
+    public void playerUseSpecialItem(PlayerInteractEvent e) {
         if(!e.hasItem()) return;
             if(e.getItem().hasItemMeta()) {
                 if(!e.getItem().getItemMeta().getPersistentDataContainer().has(NamespacedKey.minecraft("itemtype"), PersistentDataType.STRING)) return;

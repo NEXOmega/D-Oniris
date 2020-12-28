@@ -6,6 +6,7 @@ public enum MobType {
     RANGED_HOSTILE,
     RANGED_PASSIVE,
     INOFFENSIVE,
+    PORTAL,
     PATHTEST;
 
 }

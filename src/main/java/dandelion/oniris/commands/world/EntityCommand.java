@@ -7,9 +7,11 @@ import dandelion.oniris.entities.DandelionMob;
 import dandelion.oniris.entities.EntityStats;
 import dandelion.oniris.entities.MobType;
 import dandelion.oniris.entities.entity.DandelionEntity;
+import dandelion.oniris.entities.entity.other.PortalEntity;
 import dandelion.oniris.players.Stats;
 import dandelion.oniris.utils.FonctionUtils;
 import dandelion.oniris.utils.MobUtils;
+import net.minecraft.server.v1_16_R2.EntityTypes;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -60,9 +62,33 @@ public class EntityCommand implements TabExecutor {
                 dandelionMob.spawnAsMob(((Player) commandSender).getLocation(), uuid);
                 ConvertToDoc.entityToDoc(dandelionMob);
 
-            } else if(args[0].equalsIgnoreCase("edit")) {
+            }
+            else if(args[0].equalsIgnoreCase("portal")) {
+                FonctionUtils.DandelionMobBuilder mobBuilder = new FonctionUtils.DandelionMobBuilder();
+                String uuid = UUID.randomUUID().toString();
+                mobBuilder.setMobName(args[1]);
+                mobBuilder.setMobType(MobType.PORTAL);
+                mobBuilder.setLevel(Integer.parseInt(args[2]));
+                mobBuilder.setRewardXp(Integer.parseInt(args[3]));
+                mobBuilder.setName(args[4].replace("_"," "));
+                mobBuilder.setRespawnTime(Long.parseLong(args[5]));
+                mobBuilder.setRespawn(true);
+                mobBuilder.setStats(new EntityStats(0,1000000,100000,100000,0, 0, 0, 0, 0));
 
-            } else if(args[0].equalsIgnoreCase("spawn")) {
+                mobBuilder.setEntityClass(PortalEntity.class);
+                mobBuilder.setEntityTypes(EntityTypes.IRON_GOLEM);
+
+                DandelionMob dandelionMob = mobBuilder.build();
+
+                Oniris.getInstance().getEntityManager().addEntity(dandelionMob.getMob_name(), dandelionMob);
+                Oniris.getInstance().getEntityManager().addEntityLocation(uuid, dandelionMob.getMob_name(), ((Player) commandSender).getLocation());
+
+                oniris.getConnectToDB().addEntity(dandelionMob);
+
+                dandelionMob.spawnAsMob(((Player) commandSender).getLocation(), uuid);
+                ConvertToDoc.entityToDoc(dandelionMob);
+            }
+            else if(args[0].equalsIgnoreCase("spawn")) {
                 if(oniris.getEntityManager().getMobMap().containsKey(args[1])) {
                     String uuid = UUID.randomUUID().toString();
                     if(args[2].equalsIgnoreCase("mob")) {
@@ -79,12 +105,14 @@ public class EntityCommand implements TabExecutor {
                     }
 
                 }
-            } else if(args[0].equalsIgnoreCase("list")) {
+            }
+            else if(args[0].equalsIgnoreCase("list")) {
                 for(String uuid : oniris.getEntityManager().getMobMap().keySet()) {
                     DandelionMob dandelionMob = oniris.getEntityManager().getMobMap().get(uuid);
                     commandSender.sendMessage(uuid +" ; " + dandelionMob.getName());
                 }
-            } else if(args[0].equalsIgnoreCase("save")) {
+            }
+            else if(args[0].equalsIgnoreCase("save")) {
                 for(World world : Bukkit.getServer().getWorlds()) {
                     for(Entity entity : world.getEntities()) {
                         if(((CraftEntity)entity).getHandle() instanceof DandelionEntity) {
@@ -96,7 +124,8 @@ public class EntityCommand implements TabExecutor {
                         }
                     }
                 }
-            } else if(args[0].equalsIgnoreCase("load")) {
+            }
+            else if(args[0].equalsIgnoreCase("load")) {
                 oniris.getConnectToDB().getEntityCollecion().find().forEach((Block<? super Document>) e -> {
                     DandelionMob mob = ConvertToDoc.docToEntity(e);
                     oniris.getEntityManager().addEntity(mob.getMob_name(), mob);
@@ -105,7 +134,8 @@ public class EntityCommand implements TabExecutor {
                         mob.spawnAsMob(loc, uuid);
                     });
                 });
-            } else if(args[0].equalsIgnoreCase("reset")) {
+            }
+            else if(args[0].equalsIgnoreCase("reset")) {
                 for(World world : Bukkit.getServer().getWorlds()) {
                     for(Entity entity : world.getEntities()) {
                         if(((CraftEntity)entity).getHandle() instanceof DandelionEntity) {
@@ -146,7 +176,21 @@ public class EntityCommand implements TabExecutor {
                     }
                 }
             return tab;
-        } else if(args[0].equalsIgnoreCase("spawn")) {
+        }
+        else if(args[0].equalsIgnoreCase("portal")) {
+            if(args.length == 2)
+                return Arrays.asList("mob_identifier");
+            if(args.length == 3)
+                return Arrays.asList("level");
+            if(args.length == 4)
+                return Arrays.asList("expDropped");
+            if(args.length == 5)
+                return Arrays.asList("mobName");
+            if(args.length == 6)
+                return Arrays.asList("respawnTimeInSeconds");
+            return tab;
+        }
+        else if(args[0].equalsIgnoreCase("spawn")) {
             if(args.length == 2) {
                 for (String name : oniris.getEntityManager().getMobMap().keySet()) {
                     if (name.startsWith(args[1])) {
@@ -160,6 +204,6 @@ public class EntityCommand implements TabExecutor {
                 return Arrays.asList("mob", "pet");
             }
         }
-        return Arrays.asList("spawn", "create", "list", "save", "load");
+        return Arrays.asList("spawn", "create", "list", "save", "load", "portal");
     }
 }

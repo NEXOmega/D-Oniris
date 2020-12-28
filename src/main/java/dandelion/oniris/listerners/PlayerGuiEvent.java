@@ -17,6 +17,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
@@ -172,11 +173,11 @@ public class PlayerGuiEvent implements Listener {
         if (e.getCurrentItem() == null) return;
         ItemStack item = e.getCurrentItem();
         if (item.getItemMeta().hasLore()) {
-            String[] coords = item.getItemMeta().getLore().get(item.getItemMeta().getLore().size() - 1).split(" ");
-            Location loc = new Location(Bukkit.getWorld("world"),
-                    Integer.parseInt(coords[0].replaceAll("[^0-9]", "")),
-                    Integer.parseInt(coords[1].replaceAll("[^0-9]", "")),
-                    Integer.parseInt(coords[2].replaceAll("[^0-9]", "")));
+            PersistentDataContainer data = item.getItemMeta().getPersistentDataContainer();
+            Location loc = new Location(Bukkit.getWorld(data.get(NamespacedKey.minecraft("world"), PersistentDataType.STRING)),
+                    data.get(NamespacedKey.minecraft("x"), PersistentDataType.INTEGER),
+                    data.get(NamespacedKey.minecraft("y"), PersistentDataType.INTEGER),
+                    data.get(NamespacedKey.minecraft("z"), PersistentDataType.INTEGER));
             e.getWhoClicked().teleport(loc);
 
         }

@@ -1,5 +1,6 @@
 package dandelion.oniris.database;
 
+import com.google.gson.reflect.TypeToken;
 import com.mongodb.Block;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -9,6 +10,7 @@ import dandelion.oniris.jobs.Blacksmith;
 import dandelion.oniris.jobs.JobStats;
 import dandelion.oniris.players.Infos;
 import dandelion.oniris.players.PlayerStats;
+import dandelion.oniris.players.PortalStone;
 import dandelion.oniris.players.Stats;
 import dandelion.oniris.players.classes.ClassType;
 import dandelion.oniris.players.support.SupportType;
@@ -19,6 +21,7 @@ import org.bson.Document;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -34,6 +37,8 @@ public class DatabaseConnect {
     MongoCollection<Document> ressourcesCollection = database.getCollection("ressources");
     MongoCollection<Document> jobsCollection = database.getCollection("jobs");
     MongoCollection<Document> entityCollecion = database.getCollection("entities");
+
+    static Type portalStoneType = new TypeToken<ArrayList<PortalStone>>(){}.getType();
 
     public boolean hasPlayer(UUID uuid) {
         Document doc = collection.find(eq("uuid", uuid.toString())).first();
@@ -54,7 +59,7 @@ public class DatabaseConnect {
             double health = doc.getDouble("health");
             int statsPoints = doc.getInteger("statsPoints");
             SupportType support = SupportType.valueOf(doc.getString("support"));
-            ArrayList portalStones = GsonFactory.getPrettyGson().fromJson(doc.getString("portalStones"), ArrayList.class);
+            ArrayList portalStones = GsonFactory.getPrettyGson().fromJson(doc.getString("portalStones"), portalStoneType);
 
             PlayerStats stats1 = new PlayerStats(spells, infos, playerStats, equipementsStats, classType, equipements, jobStats, portalStones, support, health, statsPoints);
             return stats1;
