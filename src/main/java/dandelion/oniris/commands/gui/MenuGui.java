@@ -58,6 +58,9 @@ public class MenuGui {
         ItemStack jobGui = FonctionUtils.createItem(ChatColor.GREEN + "Ouvrir le menu des jobs", Material.DIAMOND_AXE, ItemType.DISPLAY_ITEM, Ranks.COMMON, 1, 0).getItemStack();
         inv.setItem(10, jobGui);
 
+        ItemStack petGui = FonctionUtils.createItem(ChatColor.GREEN + "Ouvrir le menu des familliers", Material.LEAD, ItemType.DISPLAY_ITEM, Ranks.COMMON, 1, 0).getItemStack();
+        inv.setItem(19, petGui);
+
         for(int i = 0; i < 27; i++) {
             if(inv.getItem(i) == null) inv.setItem(i,noItem);
         }

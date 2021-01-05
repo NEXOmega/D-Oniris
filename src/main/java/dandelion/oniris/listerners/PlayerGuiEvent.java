@@ -1,12 +1,15 @@
 package dandelion.oniris.listerners;
 
+import com.github.stefvanschie.inventoryframework.Gui;
+import com.github.stefvanschie.inventoryframework.GuiItem;
+import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import dandelion.oniris.Oniris;
 import dandelion.oniris.commands.gui.EquipementGui;
+import dandelion.oniris.entities.DandelionMob;
 import dandelion.oniris.players.PlayerStats;
 import dandelion.oniris.players.classes.ClassType;
 import dandelion.oniris.players.classes.list.RPGClass;
-import dandelion.oniris.utils.DandelionItem;
-import dandelion.oniris.utils.ItemUtils;
+import dandelion.oniris.utils.*;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -20,6 +23,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.UUID;
 
 public class PlayerGuiEvent implements Listener {
     Oniris oniris;
@@ -104,6 +109,32 @@ public class PlayerGuiEvent implements Listener {
             if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GREEN + "Ouvrir le menu des jobs")) {
                 e.getWhoClicked().closeInventory();
                 ((Player)e.getWhoClicked()).performCommand("job");
+            }
+        }
+        else if(e.getCurrentItem().getType() == Material.LEAD) {
+            if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GREEN + "Ouvrir le menu des familliers")) {
+
+                Gui petGui = new Gui(3, "Menu des familiers");
+                OutlinePane pane = new OutlinePane(0,0,9,3);
+                PlayerStats stats = oniris.getPlayers().get(e.getWhoClicked());
+                e.getWhoClicked().getEffectivePermissions().forEach(perm -> {
+                    if(perm.getPermission().startsWith("pet.summon.")) {
+                        String mobName = perm.getPermission().replace("pet.summon.", "");
+                        if(oniris.getEntityManager().getMobMap().containsKey(mobName)) {
+                            if(stats.getPet() != null) {
+                                if(stats.getPet().isAlive())
+                                    stats.getPet().killEntity();
+                                stats.setPet(null);
+                            }
+                            DandelionMob mob = oniris.getEntityManager().getMobMap().get(mobName);
+                            pane.addItem(new GuiItem(FonctionUtils.createItem(mob.getName(), Material.BLAZE_SPAWN_EGG, ItemType.DISPLAY_ITEM, Ranks.COMMON, 1,1).getItemStack(), click -> {
+                                mob.spawnAsPet(e.getWhoClicked().getLocation(), (Player) e.getWhoClicked(), UUID.randomUUID().toString());
+                            }));
+                        }
+                    }
+                });
+                petGui.addPane(pane);
+                petGui.show(e.getWhoClicked());
             }
         }
     }
