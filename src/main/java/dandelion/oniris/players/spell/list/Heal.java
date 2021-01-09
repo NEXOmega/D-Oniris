@@ -1,8 +1,12 @@
 package dandelion.oniris.players.spell.list;
 
 import dandelion.oniris.Oniris;
+import dandelion.oniris.particles.Ring;
 import dandelion.oniris.players.PlayerStats;
 import dandelion.oniris.players.spell.Spell;
+import de.slikey.effectlib.EffectType;
+import de.slikey.effectlib.effect.DonutEffect;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
 public class Heal extends Spell {
@@ -16,12 +20,12 @@ public class Heal extends Spell {
         double vit = data.getHealth() / vitTot;
         data.updateHealthBar();
 
-        /*NoFlexZone particules = new NoFlexZone(main.getEffectManager());
+        DonutEffect particules = new DonutEffect(main.getEffectManager());
         particules.setEntity(sender);
         particules.iterations = 5;
         particules.type = EffectType.INSTANT;
-        particules.particle = Particle.HEART;*/
-        //particules.start();
+        particules.particle = Particle.HEART;
+        particules.start();
 
     }
 }

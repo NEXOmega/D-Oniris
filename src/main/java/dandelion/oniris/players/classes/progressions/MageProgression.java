@@ -1,6 +1,8 @@
 package dandelion.oniris.players.classes.progressions;
 
+import dandelion.oniris.Oniris;
 import dandelion.oniris.players.PlayerStats;
+import dandelion.oniris.players.advancements.ClassesAdvancements;
 import dandelion.oniris.players.classes.ClassType;
 import dandelion.oniris.players.classes.list.RPGClass;
 import org.bukkit.entity.Player;
@@ -18,6 +20,7 @@ public class MageProgression extends ProgressionTree {
     public ArrayList<RPGClass> isProgressionValid(Player player, PlayerStats playerStats) {
         ArrayList<RPGClass> possibleClasses = new ArrayList<>();
         if(player.getLevel() >= 10 && playerStats.getMaxMagie() > 25) {
+            Oniris.getInstance().progressAdvancement(player, ClassesAdvancements.PRIEST.getAdvancement(), 2);
             possibleClasses.add(ClassType.PRIEST.getRpgClass());
         }
         return possibleClasses;

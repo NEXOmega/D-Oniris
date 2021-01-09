@@ -10,6 +10,7 @@ import dandelion.oniris.packets.server.SPacketSpellLearned;
 import dandelion.oniris.players.Infos;
 import dandelion.oniris.players.PlayerStats;
 import dandelion.oniris.players.Stats;
+import dandelion.oniris.players.advancements.ClassesAdvancements;
 import dandelion.oniris.players.classes.ClassType;
 import dandelion.oniris.utils.FonctionUtils;
 import dandelion.oniris.utils.ItemType;
@@ -28,6 +29,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 public class PlayerJoinLeave implements Listener {
 
@@ -77,6 +79,9 @@ public class PlayerJoinLeave implements Listener {
                 CustomPacketManager.sendCustomPacket(e.getPlayer(), new SPacketDiscordUpdater("En jeu !", "Oh que oui", "large", "That work", "large", dStats.getClassType().getClassName() + " Lvl : " + e.getPlayer().getLevel(), 0, true));
                 for(String s : dStats.getSpells())
                     CustomPacketManager.sendCustomPacket(e.getPlayer(), new SPacketSpellLearned(s));
+
+                main.getAdvancementManager().addPlayer(e.getPlayer());
+                main.getAdvancementManager().loadProgress(e.getPlayer(), ClassesAdvancements.getAdvancements());
             }
         }.runTaskLater(main, 2);
     }

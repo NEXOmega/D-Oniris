@@ -1,8 +1,10 @@
 package dandelion.oniris.players.classes.list;
 
+import dandelion.oniris.Oniris;
 import dandelion.oniris.commands.equipemetns.WeaponsTypes;
 import dandelion.oniris.players.PlayerStats;
 import dandelion.oniris.players.Stats;
+import dandelion.oniris.players.advancements.ClassesAdvancements;
 import dandelion.oniris.utils.*;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,5 +21,6 @@ public class Berserk extends RPGClass {
     public void onClassSelected(Player player, PlayerStats playerStats) {
         DandelionItem item = FonctionUtils.createItem("Epee de debutant", Material.IRON_SWORD, ItemType.WEAPON, Ranks.COMMON,1, 1);
         player.getInventory().addItem(ItemUtils.createRPGItem(item,0, WeaponsTypes.SWORD, null, null, 5,0,0,0,0).getItemStack());
+        Oniris.getInstance().getAdvancementManager().grantAdvancement(player, ClassesAdvancements.WARRIORPATH.getAdvancement());
     }
 }

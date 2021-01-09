@@ -26,6 +26,7 @@ import dandelion.oniris.listerners.*;
 import dandelion.oniris.packets.CustomPacketManager;
 import dandelion.oniris.players.PlayerStats;
 import dandelion.oniris.players.PlayerUtils;
+import dandelion.oniris.players.advancements.ClassesAdvancements;
 import dandelion.oniris.players.spell.SpellManager;
 import dandelion.oniris.world.RessourceManager;
 import dandelion.oniris.world.TickManager;
@@ -33,6 +34,9 @@ import dandelion.oniris.world.TreasureManager;
 import dandelion.soundapi.SoundAPI;
 import de.slikey.effectlib.EffectLib;
 import de.slikey.effectlib.EffectManager;
+import eu.endercentral.crazy_advancements.Advancement;
+import eu.endercentral.crazy_advancements.CrazyAdvancements;
+import eu.endercentral.crazy_advancements.manager.AdvancementManager;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -62,6 +66,7 @@ public final class Oniris extends JavaPlugin {
     RessourceManager ressourceManager;
     JobManager jobManager;
     EntityManager entityManager;
+    AdvancementManager advancementManager = CrazyAdvancements.getNewAdvancementManager();
     MenuGui gui;
     PlayerUtils pUtils;
     DatabaseConnect connectToDB = new DatabaseConnect();
@@ -112,6 +117,8 @@ public final class Oniris extends JavaPlugin {
 
         CustomPacketManager.registerPackets();
 
+        ClassesAdvancements.registerAdvancements(advancementManager);
+
         Bukkit.getServer().getOnlinePlayers().forEach(player -> {
                 PlayerStats stats = this.getConnectToDB().getPlayerStats(player.getUniqueId());
                 stats.getInfos().setLastPlayed(LocalDateTime.now());
@@ -159,7 +166,11 @@ public final class Oniris extends JavaPlugin {
         }
     }
 
-
+    public void progressAdvancement(Player p, Advancement advancement, int criterion) {
+        int progress = advancementManager.getCriteriaProgress(p, advancement);
+        if(progress < advancement.getCriteria())
+            advancementManager.setCriteriaProgress(p, advancement, progress+criterion);
+    }
 
     public static EffectManager getEffectManager() {
         return em;
@@ -211,5 +222,9 @@ public final class Oniris extends JavaPlugin {
 
     public EntityManager getEntityManager() {
         return entityManager;
+    }
+
+    public AdvancementManager getAdvancementManager() {
+        return advancementManager;
     }
 }

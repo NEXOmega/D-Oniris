@@ -37,7 +37,8 @@ public enum SpellType {
     INSPECT(Inspect.class ,0,0, "Inspect", 60*1000, SUPERRARE, Elements.MAGIC, FonctionUtils.createItem("Inspect", Material.GLASS, ItemType.DISPLAY_ITEM, COMMON, 1,1).getItemStack(),Collections.singleton("Permet de récolter des informations sur un joueur")),
     THEGREATFITZGERALD(TheGreatFitzgerald.class,50,0,"The Great Fitzgerald", 900*1000, HERO, Elements.ARCANE, ItemUtils.GOLD_COIN.getItem().getItemStack(), Collections.singleton("Vous donne des bonus selon l'argent dépensé")),
     THEMAGICIEN(TheMagician.class,30,0, "The Magician", 900*1000, HERO, Elements.MAGIC, FonctionUtils.createItem("Cape du mage", Material.ELYTRA, ItemType.DISPLAY_ITEM, HERO, 1,1).getItemStack(), Collections.singleton("Vous protege des sort que vous vous etes deja pris")),
-    PORTALTRAP(PortalTrap.class, 25,0,"Piege du Fourmilion", 90*1000, HERO, Elements.MAGIC, FonctionUtils.createItem("Piege du fourmilion", Material.MINECART, ItemType.DISPLAY_ITEM, HERO, 1,1).getItemStack(), Collections.singleton("Attire tous les joueurs vers un autre, après le temps imparti"));
+    PORTALTRAP(PortalTrap.class, 25,0,"Piege du Fourmilion", 90*1000, HERO, Elements.MAGIC, FonctionUtils.createItem("Piege du fourmilion", Material.MINECART, ItemType.DISPLAY_ITEM, HERO, 1,1).getItemStack(), Collections.singleton("Attire tous les joueurs vers un autre, après le temps imparti")),
+    TESTSPELL(TestSpell.class, 0,0,"Test Spell", 0, UNOBTAINABLE, Elements.ARCANE, FonctionUtils.createItem("Sort de Test", Material.DEBUG_STICK, ItemType.ADMIN_TOOL, UNOBTAINABLE, 1,1).getItemStack(), Collections.singleton("Sort de test pour les admin"));
 
     Class<? extends Spell> spell;
     int level;

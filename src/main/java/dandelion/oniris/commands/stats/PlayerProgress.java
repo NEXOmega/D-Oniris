@@ -2,6 +2,7 @@ package dandelion.oniris.commands.stats;
 
 import dandelion.oniris.Oniris;
 import dandelion.oniris.players.PlayerStats;
+import dandelion.oniris.players.advancements.ClassesAdvancements;
 import dandelion.oniris.players.classes.ClassType;
 import dandelion.oniris.players.classes.list.RPGClass;
 import org.bukkit.ChatColor;
@@ -36,6 +37,8 @@ public class PlayerProgress implements CommandExecutor {
                     sender.sendMessage(ChatColor.GOLD + "Bravo ! Votre classe a evolue en : " +ChatColor.RED+ args[0]);
                     playerStats.getSpells().clear();
                     playerStats.getSpells().addAll(Arrays.asList(playerStats.getClassType().getSpellList()));
+
+                    oniris.progressAdvancement((Player) sender, ClassesAdvancements.CHOOSECLASS.getAdvancement(), 1);
                     return false;
                 }
             }

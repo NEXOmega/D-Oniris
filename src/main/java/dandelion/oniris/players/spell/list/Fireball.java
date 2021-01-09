@@ -28,6 +28,7 @@ public class Fireball extends Spell implements LocationSpell, ImpregnableSpell {
         sphereEffect.radius = 1;
         sphereEffect.particle = Particle.FLAME;
         sphereEffect.setEntity(ball);
+        sphereEffect.disappearWithOriginEntity = true;
         sphereEffect.start();
     }
 

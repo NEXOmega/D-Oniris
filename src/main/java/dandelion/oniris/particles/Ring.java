@@ -6,7 +6,7 @@ import de.slikey.effectlib.EffectType;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 
-public class NoFlexZone extends Effect {
+public class Ring extends Effect {
 
     /**
      * Radius of the spawned circles
@@ -40,7 +40,7 @@ public class NoFlexZone extends Effect {
     private static final int PAUSE = 4;
     protected int step = DEFAULT_STEP;
 
-    public NoFlexZone(EffectManager effectManager) {
+    public Ring(EffectManager effectManager) {
         super(effectManager);
         type = EffectType.REPEATING;
         period = 10;

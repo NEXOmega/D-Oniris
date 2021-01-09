@@ -1,8 +1,10 @@
 package dandelion.oniris.players.classes.list;
 
+import dandelion.oniris.Oniris;
 import dandelion.oniris.commands.equipemetns.WeaponsTypes;
 import dandelion.oniris.players.PlayerStats;
 import dandelion.oniris.players.Stats;
+import dandelion.oniris.players.advancements.ClassesAdvancements;
 import dandelion.oniris.utils.FonctionUtils;
 import dandelion.oniris.utils.ItemType;
 import dandelion.oniris.utils.ItemUtils;
@@ -28,5 +30,7 @@ public class Archer extends RPGClass {
 
         ItemStack arrows = FonctionUtils.createItem("Fleche de debutant", Material.ARROW, ItemType.ITEM, Ranks.COMMON,16, 1).getItemStack();
         player.getInventory().addItem(dagger, bow, arrows);
+
+        Oniris.getInstance().getAdvancementManager().grantAdvancement(player, ClassesAdvancements.ARCHERPATH.getAdvancement());
     }
 }
