@@ -50,6 +50,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public final class Oniris extends JavaPlugin {
 
@@ -59,7 +60,7 @@ public final class Oniris extends JavaPlugin {
     }
     public static EffectManager em = new EffectManager(getEffectLib());
 
-    private Map<Player, PlayerStats> players = new HashMap<>();
+    private final Map<Player, PlayerStats> players = new HashMap<>();
 
     SpellManager spellManager = new SpellManager(this);
     TreasureManager treasureManager;
@@ -78,20 +79,20 @@ public final class Oniris extends JavaPlugin {
         gui = new MenuGui(this);
         soundApi = SoundAPI.getInstance();
 
-        getCommand("playerinfos").setExecutor(new PlayerInfos(this));
-        getCommand("spell").setExecutor(new LaunchSpell(this));
-        getCommand("menu").setExecutor(new PlayerMenuCommands(this));
-        getCommand("rpgitem").setExecutor(new RPGItemCommand(this));
-        getCommand("progress").setExecutor(new PlayerProgress(this));
-        getCommand("test").setExecutor(new TestCommand(this));
-        getCommand("treasure").setExecutor(new TreasuresCommands(this));
-        getCommand("ressource").setExecutor(new RessourcesCommand(this));
-        getCommand("editor").setExecutor(new EditorCommand(this));
-        getCommand("showitem").setExecutor(new ShowItemCommand());
-        getCommand("buff").setExecutor(new BuffCommand(this));
-        getCommand("ajob").setExecutor(new AdminJobCommands(this));
-        getCommand("job").setExecutor(new JobCommand(this));
-        getCommand("entity").setExecutor(new EntityCommand(this));
+        Objects.requireNonNull(getCommand("playerinfos")).setExecutor(new PlayerInfos(this));
+        Objects.requireNonNull(getCommand("spell")).setExecutor(new LaunchSpell(this));
+        Objects.requireNonNull(getCommand("menu")).setExecutor(new PlayerMenuCommands(this));
+        Objects.requireNonNull(getCommand("rpgitem")).setExecutor(new RPGItemCommand(this));
+        Objects.requireNonNull(getCommand("progress")).setExecutor(new PlayerProgress(this));
+        Objects.requireNonNull(getCommand("test")).setExecutor(new TestCommand(this));
+        Objects.requireNonNull(getCommand("treasure")).setExecutor(new TreasuresCommands(this));
+        Objects.requireNonNull(getCommand("ressource")).setExecutor(new RessourcesCommand(this));
+        Objects.requireNonNull(getCommand("editor")).setExecutor(new EditorCommand(this));
+        Objects.requireNonNull(getCommand("showitem")).setExecutor(new ShowItemCommand());
+        Objects.requireNonNull(getCommand("buff")).setExecutor(new BuffCommand(this));
+        Objects.requireNonNull(getCommand("ajob")).setExecutor(new AdminJobCommands(this));
+        Objects.requireNonNull(getCommand("job")).setExecutor(new JobCommand(this));
+        Objects.requireNonNull(getCommand("entity")).setExecutor(new EntityCommand(this));
 
         PluginManager pm = Bukkit.getPluginManager();
 
@@ -103,7 +104,7 @@ public final class Oniris extends JavaPlugin {
         pm.registerEvents(new PlayerRightClickEvent(this), this);
         pm.registerEvents(new PlayerJoinLeave(this), this);
         pm.registerEvents(new CustomCraftsEvent(this), this);
-        pm.registerEvents(new WorldEventListener(), this);
+        pm.registerEvents(new WorldEventListener(this), this);
         this.treasureManager = new TreasureManager(this);
         pm.registerEvents(treasureManager, this);
         this.ressourceManager = new RessourceManager(this);
@@ -123,21 +124,13 @@ public final class Oniris extends JavaPlugin {
                 PlayerStats stats = this.getConnectToDB().getPlayerStats(player.getUniqueId());
                 stats.getInfos().setLastPlayed(LocalDateTime.now());
                 stats.init();
-                double vit = stats.getHealth() / stats.getMaxVitality();
                 stats.updateHealthBar();
-                player.getPlayer().sendMessage("§eData Loaded & Updated !");
+                Objects.requireNonNull(player.getPlayer()).sendMessage("§eData Loaded & Updated !");
                 this.getPlayers().put(player, stats);
 
         });
 
-        this.getConnectToDB().getEntityCollecion().find().forEach((Block<? super Document>) e -> {
-            DandelionMob mob = ConvertToDoc.docToEntity(e);
-            this.getEntityManager().addEntity(mob.getMob_name(), mob);
-            mob.getMobLocations().forEach((uuid, loc) -> {
-                this.getEntityManager().addEntityLocation(uuid, mob.getMob_name(), loc);
-                mob.spawnAsMob(loc, uuid);
-            });
-        });
+        getEntityManager().loadEntities();
     }
 
     @Override
@@ -145,25 +138,9 @@ public final class Oniris extends JavaPlugin {
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             this.getConnectToDB().updatePlayer(p.getUniqueId(), this.getPlayers().get(p));
             this.getPlayers().remove(p);
-            /*p.getNearbyEntities(1,1,1).forEach(entity -> {
-                if(entity instanceof ArmorStand) {
-                    if(entity.hasMetadata("isTitle")){
-                        entity.remove();
-                    }
-                }
-            });*/
-            //p.kickPlayer("Restarting");
         }
 
-        for(World world : Bukkit.getServer().getWorlds()) {
-            for(Entity entity : world.getEntities()) {
-                if(((CraftEntity)entity).getHandle() instanceof DandelionEntity) {
-                    ((DandelionEntity)((CraftEntity)entity).getHandle()).setRespawn(false);
-                    ((DandelionEntity)((CraftEntity)entity).getHandle()).setDrop(false);
-                    entity.remove();
-                }
-            }
-        }
+        getEntityManager().resetEntities();
     }
 
     public void progressAdvancement(Player p, Advancement advancement, int criterion) {
@@ -178,7 +155,7 @@ public final class Oniris extends JavaPlugin {
 
     public static EffectLib getEffectLib() {
         Plugin effectLib = Bukkit.getPluginManager().getPlugin("EffectLib");
-        if (effectLib == null || !(effectLib instanceof EffectLib)) {
+        if (!(effectLib instanceof EffectLib)) {
             return null;
         }
         return (EffectLib)effectLib;

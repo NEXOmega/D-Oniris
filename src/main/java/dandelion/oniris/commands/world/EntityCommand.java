@@ -113,40 +113,13 @@ public class EntityCommand implements TabExecutor {
                 }
             }
             else if(args[0].equalsIgnoreCase("save")) {
-                for(World world : Bukkit.getServer().getWorlds()) {
-                    for(Entity entity : world.getEntities()) {
-                        if(((CraftEntity)entity).getHandle() instanceof DandelionEntity) {
-                            ((DandelionEntity)((CraftEntity)entity).getHandle()).setRespawn(false);
-                            //TODO Save entities
-                            System.out.println(((DandelionEntity)((CraftEntity)entity).getHandle()).getMob());
-                            oniris.getConnectToDB().addEntity(((DandelionEntity)((CraftEntity)entity).getHandle()).getMob());
-                            entity.remove();
-                        }
-                    }
-                }
+                oniris.getEntityManager().saveEntities();
             }
             else if(args[0].equalsIgnoreCase("load")) {
-                oniris.getConnectToDB().getEntityCollecion().find().forEach((Block<? super Document>) e -> {
-                    DandelionMob mob = ConvertToDoc.docToEntity(e);
-                    oniris.getEntityManager().addEntity(mob.getMob_name(), mob);
-                    mob.getMobLocations().forEach((uuid, loc) -> {
-                        oniris.getEntityManager().addEntityLocation(uuid, mob.getMob_name(), loc);
-                        mob.spawnAsMob(loc, uuid);
-                    });
-                });
+                oniris.getEntityManager().loadEntities();
             }
             else if(args[0].equalsIgnoreCase("reset")) {
-                for(World world : Bukkit.getServer().getWorlds()) {
-                    for(Entity entity : world.getEntities()) {
-                        if(((CraftEntity)entity).getHandle() instanceof DandelionEntity) {
-                            ((DandelionEntity)((CraftEntity)entity).getHandle()).setRespawn(false);
-                            //TODO Save entities
-                            entity.remove();
-                        }
-                    }
-                }
-                oniris.getEntityManager().getMobMap().clear();
-                oniris.getEntityManager().getMobSpawn().clear();
+                oniris.getEntityManager().resetEntities();
             }
         }
         return false;
@@ -204,6 +177,6 @@ public class EntityCommand implements TabExecutor {
                 return Arrays.asList("mob", "pet");
             }
         }
-        return Arrays.asList("spawn", "create", "list", "save", "load", "portal");
+        return Arrays.asList("spawn", "create", "list", "save", "load", "portal", "reset");
     }
 }

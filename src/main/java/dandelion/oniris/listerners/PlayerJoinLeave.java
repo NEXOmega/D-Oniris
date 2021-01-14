@@ -81,7 +81,7 @@ public class PlayerJoinLeave implements Listener {
                     CustomPacketManager.sendCustomPacket(e.getPlayer(), new SPacketSpellLearned(s));
 
                 main.getAdvancementManager().addPlayer(e.getPlayer());
-                main.getAdvancementManager().loadProgress(e.getPlayer(), ClassesAdvancements.getAdvancements());
+                main.getAdvancementManager().loadProgress(e.getPlayer(), e.getPlayer().getUniqueId().toString());
             }
         }.runTaskLater(main, 2);
     }
@@ -98,6 +98,9 @@ public class PlayerJoinLeave implements Listener {
 //        main.getPlayers().get(e.getPlayer()).getInfos().setPlayerTime(e.getPlayer().getPlayerTime());
         main.getConnectToDB().updatePlayer(e.getPlayer().getUniqueId(), stats);
         main.getPlayers().remove(e.getPlayer());
+
+        main.getAdvancementManager().saveProgress(e.getPlayer(), e.getPlayer().getUniqueId().toString());
+
         e.getPlayer().getNearbyEntities(1,1,1).forEach(entity -> {
             if(entity instanceof ArmorStand) {
                 if(entity.hasMetadata("isTitle")){

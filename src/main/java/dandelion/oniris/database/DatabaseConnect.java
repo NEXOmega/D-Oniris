@@ -30,13 +30,13 @@ import java.util.UUID;
 import static com.mongodb.client.model.Filters.eq;
 
 public class DatabaseConnect {
-    MongoClient mongoClient = new MongoClient("localhost", 27017);
-    MongoDatabase database = mongoClient.getDatabase("dandelion");
-    MongoCollection<Document> collection = database.getCollection("players");
-    MongoCollection<Document> treasuresCollection = database.getCollection("treasures");
-    MongoCollection<Document> ressourcesCollection = database.getCollection("ressources");
-    MongoCollection<Document> jobsCollection = database.getCollection("jobs");
-    MongoCollection<Document> entityCollecion = database.getCollection("entities");
+    public MongoClient mongoClient = new MongoClient("localhost", 27017);
+    public MongoDatabase database = mongoClient.getDatabase("dandelion");
+    public MongoCollection<Document> collection = database.getCollection("players");
+    public MongoCollection<Document> treasuresCollection = database.getCollection("treasures");
+    public MongoCollection<Document> ressourcesCollection = database.getCollection("ressources");
+    public MongoCollection<Document> jobsCollection = database.getCollection("jobs");
+    public MongoCollection<Document> entityCollecion = database.getCollection("entities");
 
     static Type portalStoneType = new TypeToken<ArrayList<PortalStone>>(){}.getType();
 
@@ -60,7 +60,6 @@ public class DatabaseConnect {
             int statsPoints = doc.getInteger("statsPoints");
             SupportType support = SupportType.valueOf(doc.getString("support"));
             ArrayList portalStones = GsonFactory.getPrettyGson().fromJson(doc.getString("portalStones"), portalStoneType);
-
             PlayerStats stats1 = new PlayerStats(spells, infos, playerStats, equipementsStats, classType, equipements, jobStats, portalStones, support, health, statsPoints);
             return stats1;
         }

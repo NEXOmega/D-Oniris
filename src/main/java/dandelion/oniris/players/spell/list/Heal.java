@@ -20,7 +20,7 @@ public class Heal extends Spell {
         double vit = data.getHealth() / vitTot;
         data.updateHealthBar();
 
-        DonutEffect particules = new DonutEffect(main.getEffectManager());
+        Ring particules = new Ring(main.getEffectManager());
         particules.setEntity(sender);
         particules.iterations = 5;
         particules.type = EffectType.INSTANT;

@@ -9,6 +9,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 
+import static org.bukkit.ChatColor.GREEN;
+import static org.bukkit.ChatColor.RED;
+
 public class StatsGui {
     public Inventory inv() {
         ArrayList<String> lore = new ArrayList<>();
@@ -54,7 +57,7 @@ public class StatsGui {
         ItemStack infos = new ItemStack(Material.STICK,1);
         ItemMeta infosM = str.getItemMeta();
         infosM.setDisplayName(ChatColor.RED + "" +ChatColor.BOLD + "Infos");
-        lore.add(ChatColor.YELLOW + "Informations : .");
+        lore.add(ChatColor.YELLOW + "Informations :");
         infosM.setLore(lore);
         lore.clear();
 
