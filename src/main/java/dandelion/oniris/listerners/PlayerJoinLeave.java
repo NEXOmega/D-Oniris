@@ -10,7 +10,6 @@ import dandelion.oniris.packets.server.SPacketSpellLearned;
 import dandelion.oniris.players.Infos;
 import dandelion.oniris.players.PlayerStats;
 import dandelion.oniris.players.Stats;
-import dandelion.oniris.players.advancements.ClassesAdvancements;
 import dandelion.oniris.players.classes.ClassType;
 import dandelion.oniris.utils.FonctionUtils;
 import dandelion.oniris.utils.ItemType;
@@ -29,7 +28,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 public class PlayerJoinLeave implements Listener {
 
@@ -51,7 +49,10 @@ public class PlayerJoinLeave implements Listener {
             e.getPlayer().sendMessage("§eData Loaded & Updated !");
             main.getPlayers().put(e.getPlayer(), stats);
             this.dStats = stats;
-        } else {
+
+            stats.onJoin(e, stats);
+        }
+        else {
 
             PlayerStats pStats = new PlayerStats(new Infos(e.getPlayer().getName(),
                     LocalDateTime.now(), LocalDateTime.now(),
@@ -71,6 +72,8 @@ public class PlayerJoinLeave implements Listener {
             double vit = pStats.getHealth() / pStats.getMaxVitality();
             pStats.getBar().setProgress(vit);
             this.dStats = pStats;
+
+            pStats.onJoin(e, pStats);
         }
 
         new BukkitRunnable() {

@@ -31,7 +31,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
-import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import java.util.Objects;
 
@@ -129,12 +128,11 @@ public class PlayerStatsEvent implements Listener {
                 }
             }
 
-
-            stats.onHitByEntity(e);
             double def = stats.getMaxDefence();
             def = ((def / 100) + 1);
             if(((CraftEntity)e.getDamager()).getHandle() instanceof DandelionEntity)
                 e.setDamage(((DandelionEntity)((CraftEntity)e.getDamager()).getHandle()).getMob().getStats().getStrength());
+            stats.onHitByEntity(e);
             stats.setHealth(stats.getHealth() - (e.getDamage() / def));
 
             //e.getEntity().sendMessage(e.getDamage() + ":" + def + "=" +(e.getDamage() / def) + "; " + stats.getHealth());

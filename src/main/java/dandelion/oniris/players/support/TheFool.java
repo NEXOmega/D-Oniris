@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class TheFool extends Support {
@@ -65,4 +66,6 @@ public class TheFool extends Support {
     }
 
     public void onRespawn(PlayerRespawnEvent e) {}
+
+    public void onJoin(PlayerJoinEvent e, PlayerStats playerStats){}
 }

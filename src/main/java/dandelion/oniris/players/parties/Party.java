@@ -43,8 +43,13 @@ public class Party {
         return players;
     }
 
+    public PartyRules getRules() {
+        return rules;
+    }
+
     static class PartyRules {
         protected boolean sharedExp = true;
+        protected boolean onlyLeaderCanInvite = false;
 
         public boolean isSharedExp() {
             return sharedExp;
@@ -52,6 +57,14 @@ public class Party {
 
         public void setSharedExp(boolean sharedExp) {
             this.sharedExp = sharedExp;
+        }
+
+        public boolean isOnlyLeaderCanInvite() {
+            return onlyLeaderCanInvite;
+        }
+
+        public void setOnlyLeaderCanInvite(boolean onlyLeaderCanInvite) {
+            this.onlyLeaderCanInvite = onlyLeaderCanInvite;
         }
     }
 }

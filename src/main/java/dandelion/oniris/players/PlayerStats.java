@@ -25,6 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -40,6 +41,7 @@ public class PlayerStats {
     transient LinkedHashMap<Support, Long> buffs = new LinkedHashMap();
     transient EntityLiving pet;
     transient String partyUUID;
+    transient LinkedHashMap<String, String> additionnalInfo = new LinkedHashMap<>();
 
     Infos infos;
     Stats stats;
@@ -142,7 +144,7 @@ public class PlayerStats {
     }
 
     public void updateHealthBar() {
-        this.bar.setTitle(ChatColor.YELLOW + "Vie " + ChatColor.RED + "{" + ChatColor.YELLOW + Math.round(this.getHealth()) + ChatColor.RED + "/" + ChatColor.YELLOW + Math.round(this.getMaxVitality()) + ChatColor.RED + "}");
+        this.bar.setTitle(ChatColor.YELLOW + "Vie " + ChatColor.RED + "{" + ChatColor.YELLOW + Math.round(this.getHealth()) + ChatColor.RED + "/" + ChatColor.YELLOW + Math.round(this.getMaxVitality()) + ChatColor.RED + "}" + String.join(", ", additionnalInfo.values()));
         this.bar.setProgress((getHealth()/getMaxVitality() < 1 ? getHealth()/getMaxVitality() : 1));
     }
 
@@ -165,6 +167,14 @@ public class PlayerStats {
 
     public void setPartyUUID(String partyUUID) {
         this.partyUUID = partyUUID;
+    }
+
+    public LinkedHashMap<String, String> getAdditionnalInfo() {
+        return additionnalInfo;
+    }
+
+    public void setAdditionnalInfo(LinkedHashMap<String, String> additionnalInfo) {
+        this.additionnalInfo = additionnalInfo;
     }
 
     public LinkedList<String> getSpells() {
@@ -287,6 +297,24 @@ public class PlayerStats {
 
     public LinkedHashMap<Support, Long> getBuffs() {
         return buffs;
+    }
+
+    public void onJoin(PlayerJoinEvent event, PlayerStats stats) {
+        if(this.getSupportType().getSupport() != null){
+            this.getSupportType().getSupport().onJoin(event, stats);
+        }
+        if(this.getClassType().getRpgClass().getSupport() != null)
+            this.getClassType().getRpgClass().getSupport().onJoin(event, stats);
+
+        ArrayList<Support> toRemove = new ArrayList<>();
+        buffs.forEach((support1, aLong) -> {
+            if(aLong > System.currentTimeMillis()) {
+                support1.onJoin(event, stats);
+            } else {
+                toRemove.add(support1);
+            }
+        });
+        toRemove.forEach(e -> buffs.remove(e));
     }
 
     public void onInteract(PlayerInteractEvent event) {

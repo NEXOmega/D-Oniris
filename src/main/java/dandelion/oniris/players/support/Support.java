@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,6 +39,7 @@ public abstract class Support {
 
     }
 
+    public abstract void onJoin(PlayerJoinEvent e, PlayerStats playerStats);
     public abstract void onRespawn(PlayerRespawnEvent e);
     public abstract void onInteract(PlayerInteractEvent event);
     public abstract void onLaunchSpell(Player player, PlayerStats stats, SpellType type, Spell s);

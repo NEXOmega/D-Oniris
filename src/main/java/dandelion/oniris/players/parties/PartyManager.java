@@ -35,6 +35,10 @@ public class PartyManager implements Listener {
 
     public void inviteParty(Player sender, String partyUUID, String playerName, boolean message) {
         if(partiesList.containsKey(partyUUID)) {
+            if(partiesList.get(partyUUID).getRules().isOnlyLeaderCanInvite() && partiesList.get(partyUUID).getPlayers().get(0) != sender) {
+                sender.sendMessage("Erreur, seul le leader peut inviter dans la party.");
+                return;
+            }
             if (Bukkit.getPlayer(playerName) != null) {
                 partiesList.get(partyUUID).getRequestedPlayers().add(Bukkit.getPlayer(playerName).getUniqueId().toString());
                 if (message)
@@ -60,13 +64,19 @@ public class PartyManager implements Listener {
     }
 
     public void leftParty(String partyUUID, Player player) {
-        partiesList.get(partyUUID).getPlayers().remove(player);
-        oniris.getPlayers().get(player).setPartyUUID(null);
-        player.sendMessage(ChatColor.RED + "Vous êtes parti du groupe " + partiesList.get(partyUUID).getName());
+        Party party = partiesList.get(partyUUID);
 
-        partiesList.get(partyUUID).getPlayers().forEach(pl -> {
+        if(party.getPlayers().get(0)==player && partiesList.size() > 1)
+            party.getPlayers().get(1).sendMessage(ChatColor.RED + "Bravo, vous êtes le nouveau leader !");
+
+        party.getPlayers().remove(player);
+        oniris.getPlayers().get(player).setPartyUUID(null);
+        player.sendMessage(ChatColor.RED + "Vous êtes parti du groupe " + party.getName());
+
+        party.getPlayers().forEach(pl -> {
             pl.sendMessage(ChatColor.GREEN + player.getName() + " est parti du groupe.");
         });
+
 
         if(partiesList.size() < 1)
             partiesList.remove(partyUUID);

@@ -5,7 +5,6 @@ import dandelion.oniris.particles.Ring;
 import dandelion.oniris.players.PlayerStats;
 import dandelion.oniris.players.spell.Spell;
 import de.slikey.effectlib.EffectType;
-import de.slikey.effectlib.effect.DonutEffect;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
