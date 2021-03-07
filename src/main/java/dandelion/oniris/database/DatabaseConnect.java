@@ -21,6 +21,7 @@ import org.bson.Document;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
+import javax.print.Doc;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,11 +57,12 @@ public class DatabaseConnect {
             ItemStack[] equipements = GsonFactory.getPrettyGson().fromJson(doc.getString("equipements"), ItemStack[].class);
             JobStats jobStats = GsonFactory.getPrettyGson().fromJson(doc.getString("jobStats"), JobStats.class);
             ClassType classType = ClassType.valueOf(doc.getString("classType").toUpperCase());
+            ClassType previousClassType = ClassType.valueOf(doc.getString("previousClassType").toUpperCase());
             double health = doc.getDouble("health");
             int statsPoints = doc.getInteger("statsPoints");
             SupportType support = SupportType.valueOf(doc.getString("support"));
             ArrayList portalStones = GsonFactory.getPrettyGson().fromJson(doc.getString("portalStones"), portalStoneType);
-            PlayerStats stats1 = new PlayerStats(spells, infos, playerStats, equipementsStats, classType, equipements, jobStats, portalStones, support, health, statsPoints);
+            PlayerStats stats1 = new PlayerStats(spells, infos, playerStats, equipementsStats, classType, previousClassType, equipements, jobStats, portalStones, support, health, statsPoints);
             return stats1;
         }
         return null;
@@ -76,6 +78,7 @@ public class DatabaseConnect {
         doc.put("equipements", GsonFactory.getPrettyGson().toJson(stats.getEquipements()));
         doc.put("jobStats", GsonFactory.getPrettyGson().toJson(stats.getJobStats()));
         doc.put("classType", stats.getClassType().name());
+        doc.put("previousClassType", stats.getPreviousClassType().name());
         doc.put("health", stats.getHealth());
         doc.put("statsPoints", stats.getStatsPoint());
         doc.put("support", stats.getSupportType().toString());
@@ -92,6 +95,7 @@ public class DatabaseConnect {
         doc.put("equipements", GsonFactory.getPrettyGson().toJson(stats.getEquipements()));
         doc.put("jobStats", GsonFactory.getPrettyGson().toJson(stats.getJobStats()));
         doc.put("classType", stats.getClassType().name());
+        doc.put("previousClassType", stats.getPreviousClassType().name());
         doc.put("health", stats.getHealth());
         doc.put("statsPoints", stats.getStatsPoint());
         doc.put("support", stats.getSupportType().toString());
@@ -136,8 +140,18 @@ public class DatabaseConnect {
     public void addRessource(Ressource ressource, Location location) {
         Document ressourceDoc = new Document("location", GsonFactory.getPrettyGson().toJson(location));
         ressourceDoc.put("ressource", GsonFactory.getPrettyGson().toJson(ressource));
-
         ressourcesCollection.insertOne(ressourceDoc);
+    }
+
+    public void updateRessource(Ressource ressource, Location location) {
+        Document doc = ressourcesCollection.find(eq("location", GsonFactory.getPrettyGson().toJson(location))).first();
+
+        doc.put("ressource", GsonFactory.getPrettyGson().toJson(ressource));
+        ressourcesCollection.replaceOne(eq("location", GsonFactory.getPrettyGson().toJson(location)), doc);
+    }
+
+    public void deleteRessource(Location location) {
+        ressourcesCollection.deleteOne(eq("location", GsonFactory.getPrettyGson().toJson(location)));
     }
 
     public void initJobs() {

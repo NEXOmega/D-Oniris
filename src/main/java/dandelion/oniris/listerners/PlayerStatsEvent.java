@@ -23,10 +23,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.player.PlayerLevelChangeEvent;
-import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -34,6 +31,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
+import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import java.util.Objects;
 
@@ -145,10 +143,7 @@ public class PlayerStatsEvent implements Listener {
 
             double vit = stats.getHealth() / stats.getMaxVitality();
             if(vit <= 0) {
-                if(stats.getSupportType().getSupport() != null)
-                    stats.getSupportType().getSupport().onDie();
-                if(stats.getClassType().getRpgClass().getSupport() != null)
-                    stats.getClassType().getRpgClass().getSupport().onDie();
+                stats.onDie(e.getDamager(), e.getEntity(), stats);
                 if(stats.getEnnemyBar().isVisible())
                     stats.getEnnemyBar().setVisible(false);
                 oniris.getpUtils().killPlayer((Player) e.getEntity());
@@ -224,7 +219,7 @@ public class PlayerStatsEvent implements Listener {
 
             double vit = stats.getHealth() / stats.getMaxVitality();
             if(vit <= 0) {
-                stats.onDie();
+                stats.onDie(e.getDamager(), e.getDamagee(), stats);
                 oniris.getpUtils().killPlayer((Player) e.getDamagee());
                 return;
             }
@@ -296,6 +291,11 @@ public class PlayerStatsEvent implements Listener {
                 }
             }
         }
+    }
+
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent e) {
+        oniris.getPlayers().get(e.getPlayer()).onRespawn(e);
     }
 
     public static double calculateDamages(PlayerStats stats, double damages) {

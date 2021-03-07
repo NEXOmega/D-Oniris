@@ -32,11 +32,8 @@ public class PlayerProgress implements CommandExecutor {
             if(args.length > 0){
 
                 if(playerStats.getClassType().getProgressionTree().isProgressionValid((Player) sender, playerStats).contains(ClassType.getClassType(args[0]).getRpgClass())) {
-                    playerStats.setClassType(ClassType.getClassType(args[0]));
-                    playerStats.getClassType().getRpgClass().onClassSelected((Player) sender, playerStats);
+                    oniris.getpUtils().setNewClass((Player) sender, playerStats, ClassType.getClassType(args[0]));
                     sender.sendMessage(ChatColor.GOLD + "Bravo ! Votre classe a evolue en : " +ChatColor.RED+ args[0]);
-                    playerStats.getSpells().clear();
-                    playerStats.getSpells().addAll(Arrays.asList(playerStats.getClassType().getSpellList()));
 
                     oniris.progressAdvancement((Player) sender, ClassesAdvancements.CHOOSECLASS.getAdvancement(), 1);
                     return false;

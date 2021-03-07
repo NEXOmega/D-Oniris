@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -78,7 +79,9 @@ public class InfiniteArrow extends Support {
     }
 
     @Override
-    public void onDie() {
+    public void onDie(Entity damager, Entity damaged, PlayerStats playerStats) {
 
     }
+
+    public void onRespawn(PlayerRespawnEvent e) {}
 }

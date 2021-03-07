@@ -23,12 +23,12 @@ public class RessourcesCommand implements TabExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull  String[] args) {
         Player p = (Player) commandSender;
         if(args[0].equalsIgnoreCase("create")) {
-            oniris.getRessourceManager().addRessource(p.getTargetBlock(null, 10), p.getInventory().getItemInMainHand(), args[3], Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+            oniris.getRessourceManager().createRessource(args[4], p.getTargetBlock(null, 10), p.getInventory().getItemInMainHand(), args[3], Integer.parseInt(args[1]), Integer.parseInt(args[2]));
             p.sendMessage(ChatColor.RED + "Ressource crée !");
 
-        } else if(args[0].equalsIgnoreCase("set")) {
+        } else if(args[0].equalsIgnoreCase("add")) {
             if(oniris.getRessourceManager().ressources.containsKey(p.getTargetBlock(null, 10).getLocation())) {
-                oniris.getRessourceManager().ressources.get(p.getTargetBlock(null, 10).getLocation()).setDrop(p.getInventory().getItemInMainHand());
+                oniris.getRessourceManager().addToRessource(p.getTargetBlock(null, 10).getLocation(), p.getInventory().getItemInMainHand().clone());
                 p.sendMessage("Loot ajouté !");
                 return true;
             }
@@ -50,6 +50,8 @@ public class RessourcesCommand implements TabExecutor {
                     return Arrays.asList("RespawnTime");
                 if (args.length == 4)
                     return Arrays.asList("Job Name", "lumberjack", "miner");
+                if (args.length == 5)
+                    return Arrays.asList("Bois_de_", "Minerais_de_", "Blé_de_");
             }
         }
         return null;

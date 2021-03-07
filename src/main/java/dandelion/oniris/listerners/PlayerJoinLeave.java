@@ -56,7 +56,7 @@ public class PlayerJoinLeave implements Listener {
             PlayerStats pStats = new PlayerStats(new Infos(e.getPlayer().getName(),
                     LocalDateTime.now(), LocalDateTime.now(),
                     0),
-                    new Stats(5, 20, 20, 5 , 5), ClassType.VILLAGER);
+                    new Stats(5, 20, 20, 5 , 5), ClassType.VILLAGER, ClassType.VILLAGER);
 
             main.getPlayers().put(e.getPlayer(), pStats);
             e.getPlayer().getInventory().addItem(ItemUtils.GRIMOIRE.getItem().getItemStack());

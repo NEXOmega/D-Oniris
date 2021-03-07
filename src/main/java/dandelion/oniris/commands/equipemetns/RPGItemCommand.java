@@ -1,6 +1,7 @@
 package dandelion.oniris.commands.equipemetns;
 
 import dandelion.oniris.Oniris;
+import dandelion.oniris.jobs.JobLevel;
 import dandelion.oniris.players.spell.Elements;
 import dandelion.oniris.players.spell.LocationSpell;
 import dandelion.oniris.players.spell.SpellType;
@@ -398,6 +399,20 @@ public class RPGItemCommand implements TabExecutor {
                     DandelionItem dandelionItem = FonctionUtils.createItem(name, material, type, rank, amount,modelData);
 
                     p.getInventory().addItem(dandelionItem.getItemStack());
+                } else if (args[0].equalsIgnoreCase("tool")) {
+                    FonctionUtils.DandelionItemBuilder builder = new FonctionUtils.DandelionItemBuilder();
+                    String name = args[1].replace("_"," ");
+                    Material material = Material.valueOf(args[2]);
+                    ItemType type = ItemType.valueOf(args[3]);
+                    Ranks rank = Ranks.valueOf(args[4]);
+                    int amount = Integer.parseInt(args[5]);
+                    int modelData = Integer.parseInt(args[6]);
+
+
+                    DandelionItem dandelionItem = FonctionUtils.createItem(name, material, type, rank, amount,modelData);
+                    dandelionItem.setLevel(Integer.parseInt(args[7]));
+                    dandelionItem.setJobLevel(new JobLevel(Integer.parseInt(args[8]), Integer.parseInt(args[9]), Integer.parseInt(args[10])));
+                    p.getInventory().addItem(dandelionItem.getItemStack());
                 }
 
             }
@@ -555,7 +570,41 @@ public class RPGItemCommand implements TabExecutor {
             }
             return tab;
         }
-        return Arrays.asList("scroll", "equip", "attr", "spell", "edit", "testor", "give", "item");
+        else if (args[0].equalsIgnoreCase("tool")) {
+            if (args.length == 2) {
+                return Arrays.asList("name");
+            } else if(args.length == 3) {
+                for(Material m : Material.values())
+                    if(m.name().toLowerCase().startsWith(args[args.length-1]))
+                        tab.add(m.name());
+            } else if(args.length == 4) {
+                for(ItemType type : ItemType.values())
+                    if(type.name().toLowerCase().startsWith(args[args.length-1]))
+                        tab.add(type.name());
+            } else if(args.length == 5) {
+                for(Ranks ranks : Ranks.values())
+                    if(ranks.name().toLowerCase().startsWith(args[args.length-1]))
+                        tab.add(ranks.name());
+            } else if(args.length == 6) {
+                return Arrays.asList("amount", "1", "8", "16", "32", "64", "128");
+            } else if(args.length == 7) {
+                return Arrays.asList("modelData", "0", "1", "100");
+            }
+            else if(args.length == 8) {
+                return Arrays.asList("Tool_Level");
+            }
+            else if(args.length == 9) {
+                return Arrays.asList("Alchemist_Level");
+            }
+            else if(args.length == 10) {
+                return Arrays.asList("BlackSmith_Level");
+            }
+            else if(args.length == 11) {
+                return Arrays.asList("Lumberjack_Level");
+            }
+            return tab;
+        }
+        return Arrays.asList("scroll", "equip", "attr", "spell", "edit", "testor", "give", "item", "tool");
     }
 
     public static String generateAttr(ChatColor color, String nbr, String attr, boolean add) {

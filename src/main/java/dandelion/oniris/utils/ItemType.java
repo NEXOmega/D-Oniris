@@ -10,5 +10,6 @@ public enum ItemType {
     BINDER,
     DISPLAY_ITEM,
     MONEY,
-    ADMIN_TOOL
+    ADMIN_TOOL,
+    RESSOURCE
 }

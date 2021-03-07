@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class BerserkMode extends Support {
     public BerserkMode() {
@@ -58,7 +59,9 @@ public class BerserkMode extends Support {
     }
 
     @Override
-    public void onDie() {
+    public void onDie(Entity damager, Entity damaged, PlayerStats playerStats) {
 
     }
+
+    public void onRespawn(PlayerRespawnEvent e) {}
 }

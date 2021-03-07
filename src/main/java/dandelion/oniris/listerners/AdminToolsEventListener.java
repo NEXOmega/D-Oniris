@@ -7,10 +7,8 @@ import dandelion.oniris.Oniris;
 import dandelion.oniris.entities.DandelionMob;
 import dandelion.oniris.entities.MobType;
 import dandelion.oniris.entities.entity.DandelionEntity;
-import dandelion.oniris.utils.FonctionUtils;
-import dandelion.oniris.utils.ItemType;
-import dandelion.oniris.utils.ItemUtils;
-import dandelion.oniris.utils.Ranks;
+import dandelion.oniris.utils.*;
+import dandelion.oniris.world.Ressource;
 import dandelion.oniris.world.Treasure;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.ChatColor;
@@ -18,7 +16,9 @@ import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_16_R2.entity.CraftEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.Arrays;
@@ -166,6 +166,34 @@ public class AdminToolsEventListener implements Listener {
                 e.getPlayer().sendMessage(ChatColor.RED + "Errur, cette entitée n'est pas modifiable");
             }
         }
+    }
 
+    @EventHandler
+    public void useOnBlock(PlayerInteractEvent e) {
+        if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getHand().equals(EquipmentSlot.HAND)) {
+            if(oniris.getRessourceManager().isRessource(e.getClickedBlock().getLocation())) {
+                Ressource r = oniris.getRessourceManager().ressources.get(e.getClickedBlock().getLocation());
+                Gui gui = new Gui(1, r.getName());
+                gui.setOnGlobalClick(click -> click.setCancelled(true));
+
+                OutlinePane infoPane = new OutlinePane(0,0,9,1);
+                infoPane.addItem(new GuiItem(FonctionUtils.createItem("Delete ressource", Material.BARRIER, ItemType.DISPLAY_ITEM, Ranks.LEGENDARY, 1, 0).getItemStack(), click -> {
+                    oniris.getRessourceManager().deleteRessource(e.getClickedBlock().getLocation());
+                    e.getPlayer().sendMessage(ChatColor.RED + "Ressource supprimée !");
+                    e.getPlayer().closeInventory();
+                }));
+
+                infoPane.addItem(new GuiItem(FonctionUtils.createItem(r.getName(), Material.valueOf(r.getMaterial()), ItemType.RESSOURCE, Ranks.RARE, 1, 0, Arrays.asList("Job : " + r.getJobName(),"Niveau Requis : " + r.getRequiredLevel(), "Temps de respawn : " + r.getRespawnTime() + "s")).getItemStack()));
+
+                DandelionItem indicator = ItemUtils.RIGHT_ARROW.getItem();
+                indicator.setName("Drop : ");
+                indicator.setRanks(Ranks.SUPERRARE);
+                infoPane.addItem(new GuiItem(indicator.getItemStack()));
+                infoPane.addItem(new GuiItem(r.getDrop()));
+
+                gui.addPane(infoPane);
+                gui.show(e.getPlayer());
+            }
+        }
     }
 }

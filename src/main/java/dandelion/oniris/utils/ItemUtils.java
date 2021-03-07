@@ -27,7 +27,9 @@ public enum ItemUtils {
     GOLD_COIN(FonctionUtils.createItem(GOLD+"Piece D'Or", Material.FEATHER,ItemType.MONEY, Ranks.COMMON,1,4, Arrays.asList(ChatColor.GREEN + "-Argent-", GRAY+"Valeur : 4096 Bronze")), "Piece de niveau 1"),
     GRIMOIRE(FonctionUtils.createItem("Grimoire", Material.BOOK,ItemType.GRIMORY, Ranks.COMMON, 1, 1), "Grimoire de base pour vos sorts"),
     BINDER(FonctionUtils.createItem("Binder", Material.FIREWORK_STAR,ItemType.BINDER, Ranks.COMMON,1,1, Collections.singletonList(WHITE+"Binding")), "Item to bind"),
-    ADMIN_WRENCH(FonctionUtils.createItem("Admin Wrench", Material.CARROT_ON_A_STICK, ItemType.ADMIN_TOOL, Ranks.UNOBTAINABLE,1,1), "Permet diverses actions si vous avez la permission");
+    ADMIN_WRENCH(FonctionUtils.createItem("Admin Wrench", Material.CARROT_ON_A_STICK, ItemType.ADMIN_TOOL, Ranks.UNOBTAINABLE,1,1), "Permet diverses actions si vous avez la permission"),
+    UP_ARROW(FonctionUtils.createItem("Up Arrow", Material.CARROT_ON_A_STICK, ItemType.DISPLAY_ITEM, Ranks.UNOBTAINABLE, 1, 11), "Une flèche pointant le haut"),
+    RIGHT_ARROW(FonctionUtils.createItem("Right Arrow", Material.CARROT_ON_A_STICK, ItemType.DISPLAY_ITEM, Ranks.UNOBTAINABLE, 1, 13), "Une flèche pointant à droite");
     DandelionItem item;
     String description;
 
@@ -147,6 +149,15 @@ public enum ItemUtils {
             item.setLevel(data.get(NamespacedKey.minecraft("level"), PersistentDataType.INTEGER));
         if(data.has(NamespacedKey.minecraft("name"), PersistentDataType.STRING))
             item.setName(data.get(NamespacedKey.minecraft("name"), PersistentDataType.STRING));
+
+        FonctionUtils.JobLevelBuilder jobLevelBuilder = new FonctionUtils.JobLevelBuilder();
+        if(data.has(NamespacedKey.minecraft("alchemist"), PersistentDataType.INTEGER))
+            jobLevelBuilder.setAlchemistLevel(data.get(NamespacedKey.minecraft("alchemist"), PersistentDataType.INTEGER));
+        if(data.has(NamespacedKey.minecraft("blacksmith"), PersistentDataType.INTEGER))
+            jobLevelBuilder.setAlchemistLevel(data.get(NamespacedKey.minecraft("blacksmith"), PersistentDataType.INTEGER));
+        if(data.has(NamespacedKey.minecraft("lumberjack"), PersistentDataType.INTEGER))
+            jobLevelBuilder.setAlchemistLevel(data.get(NamespacedKey.minecraft("lumberjack"), PersistentDataType.INTEGER));
+        item.setJobLevel(jobLevelBuilder.build());
 
         return item;
     }

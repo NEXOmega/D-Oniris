@@ -20,6 +20,7 @@ public enum ClassType {
     HUNTER(new Hunter(), null),
     ARCHER(new Archer(), new ArcherProgression()),
 
+    WORLDCHAMPION(new WorldChampion(), null),
     VILLAGER(new Villager(), new VillagerProgression());
 
     RPGClass rpgClass;

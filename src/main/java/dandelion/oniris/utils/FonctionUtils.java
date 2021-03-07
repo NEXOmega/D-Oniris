@@ -6,6 +6,8 @@ import dandelion.oniris.entities.DandelionMob;
 import dandelion.oniris.entities.EntityStats;
 import dandelion.oniris.entities.MobType;
 import dandelion.oniris.entities.entity.DandelionEntity;
+import dandelion.oniris.jobs.Job;
+import dandelion.oniris.jobs.JobLevel;
 import dandelion.oniris.players.Stats;
 import dandelion.oniris.players.spell.Elements;
 import dandelion.oniris.players.spell.Spell;
@@ -47,7 +49,7 @@ public class FonctionUtils {
         item.setAmount(amount);
         item.setItemMeta(meta);
 
-        return new DandelionItem(item, name, null,null, null,null, itemType, ranks,null,null,null);
+        return new DandelionItem(item, name, null,null, null,null, itemType, ranks,null,null,null, null);
     }
 
     public static DandelionItem createItem(String name, Material material, ItemType itemType, Ranks ranks, int amount, int modelData, List<String> lore) {
@@ -60,7 +62,7 @@ public class FonctionUtils {
         item.setAmount(amount);
         item.setItemMeta(meta);
 
-        return new DandelionItem(item, name,new ArrayList<>(lore),null, null,null, itemType, ranks,null,null,null);
+        return new DandelionItem(item, name,new ArrayList<>(lore),null, null,null, itemType, ranks,null,null,null , null);
     }
 
     public static DandelionItem createItem(String name, Material material, ItemType itemType, Ranks ranks, int amount, int modelData, List<String> lore, HashMap<String, String> data) {
@@ -77,7 +79,7 @@ public class FonctionUtils {
             item.getItemMeta().getPersistentDataContainer().set(NamespacedKey.minecraft(string), PersistentDataType.STRING, d);
         });
 
-        return new DandelionItem(item, name, new ArrayList<>(lore),null, null,null, itemType, ranks,null,null,null);
+        return new DandelionItem(item, name, new ArrayList<>(lore),null, null,null, itemType, ranks,null,null,null, null);
     }
 
     public static String getDirection(Location pos1, Location pos2) {
@@ -126,6 +128,29 @@ public class FonctionUtils {
         }
     }
 
+    public static class JobLevelBuilder {
+        int lumberjack = 0, blacksmith = 0, alchemist = 0;
+
+        public JobLevelBuilder setLumberjackLevel(int level) {
+            this.lumberjack = level;
+            return this;
+        }
+
+        public JobLevelBuilder setBlacksmithLevel(int level) {
+            this.blacksmith = level;
+            return this;
+        }
+
+        public JobLevelBuilder setAlchemistLevel(int level) {
+            this.alchemist = level;
+            return this;
+        }
+
+        public JobLevel build() {
+            return new JobLevel(lumberjack, blacksmith, alchemist);
+        }
+    }
+
     public static class DandelionItemBuilder {
         ItemStack itemStack;
         String name;
@@ -138,6 +163,7 @@ public class FonctionUtils {
         Elements elements;
         Integer level;
         String spellList;
+        JobLevel jobLevel;
 
         public void setItemStack(ItemStack itemStack) {
             this.itemStack = itemStack;
@@ -183,8 +209,10 @@ public class FonctionUtils {
             this.spellList = spellList;
         }
 
+        public void setJobLevel(JobLevel jobLevel) {this.jobLevel = jobLevel; }
+
         public DandelionItem build() {
-            return new DandelionItem(itemStack,name,description,stats,support,types,itemType, ranks, elements, level, spellList);
+            return new DandelionItem(itemStack,name,description,stats,support,types,itemType, ranks, elements, level, spellList, jobLevel);
         }
     }
 

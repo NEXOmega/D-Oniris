@@ -97,6 +97,7 @@ public class EditorCommand implements TabExecutor {
         OutlinePane playerPane = new OutlinePane(2, 0, 7, 5);
         playerPane.addItem(new GuiItem(FonctionUtils.createItem(YELLOW +"Infos sur : " + target.getDisplayName(),Material.PAPER,ItemType.DISPLAY_ITEM, Ranks.COMMON,1, 1,
                 Arrays.asList(RED + "Classe :" + GREEN + targetStats.getClassType().getClassName(),
+                        RED + "Classe Précédente : " + GREEN + targetStats.getPreviousClassType().getClassName(),
                         RED + "Support :" + GREEN +targetStats.getSupportType().getSupport().getName(),
                         RED + "Total Stats",
                         RED + "Atk : " + GREEN + targetStats.getMaxAttack(),
@@ -113,10 +114,7 @@ public class EditorCommand implements TabExecutor {
                     })
                     .onComplete((player, text) -> {           //called when the inventory output slot is clicked
                         if(EnumUtils.isValidEnum(ClassType.class, text.toUpperCase())) {
-                            targetStats.setClassType(ClassType.valueOf(text.toUpperCase()));
-                            targetStats.getSpells().clear();
-                            targetStats.getSpells().addAll(Arrays.asList(targetStats.getClassType().getSpellList()));
-                            targetStats.getClassType().getRpgClass().onClassSelected(target, targetStats);
+                            oniris.getpUtils().setNewClass(target, targetStats, ClassType.valueOf(text.toUpperCase()));
                             player.sendMessage("Vous êtes désormais un " + text);
                             return AnvilGUI.Response.close();
                         } else {

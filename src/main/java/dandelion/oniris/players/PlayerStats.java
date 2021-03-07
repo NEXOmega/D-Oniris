@@ -25,6 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public class PlayerStats {
     Stats stats;
     Stats equipementStats;
     ClassType classType;
+    ClassType previousClassType;
     ItemStack[] equipements;
     JobStats jobStats;
     ArrayList<PortalStone> portalStones;
@@ -58,10 +60,19 @@ public class PlayerStats {
         return classType;
     }
 
-    public PlayerStats(Infos infos, Stats stats, ClassType classType) {
+    public ClassType getPreviousClassType() {
+        return previousClassType;
+    }
+
+    public void setPreviousClassType(ClassType previousClassType) {
+        this.previousClassType = previousClassType;
+    }
+
+    public PlayerStats(Infos infos, Stats stats, ClassType classType, ClassType previousClassType) {
         this.infos = infos;
         this.stats = stats;
         this.classType = classType;
+        this.previousClassType = previousClassType;
         this.equipementStats = new Stats(0,0,0,0, 0);
         this.equipements = new ItemStack[8];
         this.jobStats = new JobStats();
@@ -75,11 +86,12 @@ public class PlayerStats {
         spells.addAll(Arrays.asList(classType.getSpellList()));
     }
 
-    public PlayerStats(Infos infos, Stats stats, Stats equipementStats, ClassType classType, ItemStack[] equipements, JobStats jobStats, ArrayList<PortalStone> portalStones, double health, int statsPoint) {
+    public PlayerStats(Infos infos, Stats stats, Stats equipementStats, ClassType classType, ClassType previousClassType, ItemStack[] equipements, JobStats jobStats, ArrayList<PortalStone> portalStones, double health, int statsPoint) {
         this.infos = infos;
         this.stats = stats;
         this.equipementStats = equipementStats;
         this.classType = classType;
+        this.previousClassType = previousClassType;
         this.equipements = equipements;
         this.jobStats = new JobStats();
         this.jobStats = jobStats;
@@ -92,12 +104,13 @@ public class PlayerStats {
         spells.addAll(Arrays.asList(classType.getSpellList()));
     }
 
-    public PlayerStats(LinkedList<String> spells, Infos infos, Stats stats, Stats equipementStats, ClassType classType, ItemStack[] equipements, JobStats jobStats, ArrayList<PortalStone> portalStones, SupportType support, double health, int statsPoint) {
+    public PlayerStats(LinkedList<String> spells, Infos infos, Stats stats, Stats equipementStats, ClassType classType, ClassType previousClassType, ItemStack[] equipements, JobStats jobStats, ArrayList<PortalStone> portalStones, SupportType support, double health, int statsPoint) {
         this.spells = spells;
         this.infos = infos;
         this.stats = stats;
         this.equipementStats = equipementStats;
         this.classType = classType;
+        this.previousClassType = previousClassType;
         this.equipements = equipements;
         this.jobStats = jobStats;
         this.portalStones = portalStones;
@@ -379,16 +392,16 @@ public class PlayerStats {
             this.getClassType().getRpgClass().getSupport().onSpellSense(event);
     }
 
-    public void onDie() {
+    public void onDie(Entity damager, Entity damaged, PlayerStats stats) {
         if(this.getSupportType().getSupport() != null)
-            this.getSupportType().getSupport().onDie();
+            this.getSupportType().getSupport().onDie(damager, damaged, stats);
         if(this.getClassType().getRpgClass().getSupport() != null)
-            this.getClassType().getRpgClass().getSupport().onDie();
+            this.getClassType().getRpgClass().getSupport().onDie(damager, damaged, stats);
 
         ArrayList<Support> toRemove = new ArrayList<>();
         buffs.forEach((support1, aLong) -> {
             if(aLong > System.currentTimeMillis()) {
-                support1.onDie();
+                support1.onDie(damager, damaged, stats);
             } else {
                 toRemove.add(support1);
             }
@@ -411,6 +424,23 @@ public class PlayerStats {
             }
         });
         toRemove.forEach(e -> buffs.remove(e));
+    }
+
+    public void onRespawn(PlayerRespawnEvent e) {
+        if(this.getSupportType().getSupport() != null)
+            this.getSupportType().getSupport().onRespawn(e);
+        if(this.getClassType().getRpgClass().getSupport() != null)
+            this.getClassType().getRpgClass().getSupport().onRespawn(e);
+
+        ArrayList<Support> toRemove = new ArrayList<>();
+        buffs.forEach((support1, aLong) -> {
+            if(aLong > System.currentTimeMillis()) {
+                support1.onRespawn(e);
+            } else {
+                toRemove.add(support1);
+            }
+        });
+        toRemove.forEach(a -> buffs.remove(a));
     }
 
     public EntityLiving getPet() {

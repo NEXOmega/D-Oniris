@@ -1,6 +1,7 @@
 package dandelion.oniris.utils;
 
 import dandelion.oniris.commands.equipemetns.WeaponsTypes;
+import dandelion.oniris.jobs.JobLevel;
 import dandelion.oniris.players.Stats;
 import dandelion.oniris.players.spell.Elements;
 import dandelion.oniris.players.support.Support;
@@ -25,13 +26,14 @@ public class DandelionItem {
     Elements elements;
     Integer level;
     String spellList;
+    JobLevel jobLevel;
 
     public DandelionItem(ItemStack itemStack) {
         this.itemStack = itemStack;
         this.meta = itemStack.getItemMeta();
     }
 
-    public DandelionItem(ItemStack itemStack, String name, ArrayList<String> description, Stats stats, Support support, WeaponsTypes types, ItemType itemType, Ranks ranks, Elements elements, Integer level, String spellList) {
+    public DandelionItem(ItemStack itemStack, String name, ArrayList<String> description, Stats stats, Support support, WeaponsTypes types, ItemType itemType, Ranks ranks, Elements elements, Integer level, String spellList, JobLevel jobLevel) {
         this.itemStack = itemStack;
         meta = itemStack.getItemMeta();
         PersistentDataContainer data = meta.getPersistentDataContainer();
@@ -88,6 +90,13 @@ public class DandelionItem {
             data.set(NamespacedKey.minecraft("spelllist"), PersistentDataType.STRING,spellList);
         }
         itemStack.setItemMeta(meta);
+
+        if(jobLevel != null) {
+            this.jobLevel = jobLevel;
+            data.set(NamespacedKey.minecraft("alchemist"), PersistentDataType.INTEGER, jobLevel.getAlchemist());
+            data.set(NamespacedKey.minecraft("blacksmith"), PersistentDataType.INTEGER, jobLevel.getBlacksmith());
+            data.set(NamespacedKey.minecraft("lumberjack"), PersistentDataType.INTEGER, jobLevel.getAlchemist());
+        }
     }
 
     public String getName() {
@@ -207,5 +216,16 @@ public class DandelionItem {
         meta.setUnbreakable(true);
         itemStack.setItemMeta(meta);
         return itemStack;
+    }
+
+    public JobLevel getJobLevel() {
+        return jobLevel;
+    }
+
+    public void setJobLevel(JobLevel jobLevel) {
+        this.jobLevel = jobLevel;
+        meta.getPersistentDataContainer().set(NamespacedKey.minecraft("alchemist"), PersistentDataType.INTEGER, jobLevel.getAlchemist());
+        meta.getPersistentDataContainer().set(NamespacedKey.minecraft("blacksmith"), PersistentDataType.INTEGER, jobLevel.getBlacksmith());
+        meta.getPersistentDataContainer().set(NamespacedKey.minecraft("lumberjack"), PersistentDataType.INTEGER, jobLevel.getLumberjack());
     }
 }

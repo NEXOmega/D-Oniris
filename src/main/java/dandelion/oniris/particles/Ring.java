@@ -28,6 +28,8 @@ public class Ring extends Effect {
      */
     public float grow = .1f;
 
+    public double yOffset = 0;
+
     /**
      * Circles to display
      */
@@ -57,7 +59,7 @@ public class Ring extends Effect {
             return;
         }
         double x, y, z;
-        y = step * grow;
+        y = step * grow + yOffset;
         location.add(0, y, 0);
         for (int i = 0; i < particles; i++) {
             double angle = (double) 2 * Math.PI * i / particles;

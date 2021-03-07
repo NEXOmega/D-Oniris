@@ -37,6 +37,8 @@ import de.slikey.effectlib.EffectManager;
 import eu.endercentral.crazy_advancements.Advancement;
 import eu.endercentral.crazy_advancements.CrazyAdvancements;
 import eu.endercentral.crazy_advancements.manager.AdvancementManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -73,6 +75,7 @@ public final class Oniris extends JavaPlugin {
     DatabaseConnect connectToDB = new DatabaseConnect();
 
     SoundAPI soundApi;
+
     @Override
     public void onEnable() {
         instance = this;
