@@ -93,6 +93,8 @@ public class PlayerJoinLeave implements Listener {
             if(stats.getPet().isAlive())
                 stats.getPet().killEntity();
         }
+        if(stats.getPartyUUID() != null)
+            main.getPartyManager().leftParty(stats.getPartyUUID(), e.getPlayer());
         //main.getAdvancementManager().saveProgress(e.getPlayer(),"dandelion");
         //main.getAdvancementManager().saveProgress(e.getPlayer(),"party");
 //        main.getPlayers().get(e.getPlayer()).getInfos().setPlayerTime(e.getPlayer().getPlayerTime());

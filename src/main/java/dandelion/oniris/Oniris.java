@@ -1,6 +1,7 @@
 package dandelion.oniris;
 
 import com.mongodb.Block;
+import dandelion.oniris.commands.PartyCommands;
 import dandelion.oniris.commands.PlayerInfos;
 import dandelion.oniris.commands.TestCommand;
 import dandelion.oniris.commands.admin.AdminJobCommands;
@@ -27,6 +28,7 @@ import dandelion.oniris.packets.CustomPacketManager;
 import dandelion.oniris.players.PlayerStats;
 import dandelion.oniris.players.PlayerUtils;
 import dandelion.oniris.players.advancements.ClassesAdvancements;
+import dandelion.oniris.players.parties.PartyManager;
 import dandelion.oniris.players.spell.SpellManager;
 import dandelion.oniris.world.RessourceManager;
 import dandelion.oniris.world.TickManager;
@@ -70,6 +72,7 @@ public final class Oniris extends JavaPlugin {
     JobManager jobManager;
     EntityManager entityManager;
     AdvancementManager advancementManager = CrazyAdvancements.getNewAdvancementManager();
+    PartyManager partyManager;
     MenuGui gui;
     PlayerUtils pUtils;
     DatabaseConnect connectToDB = new DatabaseConnect();
@@ -96,6 +99,7 @@ public final class Oniris extends JavaPlugin {
         Objects.requireNonNull(getCommand("ajob")).setExecutor(new AdminJobCommands(this));
         Objects.requireNonNull(getCommand("job")).setExecutor(new JobCommand(this));
         Objects.requireNonNull(getCommand("entity")).setExecutor(new EntityCommand(this));
+        Objects.requireNonNull(getCommand("party")).setExecutor(new PartyCommands(this));
 
         PluginManager pm = Bukkit.getPluginManager();
 
@@ -113,8 +117,11 @@ public final class Oniris extends JavaPlugin {
         this.ressourceManager = new RessourceManager(this);
         pm.registerEvents(ressourceManager, this);
         this.jobManager = new JobManager(this);
+        this.partyManager = new PartyManager(this);
+        pm.registerEvents(partyManager, this);
 
         this.entityManager = new EntityManager(this);
+
 
         pUtils = new PlayerUtils(this);
         this.getServer().getScheduler().runTaskTimer(this, new TickManager(this), 0L, 1L);
@@ -206,5 +213,9 @@ public final class Oniris extends JavaPlugin {
 
     public AdvancementManager getAdvancementManager() {
         return advancementManager;
+    }
+
+    public PartyManager getPartyManager() {
+        return partyManager;
     }
 }

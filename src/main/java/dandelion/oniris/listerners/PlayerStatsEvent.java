@@ -211,7 +211,6 @@ public class PlayerStatsEvent implements Listener {
 
             playerStats.onHitBySpell(e, (Player) e.getDamagee(), playerStats, e.getDamager(), e.getType(), e.getSpell());
 
-            System.out.println("Damaged " + e.getDamages());
             PlayerStats stats = oniris.getPlayers().get(e.getDamagee());
             stats.setHealth(stats.getHealth() - calculateDamages(stats, e.getDamages()));
             e.setCancelled(true);

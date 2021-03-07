@@ -39,6 +39,7 @@ public class PlayerStats {
     transient LinkedList<String> spells;
     transient LinkedHashMap<Support, Long> buffs = new LinkedHashMap();
     transient EntityLiving pet;
+    transient String partyUUID;
 
     Infos infos;
     Stats stats;
@@ -156,6 +157,14 @@ public class PlayerStats {
     public void updateEnnemyBar(LivingEntity entity, DandelionMob mob) {
         this.ennemyBar.setTitle(ChatColor.YELLOW + mob.getName() + ChatColor.RED + " {" + ChatColor.YELLOW + Math.round(entity.getHealth()) + ChatColor.RED + "/" + ChatColor.YELLOW + Math.round(mob.getStats().getVitality()) + ChatColor.RED + "}");
         this.ennemyBar.setProgress((entity.getHealth()/mob.getStats().getVitality() < 1 ? entity.getHealth()/mob.getStats().getVitality() : 1));
+    }
+
+    public String getPartyUUID() {
+        return partyUUID;
+    }
+
+    public void setPartyUUID(String partyUUID) {
+        this.partyUUID = partyUUID;
     }
 
     public LinkedList<String> getSpells() {

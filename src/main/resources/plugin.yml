@@ -48,3 +48,6 @@ commands:
   entity:
     description: Creer/modifier/Editer/Lister les entitées
     permission: admin.entity
+  party:
+    description: Permet de créer une party
+    permission: party.use
