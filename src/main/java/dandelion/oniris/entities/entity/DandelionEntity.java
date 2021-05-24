@@ -5,6 +5,7 @@ import dandelion.oniris.entities.DandelionMob;
 import dandelion.oniris.entities.MobType;
 import dandelion.oniris.utils.FonctionUtils;
 import net.minecraft.server.v1_16_R2.*;
+import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 
 import java.util.Random;
@@ -53,8 +54,10 @@ public class DandelionEntity extends EntityCreature implements IRangedEntity {
             if(killer != null)
                 killer.giveExp(dandelionMob.getRewardXp());
         }
-        if(dandelionMob.isRespawn())
+        if(dandelionMob.isRespawn()) {
+            Bukkit.broadcastMessage(this.getClass().getName() + " " + uuid + " " + this.dandelionMob.getMob_name() + "A");
             Oniris.getInstance().getEntityManager().respawn(dandelionMob.getMob_name(), uuid, true);
+        }
     }
 
     public void setRespawn(boolean respawn) {

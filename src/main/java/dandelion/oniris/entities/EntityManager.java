@@ -63,9 +63,7 @@ public class EntityManager {
         for(World world : Bukkit.getServer().getWorlds()) {
             for(Entity entity : world.getEntities()) {
                 if(((CraftEntity)entity).getHandle() instanceof DandelionEntity) {
-                    ((DandelionEntity)((CraftEntity)entity).getHandle()).setRespawn(false);
-                    ((DandelionEntity)((CraftEntity)entity).getHandle()).setDrop(false);
-                    entity.remove();
+                    unloadEntity(entity);
                 }
             }
         }

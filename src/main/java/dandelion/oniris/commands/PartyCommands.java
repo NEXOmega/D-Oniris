@@ -28,7 +28,8 @@ public class PartyCommands implements TabExecutor {
                 oniris.getPartyManager().createParty(args[1], (Player) commandSender);
             else
                 commandSender.sendMessage(ChatColor.RED + "Seul les joueurs peuvent faire cette commande.");
-        } else if(args[0].equalsIgnoreCase("join")) {
+        }
+        else if(args[0].equalsIgnoreCase("join")) {
             if (args.length < 2)
                 commandSender.sendMessage(ChatColor.RED + " Vous devez donner l'uuid de la party");
             if(commandSender instanceof Player){
@@ -39,7 +40,15 @@ public class PartyCommands implements TabExecutor {
                     commandSender.sendMessage(ChatColor.RED + "Vous devez d'abord quitter votre précédent groupe. /party leave");
             } else
                 commandSender.sendMessage(ChatColor.RED + "Seul les joueurs peuvent faire cette commande.");
-        } else if(args[0].equalsIgnoreCase("leave")) {
+        }
+        else if(args[0].equalsIgnoreCase("invite")) {
+            PlayerStats stats = oniris.getPlayers().get(commandSender);
+            if(stats.getPartyUUID() != null)
+                oniris.getPartyManager().inviteParty((Player) commandSender, stats.getPartyUUID(), args[1], true);
+            else
+                commandSender.sendMessage(ChatColor.RED + "Erreur, vous n'avez pas de groupe.");
+        }
+        else if(args[0].equalsIgnoreCase("leave")) {
             if(commandSender instanceof Player) {
                 PlayerStats stats = oniris.getPlayers().get(commandSender);
                 if(stats.getPartyUUID() != null)

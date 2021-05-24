@@ -135,12 +135,12 @@ public final class Oniris extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        getEntityManager().resetEntities();
+
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             this.getConnectToDB().updatePlayer(p.getUniqueId(), this.getPlayers().get(p));
             this.getPlayers().remove(p);
         }
-
-        getEntityManager().resetEntities();
     }
 
     public void progressAdvancement(Player p, Advancement advancement, int criterion) {
@@ -148,6 +148,8 @@ public final class Oniris extends JavaPlugin {
         if(progress < advancement.getCriteria())
             advancementManager.setCriteriaProgress(p, advancement, progress+criterion);
     }
+
+
 
     public static EffectManager getEffectManager() {
         return em;

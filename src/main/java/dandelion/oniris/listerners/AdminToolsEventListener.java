@@ -35,6 +35,7 @@ public class AdminToolsEventListener implements Listener {
     @EventHandler
     public void useOnEntity(PlayerInteractEntityEvent e) {
         if(e.getPlayer().getInventory().getItemInMainHand().equals(ItemUtils.ADMIN_WRENCH.getItem().getItemStack()) && e.getHand().equals(EquipmentSlot.HAND)) {
+            e.getPlayer().sendMessage(((CraftEntity)e.getRightClicked()).getHandle().getClass().getName());
             if(((CraftEntity)e.getRightClicked()).getHandle() instanceof DandelionEntity) {
                 DandelionMob dandelionMob = ((DandelionEntity) ((CraftEntity)e.getRightClicked()).getHandle()).getMob();
 

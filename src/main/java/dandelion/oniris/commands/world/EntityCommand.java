@@ -102,6 +102,8 @@ public class EntityCommand implements TabExecutor {
                         }
                     } else if(args[2].equalsIgnoreCase("pet")) {
                         oniris.getEntityManager().getMobMap().get(args[1]).spawnAsPet(((Player)commandSender).getLocation(), ((Player)commandSender), uuid);
+                    } else if(args[2].equalsIgnoreCase("mount")) {
+                        oniris.getEntityManager().getMobMap().get(args[1]).spawnAsMount(((Player)commandSender).getLocation(), ((Player)commandSender), uuid);
                     }
 
                 }
@@ -174,7 +176,7 @@ public class EntityCommand implements TabExecutor {
             }
             if(args.length == 3) {
 
-                return Arrays.asList("mob", "pet");
+                return Arrays.asList("mob", "pet", "mount");
             }
         }
         return Arrays.asList("spawn", "create", "list", "save", "load", "portal", "reset");

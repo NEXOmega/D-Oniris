@@ -17,15 +17,11 @@ public class TestCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
-        Location loc = ((Player)commandSender).getLocation();
-        loc.getChunk().unload();
-        /*PetCow superZombie = new PetCow(((CraftWorld)((Player) commandSender).getWorld()).getHandle(), ((Player)commandSender));
-        superZombie.goalSelector.a(2, new MoveTowardsTargetIfRange(superZombie, 1,100, loc));
-        superZombie.setCustomName(new ChatComponentText(((Player)commandSender).getDisplayName() + " Pet"));
+        double pitch = ((((Player)commandSender).getEyeLocation().getPitch() + 90) * Math.PI) / 180;
+        double yaw  = ((((Player)commandSender).getEyeLocation().getYaw() + 90)  * Math.PI) / 180;
 
-        oniris.getPlayers().get(commandSender).setPet(superZombie);
-
-        ((CraftWorld)loc.getWorld()).getHandle().addEntity(superZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);*/
+        commandSender.sendMessage(" Radians Yaw : " + yaw + " Basic Yaw : " + ((Player)commandSender).getEyeLocation().getYaw());
+        commandSender.sendMessage("X : " + Math.cos(yaw) + " Z : " + Math.sin(yaw * -1));
 
         return false;
     }

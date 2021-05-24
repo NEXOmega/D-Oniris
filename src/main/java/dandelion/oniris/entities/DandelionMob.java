@@ -3,6 +3,7 @@ package dandelion.oniris.entities;
 import dandelion.oniris.Oniris;
 import dandelion.oniris.entities.entity.DandelionEntity;
 import dandelion.oniris.entities.pathfinders.MoveTowardsTargetIfRange;
+import dandelion.oniris.entities.pathfinders.PathfinderGoalMount;
 import dandelion.oniris.entities.pathfinders.PathfinderGoalPet;
 import dandelion.oniris.players.Stats;
 import dandelion.oniris.players.spell.Spell;
@@ -10,6 +11,7 @@ import dandelion.oniris.players.support.Support;
 import dandelion.oniris.utils.FonctionUtils;
 import dandelion.oniris.world.Treasure;
 import net.minecraft.server.v1_16_R2.*;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_16_R2.entity.CraftItem;
@@ -81,6 +83,7 @@ public class DandelionMob {
 
     public void spawnAsMob(Location location, String uuid) {
         if(location.isWorldLoaded()) {
+            Bukkit.broadcastMessage(entityClass.getName() + " "+ mob_name + " " + "B");
             EntityInsentient entity = FonctionUtils.createLivingEntity(entityTypes, entityClass, type, uuid, location, this);
 
             if(equipements[0] != null)
@@ -148,6 +151,21 @@ public class DandelionMob {
             Oniris.getInstance().getEntityManager().respawn(this.getMob_name(), uuid, false);
         }
 
+    }
+
+    public void spawnAsMount(Location location, Player owner, String uuid) {
+     if(location.isWorldLoaded()) {
+         EntityInsentient entity = FonctionUtils.createLivingEntity(entityTypes, entityClass, MobType.INOFFENSIVE, uuid, location, this);
+         entity.setInvulnerable(false);
+         this.setRespawn(false);
+         entity.goalSelector.a(0, new PathfinderGoalFloat(entity));
+         entity.goalSelector.a(1, new PathfinderGoalMount(entity));
+         entity.setGoalTarget(((CraftPlayer) owner).getHandle(), EntityTargetEvent.TargetReason.CUSTOM, true);
+         entity.setCustomName(new ChatComponentText(owner.getDisplayName() + " Monture"));
+        entity.passengers.add(((CraftPlayer) owner).getHandle());
+     } else {
+         Oniris.getInstance().getEntityManager().respawn(this.getMob_name(), uuid, false);
+     }
     }
 
     public String getMob_name() {
